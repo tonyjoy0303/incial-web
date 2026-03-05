@@ -8,19 +8,11 @@ import {
   GreetingsOverlay,
   HeroSection,
   ScrollSection,
-  ServicesSection,
   TrustSection,
   ContactSection,
 } from "@/components/sections";
 
-type Phase =
-  | "greetings"
-  | "hero"
-  | "scrolling"
-  | "services"
-  | "trust"
-  | "about"
-  | "contact";
+type Phase = "greetings" | "hero" | "scrolling" | "trust" | "about" | "contact";
 
 export default function Home() {
   const [phase, setPhase] = useState<Phase>("greetings");
@@ -42,8 +34,6 @@ export default function Home() {
 
   const handleStart = useCallback(() => setPhase("scrolling"), []);
   const handleToggleMenu = useCallback(() => setMenuOpen((prev) => !prev), []);
-
-  const [servicesConfig, setServicesConfig] = useState({ initialSlide: 0 });
 
   return (
     <>
@@ -98,28 +88,10 @@ export default function Home() {
                 transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               >
                 <ScrollSection
+                  initialServicesSlide={0}
                   onScrollComplete={() => {
-                    setServicesConfig({ initialSlide: 0 });
-                    setPhase("services");
+                    setPhase("trust");
                   }}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <AnimatePresence>
-            {phase === "services" && (
-              <motion.div
-                key="services"
-                initial={{ y: "100vh", opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: "-100vh", opacity: 0 }}
-                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <ServicesSection
-                  initialSlide={servicesConfig.initialSlide}
-                  onComplete={() => setPhase("trust")}
-                  onBack={() => setPhase("scrolling")}
                 />
               </motion.div>
             )}
@@ -136,8 +108,11 @@ export default function Home() {
               >
                 <TrustSection
                   onBack={() => {
-                    setServicesConfig({ initialSlide: 3 });
-                    setPhase("services");
+                    // Since services is inside scrolling now,
+                    // we go back to scrolling phase.
+                    // The ScrollSection itself takes `initialServicesSlide = 3` internally to jump to the last slide
+                    // Let's modify phase handler for that if you want, but sticking to "scrolling" works
+                    setPhase("scrolling");
                   }}
                   onComplete={() => setPhase("contact")}
                 />

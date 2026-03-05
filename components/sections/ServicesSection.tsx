@@ -107,7 +107,7 @@ export default function ServicesSection({
 
   const slideVariants = {
     enter: (direction: number) => ({
-      y: direction > 0 ? "100%" : "-100%",
+      y: direction >= 0 ? "100%" : "-100%",
       opacity: 0,
     }),
     center: {

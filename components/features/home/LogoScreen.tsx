@@ -52,25 +52,6 @@ export default function LogoScreen({ onNextClick }: LogoScreenProps) {
           Our Works
         </button>
       </motion.div>
-
-      {/* Bottom arrow */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{
-          opacity: [0.5, 1, 0.5],
-          y: [0, 8, 0],
-        }}
-        transition={{
-          delay: 0.6,
-          duration: 2,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        onClick={onNextClick}
-        className="absolute bottom-10 right-10 cursor-pointer text-white"
-      >
-        <FiArrowDown size={24} />
-      </motion.div>
     </motion.div>
   );
 }
