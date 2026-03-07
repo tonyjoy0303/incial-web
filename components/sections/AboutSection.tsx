@@ -10,7 +10,6 @@ import Image from "next/image";
 const imgHeroBanner = "/images/about/Team-Photo.png";
 const imgBrand = "/images/about/imgBrand.png";
 const imgImpact = "/images/about/imgImpact.png";
-const imgAwardsIcon = "/images/about/imgAwardsIcon.svg";
 
 // ── Fade-up animation variant ─────────────────────────────────────────────
 const fadeUp = {
@@ -39,6 +38,8 @@ export default function AboutSection({
 }: AboutSectionProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [data, setData] = useState<AboutData | null>(null);
+  const [brandSrc, setBrandSrc] = useState(imgBrand);
+  const [impactSrc, setImpactSrc] = useState(imgImpact);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -49,7 +50,12 @@ export default function AboutSection({
   useEffect(() => {
     fetch("/api/admin/about")
       .then((res) => res.json())
-      .then(setData)
+      .then((d) => {
+        setData(d);
+        // initialize image sources; fallback if undefined
+        setBrandSrc(d?.brandImage || imgBrand);
+        setImpactSrc(d?.impactImage || imgImpact);
+      })
       .catch(console.error);
   }, []);
 
@@ -202,52 +208,6 @@ export default function AboutSection({
         ))}
       </div>
 
-      {/* ── Awards & Recognitions ─────────────────────────────────────── */}
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        variants={fadeUp}
-        custom={0.1}
-        className="text-center px-6 pb-6"
-      >
-        <h2 className="font-[Poppins,sans-serif] font-bold text-[36px] text-white mb-5">
-          {data?.awardsTitle || "Awards & Recognitions"}
-        </h2>
-        <p className="font-[Poppins,sans-serif] italic text-[16px] text-white/80 max-w-3xl mx-auto mb-14">
-          {data?.awardsSubtitle ||
-            "Over the years, Incial has been proud to receive industry awards and recognitions that celebrate our commitment to excellence, innovation, and client success. These honors inspire us to continuously raise the bar."}
-        </p>
-      </motion.div>
-
-      <div className="flex flex-col md:flex-row justify-center gap-12 md:gap-32 pb-24 px-6">
-        {(data?.awards || []).map((award, i) => (
-          <motion.div
-            key={award.id || i}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            custom={i * 0.1}
-            className="flex flex-col items-center text-center"
-          >
-            <Image
-              src={award.icon || imgAwardsIcon}
-              alt={award.name}
-              width={96}
-              height={96}
-              className="mb-4 opacity-90"
-            />
-            <h3 className="font-[Poppins,sans-serif] font-bold text-[24px] text-white">
-              {award.name}
-            </h3>
-            <p className="font-[Poppins,sans-serif] italic text-[16px] text-white/70 mt-1">
-              {award.description} <span className="text-[#65adef]">|</span>{" "}
-              {award.year}
-            </p>
-          </motion.div>
-        ))}
-      </div>
 
       {/* ── Our Brand + Our Impact (stacked image cards) ─────────────── */}
       <div
@@ -264,11 +224,14 @@ export default function AboutSection({
           className="relative h-[245px] rounded-tl-3xl rounded-tr-3xl overflow-hidden"
         >
           <Image
-            src={data?.brandImage || imgBrand}
+            src={brandSrc}
             alt="Our Brand"
             fill
             sizes="(max-width: 1256px) 100vw, 1256px"
             className="object-cover object-center"
+            onError={() => {
+              if (brandSrc !== imgBrand) setBrandSrc(imgBrand);
+            }}
           />
           <div className="absolute inset-0 bg-black/50" />
           <div className="absolute inset-0 flex flex-col justify-center px-14 gap-3">
@@ -292,11 +255,14 @@ export default function AboutSection({
           className="relative h-[245px] rounded-bl-3xl rounded-br-3xl overflow-hidden"
         >
           <Image
-            src={data?.impactImage || imgImpact}
+            src={impactSrc}
             alt="Our Impact"
             fill
             sizes="(max-width: 1256px) 100vw, 1256px"
             className="object-cover object-center"
+            onError={() => {
+              if (impactSrc !== imgImpact) setImpactSrc(imgImpact);
+            }}
           />
           <div className="absolute inset-0 bg-black/50" />
           <div className="absolute inset-0 flex flex-col justify-center px-14 gap-3">
