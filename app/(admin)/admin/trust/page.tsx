@@ -170,7 +170,7 @@ export default function AdminTrustPage() {
         <h3 className="text-white/60 text-2xl font-light italic text-center mb-6">
           {data.title}
         </h3>
-        <div className="flex justify-center gap-16">
+        <div className="flex justify-between w-full">
           {data.stats.map((stat) => (
             <div key={stat.id} className="text-center">
               <div className="text-5xl font-bold text-[#5ba4e6] italic">
