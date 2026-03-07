@@ -16,10 +16,10 @@
         "CRM",
         "Reporting"
       ],
-      "coverImage": "/images/workhub.png",
+      "coverImage": "https://ik.imagekit.io/0bs3my2iz/incial-web/images/workhub.png",
       "featured": true,
       "available": true,
-      "image": "/images/products/Workhub.png"
+      "image": "https://ik.imagekit.io/0bs3my2iz/incial-web/images/products/Workhub.png"
     },
     {
       "id": "2",
@@ -37,10 +37,10 @@
         "Real-time Stock",
         "Dashboards"
       ],
-      "coverImage": "/images/stockflow.png",
+      "coverImage": "https://ik.imagekit.io/0bs3my2iz/incial-web/images/stockflow.png",
       "featured": true,
       "available": true,
-      "image": "/images/products/Stockflow.png"
+      "image": "https://ik.imagekit.io/0bs3my2iz/incial-web/images/products/Stockflow.png"
     }
   ]
 }

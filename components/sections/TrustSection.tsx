@@ -25,6 +25,9 @@ export default function TrustSection({
 }: TrustSectionProps) {
   const [stats, setStats] = useState<Stat[]>([]);
   const [title, setTitle] = useState("Why Trust Incial?");
+  const [sectionsConfig, setSectionsConfig] = useState<Record<string, boolean>>(
+    {},
+  );
 
   useEffect(() => {
     fetch("/api/admin/trust")
@@ -39,6 +42,19 @@ export default function TrustSection({
           { id: "2", value: "80+", label: "Projects Completed" },
         ]);
       });
+
+    fetch("/api/admin/sections")
+      .then((res) => res.json())
+      .then((d) => {
+        if (d?.sections) {
+          const configMap: Record<string, boolean> = {};
+          d.sections.forEach((s: any) => {
+            configMap[s.id] = s.enabled;
+          });
+          setSectionsConfig(configMap);
+        }
+      })
+      .catch(console.error);
   }, []);
 
   useEffect(() => {
@@ -101,28 +117,32 @@ export default function TrustSection({
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           {/* Title */}
-          <div className="text-center mb-24 md:mb-32">
-            <h2 className="text-5xl md:text-7xl font-light tracking-tight italic text-white">
-              {title}
-            </h2>
-          </div>
+          {sectionsConfig["trust-title"] !== false && (
+            <div className="text-center mb-24 md:mb-32">
+              <h2 className="text-5xl md:text-7xl font-light tracking-tight italic text-white">
+                {title}
+              </h2>
+            </div>
+          )}
 
           {/* Stats Grid */}
-          <div className="flex flex-col md:flex-row flex-wrap justify-center items-center gap-16 md:gap-32 text-center w-full">
-            {stats.map((stat, index) => (
-              <div
-                key={index}
-                className="flex flex-col items-center min-w-[200px]"
-              >
-                <div className="text-7xl md:text-[80px] font-bold text-[#5ba4e6] mb-4 italic tracking-tighter">
-                  {stat.value}
+          {sectionsConfig["trust-stats"] !== false && (
+            <div className="flex flex-col md:flex-row flex-wrap justify-center items-center gap-16 md:gap-32 text-center w-full">
+              {stats.map((stat, index) => (
+                <div
+                  key={index}
+                  className="flex flex-col items-center min-w-[200px]"
+                >
+                  <div className="text-7xl md:text-[80px] font-bold text-[#5ba4e6] mb-4 italic tracking-tighter">
+                    {stat.value}
+                  </div>
+                  <div className="text-xl md:text-2xl text-white font-normal">
+                    {stat.label}
+                  </div>
                 </div>
-                <div className="text-xl md:text-2xl text-white font-normal">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </motion.div>
       </div>
     </section>

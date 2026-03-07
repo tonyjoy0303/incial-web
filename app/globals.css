@@ -34,31 +34,33 @@ body {
   padding: 0;
 }
 
-/* ── Custom cursor: hidden globally for marketing ── */
-* {
+/* ── Custom cursor: hidden globally for marketing only when .hide-cursor is on body ── */
+body.hide-cursor,
+body.hide-cursor * {
   cursor: none !important;
 }
 
 /* ── Admin panel: restore browser default cursor ── */
-.admin-panel,
-.admin-panel * {
+body .admin-panel,
+body .admin-panel * {
   cursor: auto !important;
 }
 
-.admin-panel button,
-.admin-panel a,
-.admin-panel input,
-.admin-panel textarea,
-.admin-panel select,
-.admin-panel [role="button"] {
+body .admin-panel button,
+body .admin-panel a,
+body .admin-panel input,
+body .admin-panel textarea,
+body .admin-panel select,
+body .admin-panel [role="button"] {
   cursor: pointer !important;
 }
 
-.admin-panel input[type="text"],
-.admin-panel input[type="email"],
-.admin-panel input[type="number"],
-.admin-panel input[type="tel"],
-.admin-panel textarea {
+body .admin-panel input[type="password"],
+body .admin-panel input[type="text"],
+body .admin-panel input[type="email"],
+body .admin-panel input[type="number"],
+body .admin-panel input[type="tel"],
+body .admin-panel textarea {
   cursor: text !important;
 }
 

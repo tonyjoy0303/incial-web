@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@/auth";
 import fs from "fs";
 import path from "path";
 
@@ -6,14 +7,6 @@ const ALLOWED_SECTIONS = [
   "about", "clients", "trust", "blogs", "services",
   "casestudies", "products", "sections",
 ];
-
-function validateAuth(req: NextRequest): boolean {
-  const authHeader = req.headers.get("authorization");
-  if (!authHeader?.startsWith("Bearer ")) return false;
-  const token = authHeader.slice(7);
-  const adminSecret = process.env.ADMIN_SECRET || "incial-admin-2024";
-  return token === adminSecret;
-}
 
 function getDataFilePath(section: string): string {
   return path.join(process.cwd(), "data", `${section}.json`);
@@ -41,7 +34,9 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<{ section: string }> }
 ) {
-  if (!validateAuth(req)) {
+  // Server-side session check — replaces the old Bearer token approach
+  const session = await auth();
+  if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

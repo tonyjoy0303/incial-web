@@ -43,3 +43,5 @@ next-env.d.ts
 .agents
 .orchids
 debug.log
+
+/lib/generated/prisma

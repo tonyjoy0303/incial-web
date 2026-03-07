@@ -7,7 +7,7 @@ import { apiGetSection, apiSaveSection } from "@/lib/adminApi";
 import type { CaseStudiesData, CaseStudy } from "@/lib/dataLoader";
 import { toast } from "sonner";
 import SectionVisibilityToggle from "@/components/admin/SectionVisibilityToggle";
-
+import ImageUpload from "@/components/admin/ImageUpload";
 const inputCls =
   "w-full bg-transparent border border-[#1e1e1e] rounded-xl px-4 py-2.5 text-white text-sm placeholder-[#555] focus:outline-none focus:border-white/50 transition-all font-[Inter,sans-serif]";
 const labelCls =
@@ -272,13 +272,11 @@ export default function AdminCaseStudiesPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className={labelCls}>Hero Image</label>
-                <input
-                  type="text"
+                <ImageUpload
+                  label="Hero Image"
                   value={active.heroImage}
-                  onChange={(e) => updateCase("heroImage", e.target.value)}
-                  placeholder="/images/case1.webp"
-                  className={inputCls}
+                  onChange={(v) => updateCase("heroImage", v)}
+                  folder="images/case-studies"
                 />
               </div>
 
@@ -422,7 +420,13 @@ export default function AdminCaseStudiesPage() {
             )}
 
             {/* Grid preview for the rest */}
-            <div className="mt-10 grid grid-cols-2 lg:grid-cols-3 gap-4 border-t border-[#1e1e1e] pt-6">
+            <div className="mt-10 grid grid-cols-2 lg:grid-cols-3 gap-4 border-t border-[#1e1e1e] pt-6 relative group border border-transparent p-4 -m-4 rounded-2xl hover:border-[#1e1e1e]">
+              <div className="absolute -top-3 right-4 opacity-0 group-hover:opacity-100 transition-opacity bg-black rounded-full px-2 border border-[#1e1e1e] z-10">
+                <SectionVisibilityToggle
+                  sectionId="casestudies-list"
+                  label="Visible"
+                />
+              </div>
               {data.cases.map((c, i) => (
                 <button
                   key={c.id}

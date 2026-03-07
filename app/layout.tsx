@@ -19,6 +19,9 @@ const notoSans = Noto_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "https://incial.com",
+  ),
   title: "Incial — We Build Brands",
   description:
     "Incial is a creative digital agency building brands, experiences, and products.",
@@ -39,6 +42,9 @@ export default function RootLayout({
         <div className="hidden lg:block h-full w-full">
           <MarketingShell>{children}</MarketingShell>
         </div>
+
+        {/* Render persistent global cursors entirely outside any layout wrappers to avoid stacking context issues */}
+        <div id="global-cursor-portal"></div>
       </body>
     </html>
   );

@@ -83,11 +83,36 @@ export default function Home() {
     } else {
       const timer = setTimeout(() => {
         setDirection(1);
-        setPhase("scrolling");
+        // Only go to scrolling if we don't already have a hash that says otherwise
+        const hash = window.location.hash.replace("#", "");
+        if (hash && enabledSections.includes(hash)) {
+          setPhase(hash as Phase);
+        } else {
+          setPhase("scrolling");
+        }
       }, 500);
       return () => clearTimeout(timer);
     }
-  }, [greetingIndex, phase]);
+  }, [greetingIndex, phase, enabledSections]);
+
+  /* ── Hash Navigation ────────────────────────────── */
+  useEffect(() => {
+    const handleHash = () => {
+      const hash = window.location.hash.replace("#", "");
+      if (hash && enabledSections.includes(hash)) {
+        setPhase(hash as Phase);
+        setDirection(1);
+        setMenuOpen(false); // Close menu if we navigated from NavMenu
+      }
+    };
+
+    // Check on initial load too. Since enabledSections is loaded asynchronously,
+    // we also check right away assuming default ALL_PHASES includes it.
+    handleHash();
+
+    window.addEventListener("hashchange", handleHash);
+    return () => window.removeEventListener("hashchange", handleHash);
+  }, [enabledSections]);
 
   const handleToggleMenu = useCallback(() => setMenuOpen((prev) => !prev), []);
 
@@ -129,9 +154,7 @@ export default function Home() {
             borderTopLeftRadius: menuOpen ? 24 : 0,
             borderTopRightRadius: menuOpen ? 24 : 0,
           }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           className="relative origin-top overflow-hidden bg-black text-white"
-          style={{ zIndex: 30 }}
         >
           <AnimatePresence mode="wait" custom={direction}>
             {phase === "scrolling" && (
@@ -154,6 +177,12 @@ export default function Home() {
                       setDirection(1);
                       setPhase(next);
                     }
+                  }}
+                  onBack={() => {
+                    // Allow scrolling up from LogoScreen to trigger back behavior
+                    // Going back from scrolling section goes to greetings or just top
+                    setDirection(-1);
+                    setPhase("greetings");
                   }}
                 />
               </motion.div>

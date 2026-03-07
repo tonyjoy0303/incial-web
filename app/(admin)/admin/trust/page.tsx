@@ -176,13 +176,25 @@ export default function AdminTrustPage() {
 
           {/* Exact replica of TrustSection layout */}
           <div className="flex-1 flex flex-col justify-center items-center px-8 py-10">
-            <div className="text-center mb-16 md:mb-24">
+            <div className="text-center mb-16 md:mb-24 relative group border border-transparent p-2 -m-2 rounded-2xl hover:border-[#1e1e1e]">
+              <div className="absolute -top-3 right-4 opacity-0 group-hover:opacity-100 transition-opacity bg-black rounded-full px-2 border border-[#1e1e1e] z-10">
+                <SectionVisibilityToggle
+                  sectionId="trust-title"
+                  label="Visible"
+                />
+              </div>
               <h2 className="text-5xl md:text-6xl font-light tracking-tight italic text-white font-[Poppins,sans-serif]">
                 {data.title || "Why Trust Incial?"}
               </h2>
             </div>
 
-            <div className="flex flex-col md:flex-row flex-wrap justify-center items-center gap-12 text-center w-full max-w-3xl">
+            <div className="flex flex-col md:flex-row flex-wrap justify-center items-center gap-12 text-center w-full max-w-3xl relative group border border-transparent p-4 -m-4 rounded-2xl hover:border-[#1e1e1e]">
+              <div className="absolute -top-3 right-4 opacity-0 group-hover:opacity-100 transition-opacity bg-black rounded-full px-2 border border-[#1e1e1e] z-10">
+                <SectionVisibilityToggle
+                  sectionId="trust-stats"
+                  label="Visible"
+                />
+              </div>
               {data.stats.map((stat, i) => (
                 <div
                   key={i}

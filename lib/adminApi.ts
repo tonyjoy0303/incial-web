@@ -1,30 +1,7 @@
-const getToken = () =>
-  typeof window !== "undefined"
-    ? localStorage.getItem("admin_token") || ""
-    : "";
-
-export async function apiLogin(secret: string): Promise<boolean> {
-  const res = await fetch("/api/admin/auth", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ secret }),
-  });
-  if (res.ok) {
-    localStorage.setItem("admin_token", secret);
-    return true;
-  }
-  return false;
-}
-
-export function apiLogout() {
-  localStorage.removeItem("admin_token");
-}
-
-export function isLoggedIn(): boolean {
-  return Boolean(
-    typeof window !== "undefined" && localStorage.getItem("admin_token")
-  );
-}
+/**
+ * Admin API helpers — used by admin pages to load/save section data.
+ * Auth is handled entirely by NextAuth session cookies (server-side).
+ */
 
 export async function apiGetSection<T>(section: string): Promise<T> {
   const res = await fetch(`/api/admin/${section}`);
@@ -37,7 +14,7 @@ export async function apiSaveSection<T>(section: string, data: T): Promise<void>
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${getToken()}`,
+      // Auth is verified server-side via NextAuth session cookie — no token needed here
     },
     body: JSON.stringify(data),
   });

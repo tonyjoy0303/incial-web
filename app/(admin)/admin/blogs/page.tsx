@@ -7,7 +7,7 @@ import { apiGetSection, apiSaveSection } from "@/lib/adminApi";
 import type { BlogsData, BlogPost } from "@/lib/dataLoader";
 import { toast } from "sonner";
 import SectionVisibilityToggle from "@/components/admin/SectionVisibilityToggle";
-
+import ImageUpload from "@/components/admin/ImageUpload";
 const inputCls =
   "w-full bg-transparent border border-[#1e1e1e] rounded-xl px-4 py-2.5 text-white text-sm placeholder-[#555] focus:outline-none focus:border-white/50 transition-all font-[Inter,sans-serif]";
 const labelCls =
@@ -96,13 +96,11 @@ function PostCard({
           />
         </div>
         <div className="space-y-1.5">
-          <label className={labelCls}>Image path</label>
-          <input
-            type="text"
+          <ImageUpload
+            label="Image"
             value={post.image}
-            onChange={(e) => onChange("image", e.target.value)}
-            className={inputCls}
-            placeholder="/images/post.jpg"
+            onChange={(v) => onChange("image", v)}
+            folder="images/blogs"
           />
         </div>
       </div>
@@ -215,7 +213,7 @@ export default function AdminBlogsPage() {
         month: "long",
         day: "2-digit",
       }),
-      image: "/images/case1.webp",
+      image: "https://ik.imagekit.io/0bs3my2iz/incial-web/images/case1.webp",
       category,
       content: "",
     };
@@ -341,7 +339,13 @@ export default function AdminBlogsPage() {
           <div className="flex-1 overflow-y-auto p-6 space-y-8">
             {/* Popular Posts */}
             {data.popularPosts.length > 0 && (
-              <div>
+              <div className="relative group border border-transparent p-2 -m-2 rounded-xl hover:border-[#1e1e1e]">
+                <div className="absolute -top-3 right-4 opacity-0 group-hover:opacity-100 transition-opacity bg-black rounded-full px-2 border border-[#1e1e1e] z-10">
+                  <SectionVisibilityToggle
+                    sectionId="blog-popular"
+                    label="Visible"
+                  />
+                </div>
                 <div className="flex items-center gap-2 mb-4">
                   <Star size={14} className="text-white fill-white" />
                   <span className="text-sm font-semibold text-white font-[Poppins,sans-serif]">
@@ -362,7 +366,13 @@ export default function AdminBlogsPage() {
 
             {/* Newest Posts */}
             {data.newestPosts.length > 0 && (
-              <div>
+              <div className="relative group border border-transparent p-2 -m-2 rounded-xl hover:border-[#1e1e1e]">
+                <div className="absolute -top-3 right-4 opacity-0 group-hover:opacity-100 transition-opacity bg-black rounded-full px-2 border border-[#1e1e1e] z-10">
+                  <SectionVisibilityToggle
+                    sectionId="blog-newest"
+                    label="Visible"
+                  />
+                </div>
                 <div className="mb-4">
                   <span className="text-sm font-semibold text-white font-[Poppins,sans-serif]">
                     Newest Posts

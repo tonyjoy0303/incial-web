@@ -108,6 +108,9 @@ export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [isDisabled, setIsDisabled] = useState(false);
+  const [sectionsConfig, setSectionsConfig] = useState<Record<string, boolean>>(
+    {},
+  );
 
   useEffect(() => {
     async function fetchProducts() {
@@ -131,6 +134,13 @@ export default function ProductsPage() {
         const prodConfig = data.sections?.find((s: any) => s.id === "products");
         if (prodConfig && !prodConfig.enabled) {
           setIsDisabled(true);
+        }
+        if (data?.sections) {
+          const configMap: Record<string, boolean> = {};
+          data.sections.forEach((s: any) => {
+            configMap[s.id] = s.enabled;
+          });
+          setSectionsConfig(configMap);
         }
       } catch (err) {
         // Ignore
@@ -206,70 +216,74 @@ export default function ProductsPage() {
             className="mx-auto w-full px-6 md:px-[149px]"
             style={{ maxWidth: "1439px" }}
           >
-            {loading ? (
-              <div className="text-center text-white/50 text-sm py-20 italic">
-                Loading products...
-              </div>
-            ) : (
-              <div className="flex flex-col" style={{ gap: "150px" }}>
-                {products.length === 0 ? (
-                  <div className="text-center text-white/50 text-sm italic py-10">
-                    No products available at the moment.
-                  </div>
-                ) : (
-                  products.map((product, i) => (
-                    <ProductSection
-                      key={product.id}
-                      product={product}
-                      index={i}
-                    />
-                  ))
-                )}
-              </div>
-            )}
+            {sectionsConfig["products-list"] !== false &&
+              (loading ? (
+                <div className="text-center text-white/50 text-sm py-20 italic">
+                  Loading products...
+                </div>
+              ) : (
+                <div className="flex flex-col" style={{ gap: "150px" }}>
+                  {products.length === 0 ? (
+                    <div className="text-center text-white/50 text-sm italic py-10">
+                      No products available at the moment.
+                    </div>
+                  ) : (
+                    products.map((product, i) => (
+                      <ProductSection
+                        key={product.id}
+                        product={product}
+                        index={i}
+                      />
+                    ))
+                  )}
+                </div>
+              ))}
 
             {/* ── Coming soon ────────────────────────────────────────────── */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="text-center pt-[100px] pb-16 flex flex-col items-center"
-              style={{ gap: "54px" }}
-            >
-              <h3
-                className="text-white"
-                style={{
-                  fontFamily: "var(--font-poppins)",
-                  fontWeight: 600,
-                  fontStyle: "normal",
-                  fontSize: "20px",
-                  lineHeight: "100%",
-                  letterSpacing: 0,
-                  textAlign: "center",
-                }}
+            {sectionsConfig["products-coming-soon"] !== false && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="text-center pt-[100px] pb-16 flex flex-col items-center"
+                style={{ gap: "54px" }}
               >
-                Built by Incial. Designed for real businesses. More coming soon.
-              </h3>
-              <p
-                className="text-white max-w-[1141px]"
-                style={{
-                  fontFamily: "var(--font-poppins)",
-                  fontWeight: 400,
-                  fontStyle: "italic",
-                  fontSize: "16px",
-                  lineHeight: "1.6",
-                  letterSpacing: 0,
-                  textAlign: "center",
-                }}
-              >
-                WorkHub and StockFlow are just the beginning. We are actively
-                building more solutions focused on automation, operations,
-                analytics, and business growth. All upcoming products follow the
-                same philosophy — simple, practical, and customisable for real
-                business needs.
-              </p>
-            </motion.div>
+                <h3
+                  className="text-white"
+                  style={{
+                    fontFamily: "var(--font-poppins)",
+                    fontWeight: 600,
+                    fontStyle: "normal",
+                    fontSize: "20px",
+                    lineHeight: "100%",
+                    letterSpacing: 0,
+                    textAlign: "center",
+                  }}
+                >
+                  Built by Incial. Designed for real businesses. More coming
+                  soon.
+                </h3>
+                <p
+                  className="text-white max-w-[1141px]"
+                  style={{
+                    fontFamily: "var(--font-poppins)",
+                    fontWeight: 400,
+                    fontStyle: "italic",
+                    fontSize: "16px",
+                    lineHeight: "1.6",
+                    letterSpacing: 0,
+                    textAlign: "center",
+                  }}
+                >
+                  WorkHub and StockFlow are just the beginning. We are actively
+                  building more solutions focused on automation, operations,
+                  analytics, and business growth. All upcoming products follow
+                  the same philosophy — simple, practical, and customisable for
+                  real business needs.
+                </p>
+              </motion.div>
+            )}
           </div>
         </main>
 

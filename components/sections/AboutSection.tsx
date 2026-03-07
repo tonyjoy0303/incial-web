@@ -55,7 +55,12 @@ export default function AboutSection({
     ? teamMembers
     : teamMembers.slice(0, 6);
 
+  const [sectionsConfig, setSectionsConfig] = useState<Record<string, boolean>>(
+    {},
+  );
+
   useEffect(() => {
+    // Fetch About Data
     fetch("/api/admin/about")
       .then((res) => res.json())
       .then((d) => {
@@ -63,6 +68,20 @@ export default function AboutSection({
         // initialize image sources; fallback if undefined
         setBrandSrc(d?.brandImage || imgBrand);
         setImpactSrc(d?.impactImage || imgImpact);
+      })
+      .catch(console.error);
+
+    // Fetch Sections Data for fine-grained toggles
+    fetch("/api/admin/sections")
+      .then((res) => res.json())
+      .then((d) => {
+        if (d?.sections) {
+          const configMap: Record<string, boolean> = {};
+          d.sections.forEach((s: any) => {
+            configMap[s.id] = s.enabled;
+          });
+          setSectionsConfig(configMap);
+        }
       })
       .catch(console.error);
   }, []);
@@ -142,191 +161,208 @@ export default function AboutSection({
         )}
       </motion.div>
       {/* ── Our Story ────────────────────────────────────────────────── */}
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        variants={fadeUp}
-        custom={0.1}
-        className="text-center px-6 pt-16 pb-12 max-w-4xl mx-auto"
-      >
-        <h2 className="font-[Poppins,sans-serif] font-bold text-[36px] text-white mb-6">
-          {data?.storyTitle || "Our Story"}
-        </h2>
-        <p className="font-[Poppins,sans-serif] italic text-[16px] text-white/80 leading-relaxed max-w-3xl mx-auto">
-          {data?.storyText ||
-            "Incial began with a simple vision: to empower brands, businesses, and ideas with innovative digital solutions that create lasting impact. Founded in 2024 in Kanjirappally, Kerala, we started as a small team of passionate creators and strategists determined to make a difference. From those first projects to now serving businesses across industries, our journey has been fueled by creativity, collaboration, and a relentless drive to push boundaries."}
-        </p>
-      </motion.div>
-      {/* ── Our Purpose (white card) ──────────────────────────────────── */}
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        variants={fadeUp}
-        custom={0.15}
-        className="mx-auto bg-white text-black rounded-3xl px-20 py-16 mb-16 flex flex-col gap-8"
-        style={{ width: "calc(100% - 96px)", maxWidth: 1253 }}
-      >
-        <h2 className="font-[Poppins,sans-serif] font-bold text-[36px]">
-          {data?.purposeTitle || "Our Purpose"}
-        </h2>
-        <p className="font-[Poppins,sans-serif] italic text-[16px] leading-relaxed max-w-3xl">
-          {data?.purposeText ||
-            "Our purpose is clear: to build brands that resonate, businesses that grow, and beyond that, to innovate continuously. We align strategy with creativity, technology with human connection, and ideas with measurable results."}
-        </p>
-      </motion.div>
-      {/* ── Meet Our Team ────────────────────────────────────────────── */}
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        variants={fadeUp}
-        custom={0.1}
-        className="text-center px-6 pt-4 pb-6"
-      >
-        <h2 className="font-[Poppins,sans-serif] font-bold text-[36px] text-white mb-5">
-          {data?.teamTitle || "Meet Our Team"}
-        </h2>
-        <p className="font-[Poppins,sans-serif] italic text-[16px] text-white/80 max-w-3xl mx-auto mb-12">
-          {data?.teamSubtitle ||
-            "Behind every project is a team of talented professionals — creatives, marketers, designers, and technologists — united by passion and expertise. Together, we bring ideas to life and transform challenges into opportunities."}
-        </p>
-      </motion.div>
-      <div
-        className="mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-8 px-6"
-        style={{ maxWidth: 900 }}
-      >
-        {visibleTeamMembers.map((member, i) => (
-          <TeamMemberCard
-            key={member.id || i}
-            member={member}
-            delay={i * 0.1}
-          />
-        ))}
-      </div>
-      {teamMembers.length > 6 && (
-        <div className="flex justify-center mb-24">
-          <button
-            onClick={() => setShowAllTeam(!showAllTeam)}
-            className="text-white border border-white/20 hover:bg-white/10 px-6 py-2 rounded-full font-[Poppins,sans-serif] text-[14px] transition-colors"
-          >
-            {showAllTeam ? "View Less" : "View All"}
-          </button>
-        </div>
-      )}
-      {/* ── Awards & Recognitions ─────────────────────────────────────── */}
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        variants={fadeUp}
-        custom={0.1}
-        className="text-center px-6 pb-6"
-      >
-        <h2 className="font-[Poppins,sans-serif] font-bold text-[36px] text-white mb-5">
-          {data?.awardsTitle || "Awards & Recognitions"}
-        </h2>
-        <p className="font-[Poppins,sans-serif] italic text-[16px] text-white/80 max-w-3xl mx-auto mb-14">
-          {data?.awardsSubtitle ||
-            "Over the years, Incial has been proud to receive industry awards and recognitions that celebrate our commitment to excellence, innovation, and client success. These honors inspire us to continuously raise the bar."}
-        </p>
-      </motion.div>
-      <div className="flex flex-col md:flex-row justify-center gap-12 md:gap-32 pb-24 px-6">
-        {(data?.awards || []).map((award, i) => (
-          <motion.div
-            key={award.id || i}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            custom={i * 0.1}
-            className="flex flex-col items-center text-center"
-          >
-            <Image
-              src={award.icon || imgAwardsIcon}
-              alt={award.name}
-              width={96}
-              height={96}
-              className="mb-4 opacity-90"
-            />
-            <h3 className="font-[Poppins,sans-serif] font-bold text-[24px] text-white">
-              {award.name}
-            </h3>
-            <p className="font-[Poppins,sans-serif] italic text-[16px] text-white/70 mt-1">
-              {award.description} <span className="text-[#65adef]">|</span>{" "}
-              {award.year}
-            </p>
-          </motion.div>
-        ))}
-      </div>
-      {/* ── Our Brand + Our Impact (stacked image cards) ─────────────── */}
-      <div
-        className="mx-auto mb-16"
-        style={{ width: "calc(100% - 96px)", maxWidth: 1256 }}
-      >
-        {/* Brand */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={fadeUp}
-          custom={0}
-          className="relative h-[245px] rounded-tl-3xl rounded-tr-3xl overflow-hidden"
-        >
-          <Image
-            src={brandSrc}
-            alt="Our Brand"
-            fill
-            sizes="(max-width: 1256px) 100vw, 1256px"
-            className="object-cover object-center"
-            onError={() => {
-              if (brandSrc !== imgBrand) setBrandSrc(imgBrand);
-            }}
-          />
-          <div className="absolute inset-0 bg-black/50" />
-          <div className="absolute inset-0 flex flex-col justify-center px-14 gap-3">
-            <h3 className="font-[Poppins,sans-serif] font-bold text-[36px] text-white">
-              {data?.brandTitle || "Our Brand"}
-            </h3>
-            <p className="font-[Poppins,sans-serif] italic text-[16px] text-white/90 max-w-3xl leading-relaxed">
-              {data?.brandText ||
-                "At Incial, our brand echoes our values: authentic, innovative, and trusted. We believe in transparency, empathy, and delivering beyond expectations. Every interaction is a chance to build lasting relationships."}
-            </p>
-          </div>
-        </motion.div>
-
-        {/* Impact */}
+      {sectionsConfig["about-story"] !== false && (
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           variants={fadeUp}
           custom={0.1}
-          className="relative h-[245px] rounded-bl-3xl rounded-br-3xl overflow-hidden"
+          className="text-center px-6 pt-16 pb-12 max-w-4xl mx-auto"
         >
-          <Image
-            src={impactSrc}
-            alt="Our Impact"
-            fill
-            sizes="(max-width: 1256px) 100vw, 1256px"
-            className="object-cover object-center"
-            onError={() => {
-              if (impactSrc !== imgImpact) setImpactSrc(imgImpact);
-            }}
-          />
-          <div className="absolute inset-0 bg-black/50" />
-          <div className="absolute inset-0 flex flex-col justify-center px-14 gap-3">
-            <h3 className="font-[Poppins,sans-serif] font-bold text-[36px] text-white">
-              {data?.impactTitle || "Our Impact"}
-            </h3>
-            <p className="font-[Poppins,sans-serif] italic text-[16px] text-white/90 max-w-3xl leading-relaxed">
-              {data?.impactText ||
-                "Every project is a story of growth, transformation, and measurable success. We take pride in helping clients achieve goals, enhance visibility, and create memorable digital experiences."}
-            </p>
-          </div>
+          <h2 className="font-[Poppins,sans-serif] font-bold text-[36px] text-white mb-6">
+            {data?.storyTitle || "Our Story"}
+          </h2>
+          <p className="font-[Poppins,sans-serif] italic text-[16px] text-white/80 leading-relaxed max-w-3xl mx-auto">
+            {data?.storyText ||
+              "Incial began with a simple vision: to empower brands, businesses, and ideas with innovative digital solutions that create lasting impact. Founded in 2024 in Kanjirappally, Kerala, we started as a small team of passionate creators and strategists determined to make a difference. From those first projects to now serving businesses across industries, our journey has been fueled by creativity, collaboration, and a relentless drive to push boundaries."}
+          </p>
         </motion.div>
-      </div>
+      )}
+      {/* ── Our Purpose (white card) ──────────────────────────────────── */}
+      {sectionsConfig["about-purpose"] !== false && (
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeUp}
+          custom={0.15}
+          className="mx-auto bg-white text-black rounded-3xl px-20 py-16 mb-16 flex flex-col gap-8"
+          style={{ width: "calc(100% - 96px)", maxWidth: 1253 }}
+        >
+          <h2 className="font-[Poppins,sans-serif] font-bold text-[36px]">
+            {data?.purposeTitle || "Our Purpose"}
+          </h2>
+          <p className="font-[Poppins,sans-serif] italic text-[16px] leading-relaxed max-w-3xl">
+            {data?.purposeText ||
+              "Our purpose is clear: to build brands that resonate, businesses that grow, and beyond that, to innovate continuously. We align strategy with creativity, technology with human connection, and ideas with measurable results."}
+          </p>
+        </motion.div>
+      )}
+      {/* ── Meet Our Team ────────────────────────────────────────────── */}
+      {sectionsConfig["about-team"] !== false && (
+        <>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            custom={0.1}
+            className="text-center px-6 pt-4 pb-6"
+          >
+            <h2 className="font-[Poppins,sans-serif] font-bold text-[36px] text-white mb-5">
+              {data?.teamTitle || "Meet Our Team"}
+            </h2>
+            <p className="font-[Poppins,sans-serif] italic text-[16px] text-white/80 max-w-3xl mx-auto mb-12">
+              {data?.teamSubtitle ||
+                "Behind every project is a team of talented professionals — creatives, marketers, designers, and technologists — united by passion and expertise. Together, we bring ideas to life and transform challenges into opportunities."}
+            </p>
+          </motion.div>
+          <div
+            className="mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-8 px-6"
+            style={{ maxWidth: 900 }}
+          >
+            {visibleTeamMembers.map((member, i) => (
+              <TeamMemberCard
+                key={member.id || i}
+                member={member}
+                delay={i * 0.1}
+              />
+            ))}
+          </div>
+          {teamMembers.length > 6 && (
+            <div className="flex justify-center mb-24">
+              <button
+                onClick={() => setShowAllTeam(!showAllTeam)}
+                className="text-white border border-white/20 hover:bg-white/10 px-6 py-2 rounded-full font-[Poppins,sans-serif] text-[14px] transition-colors"
+              >
+                {showAllTeam ? "View Less" : "View All"}
+              </button>
+            </div>
+          )}
+        </>
+      )}
+      {/* ── Awards & Recognitions ─────────────────────────────────────── */}
+      {sectionsConfig["about-awards"] !== false && (
+        <>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            custom={0.1}
+            className="text-center px-6 pb-6"
+          >
+            <h2 className="font-[Poppins,sans-serif] font-bold text-[36px] text-white mb-5">
+              {data?.awardsTitle || "Awards & Recognitions"}
+            </h2>
+            <p className="font-[Poppins,sans-serif] italic text-[16px] text-white/80 max-w-3xl mx-auto mb-14">
+              {data?.awardsSubtitle ||
+                "Over the years, Incial has been proud to receive industry awards and recognitions that celebrate our commitment to excellence, innovation, and client success. These honors inspire us to continuously raise the bar."}
+            </p>
+          </motion.div>
+          <div className="flex flex-col md:flex-row justify-center gap-12 md:gap-32 pb-24 px-6">
+            {(data?.awards || []).map((award, i) => (
+              <motion.div
+                key={award.id || i}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeUp}
+                custom={i * 0.1}
+                className="flex flex-col items-center text-center"
+              >
+                <Image
+                  src={award.icon || imgAwardsIcon}
+                  alt={award.name}
+                  width={96}
+                  height={96}
+                  className="mb-4 opacity-90"
+                  loading="lazy"
+                />
+                <h3 className="font-[Poppins,sans-serif] font-bold text-[24px] text-white">
+                  {award.name}
+                </h3>
+                <p className="font-[Poppins,sans-serif] italic text-[16px] text-white/70 mt-1">
+                  {award.description} <span className="text-[#65adef]">|</span>{" "}
+                  {award.year}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </>
+      )}
+      {/* ── Our Brand + Our Impact (stacked image cards) ─────────────── */}
+      {sectionsConfig["about-brand-impact"] !== false && (
+        <div
+          className="mx-auto mb-16"
+          style={{ width: "calc(100% - 96px)", maxWidth: 1256 }}
+        >
+          {/* Brand */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            custom={0}
+            className="relative h-[245px] rounded-tl-3xl rounded-tr-3xl overflow-hidden"
+          >
+            <Image
+              src={brandSrc}
+              alt="Our Brand"
+              fill
+              sizes="(max-width: 1256px) 100vw, 1256px"
+              className="object-cover object-center"
+              onError={() => {
+                if (brandSrc !== imgBrand) setBrandSrc(imgBrand);
+              }}
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-black/50" />
+            <div className="absolute inset-0 flex flex-col justify-center px-14 gap-3">
+              <h3 className="font-[Poppins,sans-serif] font-bold text-[36px] text-white">
+                {data?.brandTitle || "Our Brand"}
+              </h3>
+              <p className="font-[Poppins,sans-serif] italic text-[16px] text-white/90 max-w-3xl leading-relaxed">
+                {data?.brandText ||
+                  "At Incial, our brand echoes our values: authentic, innovative, and trusted. We believe in transparency, empathy, and delivering beyond expectations. Every interaction is a chance to build lasting relationships."}
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Impact */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            custom={0.1}
+            className="relative h-[245px] rounded-bl-3xl rounded-br-3xl overflow-hidden"
+          >
+            <Image
+              src={impactSrc}
+              alt="Our Impact"
+              fill
+              sizes="(max-width: 1256px) 100vw, 1256px"
+              className="object-cover object-center"
+              onError={() => {
+                if (impactSrc !== imgImpact) setImpactSrc(imgImpact);
+              }}
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-black/50" />
+            <div className="absolute inset-0 flex flex-col justify-center px-14 gap-3">
+              <h3 className="font-[Poppins,sans-serif] font-bold text-[36px] text-white">
+                {data?.impactTitle || "Our Impact"}
+              </h3>
+              <p className="font-[Poppins,sans-serif] italic text-[16px] text-white/90 max-w-3xl leading-relaxed">
+                {data?.impactText ||
+                  "Every project is a story of growth, transformation, and measurable success. We take pride in helping clients achieve goals, enhance visibility, and create memorable digital experiences."}
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      )}
       {/* ── Contact ──────────────────────────────────────────────────── */}
       <motion.div
         initial="hidden"
@@ -422,11 +458,15 @@ function TeamMemberCard({ member, delay }: { member: any; delay: number }) {
       <div className="relative w-[247px] h-[276px] mb-4 overflow-hidden rounded-[125px]">
         <div className="absolute bottom-0 left-0 w-[247px] h-[247px] rounded-full bg-[#d5d5d5]" />
         <Image
-          src={member.img || "/images/about/team-placeholder.jpg"}
+          src={
+            member.img ||
+            "https://ik.imagekit.io/0bs3my2iz/incial-web/images/about/team-placeholder.jpg"
+          }
           alt={member.name}
           fill
           sizes="247px"
           className={`object-cover ${member.objectPos || "object-top"} grayscale hover:grayscale-0 transition-all duration-500`}
+          loading="lazy"
         />
       </div>
       <h3 className="font-[Poppins,sans-serif] font-bold text-[24px] text-white">

@@ -8,20 +8,39 @@
       "heroQuote": "How do you take a traditional offline home décor seller and turn them into a premium online brand? For Homescapes, we built their digital presence from scratch, and opened the doors to e-commerce success.",
       "introduction": "Homescapes was a home décor brand with beautiful products, collections, and designs premium bedspreads, curtains, artificial carpets, and rugs. The challenge: it had zero web traffic. Without an online presence, they couldn't tap into the massive opportunity in the e-commerce landscape.",
       "sections": [
-        { "title": "Here's how we solved it:", "content": "We built them a totally shopify website to bring their entire product range online." },
-        { "title": "E-commerce Transformation", "content": "We built them a totally shopify website to bring their entire product range online." },
-        { "title": "Instagram Presence", "content": "We created a curated, on-brand page for Homescapes, showcasing their products in a visually appealing and engaging way." },
-        { "title": "Strong Digital Identity", "content": "We gave Homescapes no just an online store, but a brand story and identity that connected with modern design-conscious consumers." },
-        { "title": "The Impact?", "content": "Homescapes transformed from being an 'offline-only' seller to a full-fledged e-commerce brand. By leveraging Shopify, the company maximized its sales trajectory and seamlessly ensuring smoother operations and better customer experiences. And perhaps most importantly, Homescapes is now set up to scale digitally, engage with customers online effectively, driving growth and brand visibility." }
+        {
+          "title": "Here's how we solved it:",
+          "content": "We built them a totally shopify website to bring their entire product range online."
+        },
+        {
+          "title": "E-commerce Transformation",
+          "content": "We built them a totally shopify website to bring their entire product range online."
+        },
+        {
+          "title": "Instagram Presence",
+          "content": "We created a curated, on-brand page for Homescapes, showcasing their products in a visually appealing and engaging way."
+        },
+        {
+          "title": "Strong Digital Identity",
+          "content": "We gave Homescapes no just an online store, but a brand story and identity that connected with modern design-conscious consumers."
+        },
+        {
+          "title": "The Impact?",
+          "content": "Homescapes transformed from being an 'offline-only' seller to a full-fledged e-commerce brand. By leveraging Shopify, the company maximized its sales trajectory and seamlessly ensuring smoother operations and better customer experiences. And perhaps most importantly, Homescapes is now set up to scale digitally, engage with customers online effectively, driving growth and brand visibility."
+        }
       ],
       "location": "Kanjirappally, Kerala, India",
-      "tags": ["Shopify", "E-commerce", "Instagram"],
+      "tags": [
+        "Shopify",
+        "E-commerce",
+        "Instagram"
+      ],
       "summary": "Homescapes transformed from being an 'offline-only' seller to a full-fledged e-commerce brand.",
       "challenge": "Zero web traffic and no online presence.",
       "solution": "Built a Shopify website and curated an Instagram presence.",
       "result": "Maximized sales trajectory and driving growth.",
-      "coverImage": "/images/case1.webp",
-      "heroImage": "/images/case1.webp",
+      "coverImage": "https://ik.imagekit.io/0bs3my2iz/incial-web/images/case1.webp",
+      "heroImage": "https://ik.imagekit.io/0bs3my2iz/incial-web/images/case1.webp",
       "year": "2023",
       "featured": true,
       "client": "Homescapes"
@@ -34,19 +53,35 @@
       "heroQuote": "How do you turn a newly launched kids' park, restocafé, and event space into the most talked-about destination in town, with 18k followers in just three weeks? That's exactly what we achieved with Funfee Kanjirappally.",
       "introduction": "When Funfee approached us, it was a brand-new venture. A unique combination of kids' play, upscale food, and events located in Kanjirappally. The challenge? No one knew it yet. We had one simple but ambitious creative-build, comedy, and a loyal social following fast.",
       "sections": [
-        { "title": "Curiosity Campaigns", "content": "Launched with teaser posts and hashtags designed to spark interest and conversation before the official launch." },
-        { "title": "Introducing Funfee", "content": "Unveiled Funfee through high-energy reels and posters showcasing what Funfee really is — a place for families and friends to bond, creating a joyful, vibrant vibe." },
-        { "title": "Targeted Growth Campaign", "content": "Combined engaging caption focused on building a loyal audience in Kanjirappally — the people most likely to visit Funfee." },
-        { "title": "The Results:", "content": "In 20 days, Funfee gained 18k organic followers and built a strong, engaged local audience in Kanjirappally. The brand achieved massive visibility and generated significant community buzz, solidifying itself as the go-to family destination. Attracting over 4.6m views." }
+        {
+          "title": "Curiosity Campaigns",
+          "content": "Launched with teaser posts and hashtags designed to spark interest and conversation before the official launch."
+        },
+        {
+          "title": "Introducing Funfee",
+          "content": "Unveiled Funfee through high-energy reels and posters showcasing what Funfee really is — a place for families and friends to bond, creating a joyful, vibrant vibe."
+        },
+        {
+          "title": "Targeted Growth Campaign",
+          "content": "Combined engaging caption focused on building a loyal audience in Kanjirappally — the people most likely to visit Funfee."
+        },
+        {
+          "title": "The Results:",
+          "content": "In 20 days, Funfee gained 18k organic followers and built a strong, engaged local audience in Kanjirappally. The brand achieved massive visibility and generated significant community buzz, solidifying itself as the go-to family destination. Attracting over 4.6m views."
+        }
       ],
       "location": "Kanjirappally, Kerala, India",
-      "tags": ["Social Media", "Reels", "Local Growth"],
+      "tags": [
+        "Social Media",
+        "Reels",
+        "Local Growth"
+      ],
       "summary": "18k organic followers in 20 days.",
       "challenge": "Brand new venture with zero awareness in the local area.",
       "solution": "Curiosity campaigns, high-energy reels, and targeted growth.",
       "result": "4.6m views, huge buzz, and 18k followers.",
-      "coverImage": "/images/case1.webp",
-      "heroImage": "/images/case1.webp",
+      "coverImage": "https://ik.imagekit.io/0bs3my2iz/incial-web/images/case1.webp",
+      "heroImage": "https://ik.imagekit.io/0bs3my2iz/incial-web/images/case1.webp",
       "year": "2023",
       "featured": true,
       "client": "Funfee"
@@ -59,19 +94,35 @@
       "heroQuote": "What happens when an AI company is making big moves in the U.S. market, but doesn't have a brand identity to match its innovation? That's where Incial stepped in for DataLabs Corporation.",
       "introduction": "DataLabs Corporation, a U.S.-based AI company, was already established in the industry with strong partnerships and innovative solutions. But there was one gap that stood in their way: their brand. They had no strong logo, no consistent language, and no clear story — and this made it a competitive us AI market they needed a strong identity.",
       "sections": [
-        { "title": "Brand Identity Creation", "content": "We crafted a modern, clean logo and a visual identity system that speaks for the brand." },
-        { "title": "Brand Storytelling", "content": "We wrote a brand narrative and positioned DataLabs as not just an 'AI shop', but a serious innovation, partnership, and enterprise solution." },
-        { "title": "Naming & Design Language", "content": "We revised brand names, tier messaging paths, and built a design system that gave DataLabs a cohesive and recognizable presence." },
-        { "title": "The Impact?", "content": "DataLabs now has value-driven visual collaborations, including partnerships with B2G and various automation ventures. Their digital presence was refined; their global ambition and the brand identity we created communicates as powerfully as their cutting-edge technology." }
+        {
+          "title": "Brand Identity Creation",
+          "content": "We crafted a modern, clean logo and a visual identity system that speaks for the brand."
+        },
+        {
+          "title": "Brand Storytelling",
+          "content": "We wrote a brand narrative and positioned DataLabs as not just an 'AI shop', but a serious innovation, partnership, and enterprise solution."
+        },
+        {
+          "title": "Naming & Design Language",
+          "content": "We revised brand names, tier messaging paths, and built a design system that gave DataLabs a cohesive and recognizable presence."
+        },
+        {
+          "title": "The Impact?",
+          "content": "DataLabs now has value-driven visual collaborations, including partnerships with B2G and various automation ventures. Their digital presence was refined; their global ambition and the brand identity we created communicates as powerfully as their cutting-edge technology."
+        }
       ],
       "location": "Kanjirappally, Kerala, India",
-      "tags": ["Branding", "Identity", "Naming"],
+      "tags": [
+        "Branding",
+        "Identity",
+        "Naming"
+      ],
       "summary": "Complete brand identity and narrative for a U.S AI company.",
       "challenge": "No strong logo, consistent language or clear story in a competitive market.",
       "solution": "Visual identity system, brand storytelling, and naming.",
       "result": "Value-driven visual collaborations and refined digital presence.",
-      "coverImage": "/images/case1.webp",
-      "heroImage": "/images/case1.webp",
+      "coverImage": "https://ik.imagekit.io/0bs3my2iz/incial-web/images/case1.webp",
+      "heroImage": "https://ik.imagekit.io/0bs3my2iz/incial-web/images/case1.webp",
       "year": "2023",
       "featured": false,
       "client": "DataLabs"
@@ -84,21 +135,43 @@
       "heroQuote": "How do you build awareness around wealth management and age-banking in a three-tier city, when you yourself are new to the financial world? That's the challenge we took on with Livelong Wealth Pala. The result? A community of engaged investors, a successful Regional Agent, and vital long-grow hits in 68 CR in just four months.",
       "introduction": "When Livelong Wealth Pala approached us, we were stepping into unfamiliar territory: Wealth management, high-thinking investments, chatter of rust formed over time. But that was the challenge: we embraced it.",
       "sections": [
-        { "title": "A new industry", "content": "Understanding and translating complex financial concepts into content the local audience could relate to. Building awareness in a market where investing in schemes typically doesn't resonate or structures exist for proper management." },
-        { "title": "Educational Content Strategy", "content": "We created content designed to simplify financial concepts and educate the local audience." },
-        { "title": "Community building", "content": "We regularly engaged with followers—often here, then four-ever-seen events. The response? Over 100 attendees — a full house of curious and motivated people." },
-        { "title": "Relatable content", "content": "We introduced Finance-themed memes to build connection and break the barrier of 'finance is boring'." },
-        { "title": "Results with impact", "content": "Combined our content, expert management, app training, and financial awareness helped the brand win both followers and trust." },
-        { "title": "The Results?", "content": "In six months, Livelong Wealth Pala rose to Assets Under Management over from 33 lacs to 42 CR. A strong, engaged regional community; a new loyal farmer accounts, actively participating in wealth management initiatives, today, Livelong Wealth serves as a trusted and motivated partner for investors." }
+        {
+          "title": "A new industry",
+          "content": "Understanding and translating complex financial concepts into content the local audience could relate to. Building awareness in a market where investing in schemes typically doesn't resonate or structures exist for proper management."
+        },
+        {
+          "title": "Educational Content Strategy",
+          "content": "We created content designed to simplify financial concepts and educate the local audience."
+        },
+        {
+          "title": "Community building",
+          "content": "We regularly engaged with followers—often here, then four-ever-seen events. The response? Over 100 attendees — a full house of curious and motivated people."
+        },
+        {
+          "title": "Relatable content",
+          "content": "We introduced Finance-themed memes to build connection and break the barrier of 'finance is boring'."
+        },
+        {
+          "title": "Results with impact",
+          "content": "Combined our content, expert management, app training, and financial awareness helped the brand win both followers and trust."
+        },
+        {
+          "title": "The Results?",
+          "content": "In six months, Livelong Wealth Pala rose to Assets Under Management over from 33 lacs to 42 CR. A strong, engaged regional community; a new loyal farmer accounts, actively participating in wealth management initiatives, today, Livelong Wealth serves as a trusted and motivated partner for investors."
+        }
       ],
       "location": "Kanjirappally, Kerala, India",
-      "tags": ["Finance", "Awareness", "Community"],
+      "tags": [
+        "Finance",
+        "Awareness",
+        "Community"
+      ],
       "summary": "Assets Under Management grew from 33 lacs to 42 CR in 6 months.",
       "challenge": "Building awareness around wealth management in a new territory.",
       "solution": "Educational strategy, community events, and relatable meme marketing.",
       "result": "Strong regional community and massive AUM growth.",
-      "coverImage": "/images/case1.webp",
-      "heroImage": "/images/case1.webp",
+      "coverImage": "https://ik.imagekit.io/0bs3my2iz/incial-web/images/case1.webp",
+      "heroImage": "https://ik.imagekit.io/0bs3my2iz/incial-web/images/case1.webp",
       "year": "2023",
       "featured": false,
       "client": "Livelong Wealth"
@@ -111,20 +184,39 @@
       "heroQuote": "How do you bridge the gap between bright engineering students and real-world industry challenges? That's exactly what we achieved with InternHub — a digital platform we built for Amal Jyothi College of Engineering in partnership with Startups Valley Intl.",
       "introduction": "At Amal Jyothi College of Engineering innovation isn't an ambition—it's a culture. The college maintains positive student-driven startups—whether or not they are launched, however, graduates might discard required to real academic projects—and a platform to share ideas, collaborate with peers, and build innovative solutions.",
       "sections": [
-        { "title": "That's where InternHub was born", "content": "We developed InternHub as a dedicated platform that acts as a bridge between students and industries." },
-        { "title": "Industries can list their real-world problem statements and projects.", "content": "" },
-        { "title": "Students can browse these challenges, collaborate with peers, and build innovative solutions.", "content": "" },
-        { "title": "The result: students gain internship opportunities while industries get practical, fresh perspectives.", "content": "" },
-        { "title": "The Outcome?", "content": "InternHub became a fully functional bridge between education and enterprise, enabling students to explore internships and experiential projects, share ideas, and participate in innovation challenges. Centres of students are now getting practical experience, while Amal Jyothi even has the engagement as platform as a hub for innovation and hands-on-learning." }
+        {
+          "title": "That's where InternHub was born",
+          "content": "We developed InternHub as a dedicated platform that acts as a bridge between students and industries."
+        },
+        {
+          "title": "Industries can list their real-world problem statements and projects.",
+          "content": ""
+        },
+        {
+          "title": "Students can browse these challenges, collaborate with peers, and build innovative solutions.",
+          "content": ""
+        },
+        {
+          "title": "The result: students gain internship opportunities while industries get practical, fresh perspectives.",
+          "content": ""
+        },
+        {
+          "title": "The Outcome?",
+          "content": "InternHub became a fully functional bridge between education and enterprise, enabling students to explore internships and experiential projects, share ideas, and participate in innovation challenges. Centres of students are now getting practical experience, while Amal Jyothi even has the engagement as platform as a hub for innovation and hands-on-learning."
+        }
       ],
       "location": "Kanjirappally, Kerala, India",
-      "tags": ["Platform", "Web Dev", "Education"],
+      "tags": [
+        "Platform",
+        "Web Dev",
+        "Education"
+      ],
       "summary": "A fully functional bridge between education and enterprise.",
       "challenge": "Bridging the gap between engineering students and real-world industry challenges.",
       "solution": "Developed a dedicated platform to post and browse challenges.",
       "result": "Students gain internship opportunities and practical experience.",
-      "coverImage": "/images/case1.webp",
-      "heroImage": "/images/case1.webp",
+      "coverImage": "https://ik.imagekit.io/0bs3my2iz/incial-web/images/case1.webp",
+      "heroImage": "https://ik.imagekit.io/0bs3my2iz/incial-web/images/case1.webp",
       "year": "2023",
       "featured": false,
       "client": "Amal Jyothi College"
@@ -137,20 +229,39 @@
       "heroQuote": "When one of the world's most recognized electronics brands — Blaupunkt — approached us to design their EV (Electric Vehicle) website, we knew this was something big. It was an honor, a challenge, and a milestone for Incial.",
       "introduction": "Blaupunkt is a legacy German electronics brand known globally for innovation and quality. Now, expanding to premium EVs in India, they needed a website. But what they really needed? A digital transformation position.",
       "sections": [
-        { "title": "When we received the RFP, it was clear: some exciting thing. The brand was to design-and-develop-it dedicated E-website section that seamlessly bridged the nearly-traditional Blaupunkt's storied brand identity while heralding-futuristic digital positioning.", "content": "" },
-        { "title": "Aligned with Global Brand Guidelines", "content": "It nailed the essence of Blaupunkt's signature premium look and feel, maintaining global consistency." },
-        { "title": "Developed the EV Website Section", "content": "Presented EVs in a stylish, futuristic workflow to highlight their electric vehicle range and innovation." },
-        { "title": "Blended Tradition with Modernity", "content": "We designed a hub that with Jt seamlessly design language brought added for the EV market." },
-        { "title": "The Results?", "content": "What we built isn't just content or website that seamlessly complements Blaupunkt's global ecosystem. The design remains consistent with their equals and online identity, across platforms, and this consistent elevated Incial to work-to-creative, high-end of in premium digital experiences." }
+        {
+          "title": "When we received the RFP, it was clear: some exciting thing. The brand was to design-and-develop-it dedicated E-website section that seamlessly bridged the nearly-traditional Blaupunkt's storied brand identity while heralding-futuristic digital positioning.",
+          "content": ""
+        },
+        {
+          "title": "Aligned with Global Brand Guidelines",
+          "content": "It nailed the essence of Blaupunkt's signature premium look and feel, maintaining global consistency."
+        },
+        {
+          "title": "Developed the EV Website Section",
+          "content": "Presented EVs in a stylish, futuristic workflow to highlight their electric vehicle range and innovation."
+        },
+        {
+          "title": "Blended Tradition with Modernity",
+          "content": "We designed a hub that with Jt seamlessly design language brought added for the EV market."
+        },
+        {
+          "title": "The Results?",
+          "content": "What we built isn't just content or website that seamlessly complements Blaupunkt's global ecosystem. The design remains consistent with their equals and online identity, across platforms, and this consistent elevated Incial to work-to-creative, high-end of in premium digital experiences."
+        }
       ],
       "location": "Kanjirappally, Kerala, India",
-      "tags": ["Design", "Web Dev", "Enterprise"],
+      "tags": [
+        "Design",
+        "Web Dev",
+        "Enterprise"
+      ],
       "summary": "A modern website for a legacy brand expanding into EVs.",
       "challenge": "Designing an EV website mirroring a legacy brand's global consistency.",
       "solution": "Futuristic workflow highlighting electric vehicles while aligned with global guidelines.",
       "result": "Consistent global presence elevating Incial to creative high-end work.",
-      "coverImage": "/images/case1.webp",
-      "heroImage": "/images/case1.webp",
+      "coverImage": "https://ik.imagekit.io/0bs3my2iz/incial-web/images/case1.webp",
+      "heroImage": "https://ik.imagekit.io/0bs3my2iz/incial-web/images/case1.webp",
       "year": "2023",
       "featured": false,
       "client": "Blaupunkt"

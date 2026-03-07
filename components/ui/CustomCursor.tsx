@@ -152,7 +152,7 @@ export function CustomCursor() {
         top: 0,
         left: 0,
         pointerEvents: "none",
-        zIndex: 99999,
+        zIndex: 99999999, // Maximum z-index
         willChange: "transform",
       }}
     >

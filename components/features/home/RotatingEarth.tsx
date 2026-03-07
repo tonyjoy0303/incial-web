@@ -275,12 +275,15 @@ export default function RotatingEarth({
         }, 10);
       };
 
-      document.addEventListener("mousemove", handleMouseMove);
-      document.addEventListener("mouseup", handleMouseUp);
+      document.addEventListener("mousemove", handleMouseMove, {
+        passive: true,
+      });
+      document.addEventListener("mouseup", handleMouseUp, { passive: true });
     };
 
     const handleWheel = (event: WheelEvent) => {
-      event.preventDefault();
+      // Allow scroll events to bubble up for the scroll section logic
+      // event.preventDefault();
       const scaleFactor = event.deltaY > 0 ? 0.9 : 1.1;
       const newRadius = Math.max(
         radius * 0.5,

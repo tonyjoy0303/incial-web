@@ -24,7 +24,7 @@ import { apiGetSection, apiSaveSection } from "@/lib/adminApi";
 import type { ClientsData, Client, Testimonial } from "@/lib/dataLoader";
 import { toast } from "sonner";
 import SectionVisibilityToggle from "@/components/admin/SectionVisibilityToggle";
-
+import ImageUpload from "@/components/admin/ImageUpload";
 const inputCls =
   "w-full bg-transparent border border-[#1e1e1e] rounded-xl px-4 py-2.5 text-white text-sm placeholder-[#555] focus:outline-none focus:border-white/50 transition-all font-[Inter,sans-serif]";
 const labelCls =
@@ -52,6 +52,8 @@ function SortableClientItem({ client }: { client: Client }) {
           src={client.src}
           alt={client.name}
           fill
+          sizes="150px"
+          quality={60}
           className="object-contain p-2 pointer-events-none"
         />
       ) : (
@@ -236,17 +238,20 @@ export default function AdminClientsPage() {
                         src={client.src}
                         alt={client.name}
                         fill
+                        sizes="50px"
+                        quality={60}
                         className="object-contain p-1"
                       />
                     )}
                   </div>
-                  <input
-                    type="text"
-                    value={client.src}
-                    onChange={(e) => updateClient(i, "src", e.target.value)}
-                    placeholder="File Path (/logo.png)"
-                    className="flex-1 bg-transparent border border-[#1e1e1e] rounded-lg px-3 py-1.5 text-white text-xs placeholder-[#555] focus:outline-none focus:border-white/50 transition-all"
-                  />
+                  <div className="flex-1 w-full min-w-[200px]">
+                    <ImageUpload
+                      label="Logo Upload"
+                      value={client.src}
+                      onChange={(v) => updateClient(i, "src", v)}
+                      folder="clients"
+                    />
+                  </div>
                   <button
                     onClick={() => removeClient(i)}
                     className="text-red-500/70 hover:text-red-500 shrink-0"
@@ -341,32 +346,48 @@ export default function AdminClientsPage() {
                 collisionDetection={closestCenter}
                 onDragEnd={handleDragEnd}
               >
-                <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-2 w-full">
-                  <SortableContext
-                    items={data.clients}
-                    strategy={rectSortingStrategy}
-                  >
-                    {data.clients.map((client) => (
-                      <SortableClientItem key={client.id} client={client} />
-                    ))}
-                  </SortableContext>
+                <div className="relative group border border-transparent p-4 -m-4 rounded-2xl hover:border-[#1e1e1e] w-full">
+                  <div className="absolute -top-3 right-4 opacity-0 group-hover:opacity-100 transition-opacity bg-black rounded-full px-2 border border-[#1e1e1e] z-10">
+                    <SectionVisibilityToggle
+                      sectionId="client-logos"
+                      label="Visible"
+                    />
+                  </div>
+                  <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-2 w-full">
+                    <SortableContext
+                      items={data.clients}
+                      strategy={rectSortingStrategy}
+                    >
+                      {data.clients.map((client) => (
+                        <SortableClientItem key={client.id} client={client} />
+                      ))}
+                    </SortableContext>
+                  </div>
                 </div>
               </DndContext>
             )}
 
             {/* Testimonials mirroring main site */}
             {data.testimonials.length > 0 && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-20 w-full max-w-3xl">
-                {data.testimonials.map((t) => (
-                  <div key={t.id} className="flex flex-col">
-                    <p className="text-base italic text-white/80 mb-3 font-light leading-relaxed font-[Poppins]">
-                      &ldquo;{t.quote}&rdquo;
-                    </p>
-                    <p className="text-right text-white/60 font-light text-sm italic tracking-wide">
-                      ~ {t.author}
-                    </p>
-                  </div>
-                ))}
+              <div className="relative group border border-transparent p-4 -m-4 rounded-2xl hover:border-[#1e1e1e] w-full max-w-3xl">
+                <div className="absolute -top-3 right-4 opacity-0 group-hover:opacity-100 transition-opacity bg-black rounded-full px-2 border border-[#1e1e1e] z-10">
+                  <SectionVisibilityToggle
+                    sectionId="client-testimonials"
+                    label="Visible"
+                  />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-20 w-full">
+                  {data.testimonials.map((t) => (
+                    <div key={t.id} className="flex flex-col">
+                      <p className="text-base italic text-white/80 mb-3 font-light leading-relaxed font-[Poppins]">
+                        &ldquo;{t.quote}&rdquo;
+                      </p>
+                      <p className="text-right text-white/60 font-light text-sm italic tracking-wide">
+                        ~ {t.author}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </div>

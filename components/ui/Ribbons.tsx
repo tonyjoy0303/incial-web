@@ -292,10 +292,7 @@ const Ribbons = ({
         width: "100vw",
         height: "100vh",
         pointerEvents: "none",
-        zIndex: 99998, // Just below cursor
-        // Apply layered glowing drop-shadows matching the cursor
-        filter:
-          "drop-shadow(0 0 12px rgba(96,165,250,0.6)) drop-shadow(0 0 24px rgba(59,130,246,0.4))",
+        zIndex: 999999, // Maximize z-index to stay above everything
       }}
     />
   );

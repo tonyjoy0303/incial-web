@@ -29,9 +29,11 @@ export default function AdminSettingsPage() {
     }
   }
 
-  function toggleSection(idx: number) {
+  function toggleSection(sectionId: string) {
     if (!data) return;
     const sections = [...data.sections];
+    const idx = sections.findIndex((s) => s.id === sectionId);
+    if (idx === -1) return;
     // Don't allow disabling the main intro/services scroll section completely
     if (sections[idx].id === "scrolling" && sections[idx].enabled) {
       toast.error("The home hero section cannot be disabled.");
@@ -74,7 +76,7 @@ export default function AdminSettingsPage() {
         </button>
       </div>
 
-      <div className="bg-transparent border border-[#1e1e1e] rounded-3xl overflow-hidden">
+      <div className="bg-transparent border border-[#1e1e1e] rounded-3xl overflow-hidden mb-12">
         <div className="px-6 py-4 border-b border-[#1e1e1e] flex items-center justify-between bg-[#0a0a0a]">
           <h3 className="text-sm font-semibold text-white uppercase tracking-wider font-[Poppins,sans-serif]">
             Website Sections
@@ -85,36 +87,83 @@ export default function AdminSettingsPage() {
         </div>
 
         <div className="divide-y divide-[#1e1e1e]">
-          {data.sections.map((section, idx) => (
-            <div
-              key={section.id}
-              className="p-5 flex items-center justify-between hover:bg-[#0a0a0a]/50 transition-colors"
-            >
-              <div>
-                <p
-                  className={`font-semibold font-[Poppins,sans-serif] ${section.enabled ? "text-white" : "text-[#555]"}`}
-                >
-                  {section.label}
-                </p>
-                <p className="text-xs text-[#8e8e8e] mt-1">
-                  Internal ID: {section.id}
-                </p>
-              </div>
+          {(() => {
+            const groupedSections = data.sections.reduce(
+              (acc, section) => {
+                let group = "Other Pages";
+                const id = section.id.toLowerCase();
+                if (id === "scrolling") group = "Home Page";
+                else if (id.startsWith("about")) group = "About Page";
+                else if (id.startsWith("blog")) group = "Blogs Page";
+                else if (id.startsWith("client")) group = "Clients Page";
+                else if (id.startsWith("trust")) group = "Trust Page";
+                else if (id.startsWith("product")) group = "Products Page";
+                else if (id.startsWith("casestud")) group = "Case Studies Page";
 
-              <button
-                onClick={() => toggleSection(idx)}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${
-                  section.enabled ? "bg-white" : "bg-[#2e2e2e]"
-                }`}
-              >
-                <span
-                  className={`inline-block h-4 w-4 transform rounded-full bg-black transition-transform ${
-                    section.enabled ? "translate-x-6" : "translate-x-1"
-                  }`}
-                />
-              </button>
-            </div>
-          ))}
+                if (!acc[group]) acc[group] = [];
+                acc[group].push(section);
+                return acc;
+              },
+              {} as Record<string, typeof data.sections>,
+            );
+
+            const order = [
+              "Home Page",
+              "About Page",
+              "Blogs Page",
+              "Clients Page",
+              "Trust Page",
+              "Products Page",
+              "Case Studies Page",
+              "Other Pages",
+            ];
+
+            return order
+              .filter((group) => groupedSections[group]?.length > 0)
+              .map((group) => (
+                <div key={group} className="flex flex-col">
+                  <div className="px-5 py-2.5 bg-[#141414] border-b border-t border-[#1e1e1e] first:border-t-0">
+                    <span className="text-xs font-semibold text-[#8e8e8e] uppercase tracking-wider">
+                      {group}
+                    </span>
+                  </div>
+                  {groupedSections[group]
+                    .sort((a, b) => a.id.length - b.id.length)
+                    .map((section) => (
+                      <div
+                        key={section.id}
+                        className="p-5 flex items-center justify-between hover:bg-[#0a0a0a]/50 transition-colors border-b border-[#1e1e1e] last:border-b-0"
+                      >
+                        <div>
+                          <p
+                            className={`font-semibold text-sm font-[Poppins,sans-serif] ${section.enabled ? "text-white" : "text-[#555]"}`}
+                          >
+                            {section.label}
+                          </p>
+                          <p className="text-xs text-[#8e8e8e] mt-1">
+                            ID: {section.id}
+                          </p>
+                        </div>
+
+                        <button
+                          onClick={() => toggleSection(section.id)}
+                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${
+                            section.enabled ? "bg-white" : "bg-[#2e2e2e]"
+                          }`}
+                        >
+                          <span
+                            className={`inline-block h-4 w-4 transform rounded-full bg-black transition-transform ${
+                              section.enabled
+                                ? "translate-x-6"
+                                : "translate-x-1"
+                            }`}
+                          />
+                        </button>
+                      </div>
+                    ))}
+                </div>
+              ));
+          })()}
         </div>
       </div>
     </div>

@@ -15,11 +15,27 @@ export default function ClientSection({
   onComplete,
 }: ClientSectionProps) {
   const [data, setData] = useState<ClientsData | null>(null);
+  const [sectionsConfig, setSectionsConfig] = useState<Record<string, boolean>>(
+    {},
+  );
 
   useEffect(() => {
     fetch("/api/admin/clients")
       .then((r) => r.json())
       .then(setData)
+      .catch(console.error);
+
+    fetch("/api/admin/sections")
+      .then((res) => res.json())
+      .then((d) => {
+        if (d?.sections) {
+          const configMap: Record<string, boolean> = {};
+          d.sections.forEach((s: any) => {
+            configMap[s.id] = s.enabled;
+          });
+          setSectionsConfig(configMap);
+        }
+      })
       .catch(console.error);
   }, []);
   useEffect(() => {
@@ -89,43 +105,48 @@ export default function ClientSection({
           </div>
 
           {/* Client Logo Grid */}
-          <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-2 md:gap-2.5 mb-10 md:mb-14 w-full">
-            {(data?.clients || []).map((client, index) => (
-              <motion.div
-                key={client.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{
-                  duration: 0.4,
-                  delay: index * 0.025,
-                  ease: "easeOut",
-                }}
-                className="bg-white rounded-[5px] flex items-center justify-center p-2 aspect-[3/2] relative overflow-hidden group transition-transform duration-300 hover:scale-105 cursor-pointer"
-              >
-                <Image
-                  src={client.src}
-                  alt={client.name}
-                  fill
-                  className="object-contain p-2 pointer-events-none"
-                  sizes="(max-width: 640px) 25vw, (max-width: 1024px) 16vw, 12.5vw"
-                />
-              </motion.div>
-            ))}
-          </div>
+          {sectionsConfig["client-logos"] !== false && (
+            <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-2 md:gap-2.5 mb-10 md:mb-14 w-full">
+              {(data?.clients || []).map((client, index) => (
+                <motion.div
+                  key={client.id}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{
+                    duration: 0.4,
+                    delay: index * 0.025,
+                    ease: "easeOut",
+                  }}
+                  className="bg-white rounded-[5px] flex items-center justify-center p-2 aspect-[3/2] relative overflow-hidden group transition-transform duration-300 hover:scale-105 cursor-pointer"
+                >
+                  <Image
+                    src={client.src}
+                    alt={client.name}
+                    fill
+                    className="object-contain p-2 pointer-events-none"
+                    sizes="(max-width: 640px) 25vw, (max-width: 1024px) 16vw, 12.5vw"
+                    loading="lazy"
+                  />
+                </motion.div>
+              ))}
+            </div>
+          )}
 
           {/* Testimonials */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-20 w-full max-w-5xl px-4">
-            {(data?.testimonials || []).map((test) => (
-              <div key={test.id} className="flex flex-col">
-                <p className="text-base md:text-lg italic text-white/80 mb-4 font-light leading-relaxed font-[Poppins]">
-                  &ldquo;{test.quote}&rdquo;
-                </p>
-                <p className="text-right text-white/60 font-light text-sm italic tracking-wide">
-                  ~ {test.author}
-                </p>
-              </div>
-            ))}
-          </div>
+          {sectionsConfig["client-testimonials"] !== false && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-20 w-full max-w-5xl px-4">
+              {(data?.testimonials || []).map((test) => (
+                <div key={test.id} className="flex flex-col">
+                  <p className="text-base md:text-lg italic text-white/80 mb-4 font-light leading-relaxed font-[Poppins]">
+                    &ldquo;{test.quote}&rdquo;
+                  </p>
+                  <p className="text-right text-white/60 font-light text-sm italic tracking-wide">
+                    ~ {test.author}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
         </motion.div>
       </div>
     </section>

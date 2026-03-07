@@ -16,7 +16,7 @@ import { apiGetSection, apiSaveSection } from "@/lib/adminApi";
 import type { ProductsData, Product } from "@/lib/dataLoader";
 import { toast } from "sonner";
 import SectionVisibilityToggle from "@/components/admin/SectionVisibilityToggle";
-
+import ImageUpload from "@/components/admin/ImageUpload";
 const inputCls =
   "w-full bg-transparent border border-[#1e1e1e] rounded-xl px-4 py-2.5 text-white text-sm placeholder-[#555] focus:outline-none focus:border-white/50 transition-all font-[Inter,sans-serif]";
 const labelCls =
@@ -290,13 +290,11 @@ export default function AdminProductsPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className={labelCls}>Image URL</label>
-                <input
-                  type="text"
+                <ImageUpload
+                  label="Image"
                   value={active.image}
-                  onChange={(e) => updateProduct("image", e.target.value)}
-                  placeholder="/images/prod1.png"
-                  className={inputCls}
+                  onChange={(v) => updateProduct("image", v)}
+                  folder="images/products"
                 />
               </div>
 
@@ -365,7 +363,13 @@ export default function AdminProductsPage() {
 
           <div className="flex-1 overflow-y-auto p-6 bg-white">
             {/* Real Frontend Live Preview */}
-            <div className="mx-auto w-full max-w-4xl pt-8 pb-12">
+            <div className="mx-auto w-full max-w-4xl pt-8 pb-12 relative group border border-transparent p-4 -m-4 rounded-2xl hover:border-gray-200">
+              <div className="absolute -top-3 right-4 opacity-0 group-hover:opacity-100 transition-opacity bg-black rounded-full px-2 border border-[#1e1e1e] z-10">
+                <SectionVisibilityToggle
+                  sectionId="products-list"
+                  label="Visible"
+                />
+              </div>
               {data.products.map((p, i) => (
                 <div
                   key={p.id}

@@ -12,8 +12,9 @@ import {
   Package,
   Settings2,
   LogOut,
+  Layers,
 } from "lucide-react";
-import { apiLogout } from "@/lib/adminApi";
+import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 const navItems = [
@@ -24,16 +25,12 @@ const navItems = [
   { href: "/admin/blogs", label: "Blogs", icon: BookOpen },
   { href: "/admin/casestudies", label: "Case Studies", icon: Briefcase },
   { href: "/admin/products", label: "Products", icon: Package },
+  { href: "/admin/services", label: "Services", icon: Layers },
 ];
 
 export default function AdminSidebar() {
   const pathname = usePathname();
   const router = useRouter();
-
-  function handleLogout() {
-    apiLogout();
-    router.push("/admin/login");
-  }
 
   return (
     <aside className="w-60 shrink-0 border-r border-[#1e1e1e] flex flex-col bg-black">
@@ -86,7 +83,7 @@ export default function AdminSidebar() {
       {/* Logout */}
       <div className="px-3 py-4 border-t border-[#1e1e1e]">
         <button
-          onClick={handleLogout}
+          onClick={() => signOut({ callbackUrl: "/admin/login" })}
           className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-[Inter,sans-serif] text-[#8e8e8e] hover:text-red-500 hover:bg-red-500/10 w-full transition-colors"
         >
           <LogOut size={16} className="shrink-0" />

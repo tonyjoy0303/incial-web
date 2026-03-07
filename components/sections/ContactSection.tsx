@@ -50,16 +50,55 @@ export default function ContactSection({ onBack }: ContactSectionProps) {
     message: "",
   });
 
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
+  const [errorMessage, setErrorMessage] = useState("");
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log("Form submitted:", formData);
+    if (!formData.name || !formData.email || !formData.message) {
+      setErrorMessage(
+        "Please fill in required fields: Name, Email, and Message.",
+      );
+      setStatus("error");
+      return;
+    }
+
+    setStatus("loading");
+    setErrorMessage("");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to submit form");
+      }
+
+      setStatus("success");
+      setFormData({ name: "", email: "", phone: "", message: "" });
+
+      // Reset status after a few seconds
+      setTimeout(() => setStatus("idle"), 5000);
+    } catch (error: any) {
+      console.error("Form submission error:", error);
+      setErrorMessage(error.message || "Something went wrong.");
+      setStatus("error");
+    }
   };
 
   return (
@@ -134,11 +173,27 @@ export default function ContactSection({ onBack }: ContactSectionProps) {
               onChange={handleChange}
               className="w-full bg-transparent outline-none text-white placeholder-gray-500 resize-none mb-12"
             />
+
+            {status === "success" && (
+              <p className="absolute bottom-4 left-6 text-green-400 text-sm">
+                Message sent successfully!
+              </p>
+            )}
+            {status === "error" && (
+              <p
+                className="absolute bottom-4 left-6 text-red-500 text-sm max-w-[70%] truncate"
+                title={errorMessage}
+              >
+                {errorMessage}
+              </p>
+            )}
+
             <button
               type="submit"
-              className="absolute bottom-4 right-4 bg-white text-black font-bold py-2 px-6 rounded-full hover:bg-gray-200 transition-colors"
+              disabled={status === "loading"}
+              className="absolute bottom-4 right-4 bg-white text-black font-bold py-2 px-6 rounded-full hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Contact
+              {status === "loading" ? "Sending..." : "Contact"}
             </button>
           </div>
         </motion.form>

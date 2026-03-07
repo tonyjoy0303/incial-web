@@ -26,13 +26,13 @@ export default function MarketingShell({
 
   return (
     <>
+      {children}
       {!isAdmin && (
-        <>
+        <div className="fixed inset-0 z-[999999] pointer-events-none">
           <Ribbons colors={["#60A5FA"]} baseThickness={8} pointCount={35} />
           <CustomCursor />
-        </>
+        </div>
       )}
-      {children}
     </>
   );
 }

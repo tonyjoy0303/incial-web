@@ -44,6 +44,21 @@
       "id": "careers",
       "label": "Careers Page",
       "enabled": true
+    },
+    {
+      "id": "client-logos",
+      "label": "Visible",
+      "enabled": true
+    },
+    {
+      "id": "about-awards",
+      "label": "Visible",
+      "enabled": false
+    },
+    {
+      "id": "casestudies-list",
+      "label": "Visible",
+      "enabled": true
     }
   ]
 }

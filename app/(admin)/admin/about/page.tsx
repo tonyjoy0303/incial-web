@@ -2,19 +2,36 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { Loader2, Save, Plus, Trash2, GripVertical } from "lucide-react";
 import {
-  Loader2,
-  Save,
-  Plus,
-  Trash2,
-  ChevronDown,
-  ChevronUp,
-} from "lucide-react";
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  rectSortingStrategy,
+  verticalListSortingStrategy,
+  useSortable,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { apiGetSection, apiSaveSection } from "@/lib/adminApi";
 import type { AboutData, TeamMember, Award } from "@/lib/dataLoader";
 import { toast } from "sonner";
 import SectionVisibilityToggle from "@/components/admin/SectionVisibilityToggle";
+import ImageUpload from "@/components/admin/ImageUpload";
 
+// ─── Shared styles ───────────────────────────────────────────────────────────
+const labelCls =
+  "text-[10px] font-semibold text-[#8e8e8e] uppercase tracking-wider font-[Inter,sans-serif]";
+
+// ─── FieldEditor ─────────────────────────────────────────────────────────────
 function FieldEditor({
   label,
   value,
@@ -32,9 +49,7 @@ function FieldEditor({
     "w-full bg-transparent border border-[#1e1e1e] rounded-xl px-4 py-2.5 text-white text-sm placeholder-[#555] focus:outline-none focus:border-white/50 transition-all font-[Inter,sans-serif]";
   return (
     <div className="space-y-1.5">
-      <label className="text-[10px] font-semibold text-[#8e8e8e] uppercase tracking-wider font-[Inter,sans-serif]">
-        {label}
-      </label>
+      <label className={labelCls}>{label}</label>
       {multiline ? (
         <textarea
           rows={3}
@@ -56,6 +71,7 @@ function FieldEditor({
   );
 }
 
+// ─── Card wrapper ─────────────────────────────────────────────────────────────
 function Card({
   title,
   children,
@@ -75,6 +91,137 @@ function Card({
   );
 }
 
+// ─── Sortable form card (left panel) ─────────────────────────────────────────
+function SortableMemberFormCard({
+  member,
+  index,
+  onUpdate,
+  onRemove,
+}: {
+  member: TeamMember;
+  index: number;
+  onUpdate: (field: keyof TeamMember, value: string) => void;
+  onRemove: () => void;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: member.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+    zIndex: isDragging ? 50 : undefined,
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className="bg-transparent border border-[#1e1e1e] rounded-2xl p-5"
+    >
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          {/* Drag handle */}
+          <button
+            {...attributes}
+            {...listeners}
+            className="text-[#555] hover:text-white cursor-grab active:cursor-grabbing transition-colors touch-none select-none"
+            title="Drag to reorder"
+          >
+            <GripVertical size={16} />
+          </button>
+          <span className="text-xs font-semibold text-[#8e8e8e] uppercase tracking-wider">
+            Member {index + 1}
+          </span>
+        </div>
+        <button
+          onClick={onRemove}
+          className="text-red-500/80 hover:text-red-500 transition-colors"
+        >
+          <Trash2 size={13} />
+        </button>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="space-y-4">
+          <FieldEditor
+            label="Name"
+            value={member.name}
+            onChange={(v) => onUpdate("name", v)}
+          />
+          <FieldEditor
+            label="Role"
+            value={member.role}
+            onChange={(v) => onUpdate("role", v)}
+          />
+          <div className="col-span-1 sm:col-span-2">
+            <ImageUpload
+              label="Photo"
+              value={member.img}
+              onChange={(v) => onUpdate("img", v)}
+              folder="images/about/team"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Sortable grid card (right preview) ──────────────────────────────────────
+function SortableTeamPreviewCard({ member }: { member: TeamMember }) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: member.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+    zIndex: isDragging ? 50 : undefined,
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className="flex flex-col items-center text-center cursor-grab active:cursor-grabbing select-none touch-none group"
+    >
+      <div className="w-16 h-16 rounded-full bg-[#d5d5d5] relative overflow-hidden mb-2 ring-2 ring-transparent group-hover:ring-white/30 transition-all">
+        {member.img && (
+          <Image
+            src={member.img}
+            alt={member.name}
+            fill
+            sizes="64px"
+            quality={60}
+            className="object-cover pointer-events-none"
+          />
+        )}
+      </div>
+      <p className="text-white text-xs font-semibold font-[Poppins,sans-serif] leading-tight">
+        {member.name || "Name"}
+      </p>
+      <p className="text-[#8e8e8e] text-[10px] italic font-[Poppins,sans-serif]">
+        {member.role || "Role"}
+      </p>
+    </div>
+  );
+}
+
+// ─── Main page ────────────────────────────────────────────────────────────────
 export default function AdminAboutPage() {
   const [data, setData] = useState<AboutData | null>(null);
   const [saving, setSaving] = useState(false);
@@ -85,6 +232,31 @@ export default function AdminAboutPage() {
       .catch(() => {});
   }, []);
 
+  // Sensors shared by both DnD contexts
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  );
+
+  // ── Team drag handlers ────────────────────────────────────────────────────
+  function handleTeamDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    if (over && active.id !== over.id) {
+      setData((prev) => {
+        if (!prev) return prev;
+        const oldIndex = prev.teamMembers.findIndex((m) => m.id === active.id);
+        const newIndex = prev.teamMembers.findIndex((m) => m.id === over.id);
+        return {
+          ...prev,
+          teamMembers: arrayMove(prev.teamMembers, oldIndex, newIndex),
+        };
+      });
+    }
+  }
+
+  // ── Save ─────────────────────────────────────────────────────────────────
   async function handleSave() {
     if (!data) return;
     setSaving(true);
@@ -98,6 +270,7 @@ export default function AdminAboutPage() {
     }
   }
 
+  // ── Team helpers ─────────────────────────────────────────────────────────
   function updateMember(idx: number, field: keyof TeamMember, value: string) {
     if (!data) return;
     const members = [...data.teamMembers];
@@ -125,6 +298,7 @@ export default function AdminAboutPage() {
     });
   }
 
+  // ── Award helpers ─────────────────────────────────────────────────────────
   function updateAward(idx: number, field: keyof Award, value: string) {
     if (!data) return;
     const awards = [...data.awards];
@@ -246,129 +420,75 @@ export default function AdminAboutPage() {
           </Card>
 
           {/* Images */}
-          <Card title="Banner Images (URLs)">
+          <Card title="Banner Images">
             <div className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-                <FieldEditor
-                  label="Hero Banner URL"
+              <div className="w-full">
+                <ImageUpload
+                  label="Hero Banner Image"
                   value={data.heroBanner}
                   onChange={(v) => setData({ ...data, heroBanner: v })}
-                  placeholder="https://..."
+                  folder="images/about"
                 />
-                {data.heroBanner && (
-                  <div className="relative w-full aspect-21/9 bg-[#1a1a1a] rounded-xl overflow-hidden border border-[#1e1e1e]">
-                    <Image
-                      src={data.heroBanner}
-                      alt="Hero Banner"
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                )}
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-                <FieldEditor
-                  label="Brand Image URL"
+              <div className="w-full">
+                <ImageUpload
+                  label="Brand Image"
                   value={data.brandImage}
                   onChange={(v) => setData({ ...data, brandImage: v })}
-                  placeholder="https://..."
+                  folder="images/about"
                 />
-                {data.brandImage && (
-                  <div className="relative w-full aspect-21/9 bg-[#1a1a1a] rounded-xl overflow-hidden border border-[#1e1e1e]">
-                    <Image
-                      src={data.brandImage}
-                      alt="Brand"
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                )}
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-                <FieldEditor
-                  label="Impact Image URL"
+              <div className="w-full">
+                <ImageUpload
+                  label="Impact Image"
                   value={data.impactImage}
                   onChange={(v) => setData({ ...data, impactImage: v })}
-                  placeholder="https://..."
+                  folder="images/about"
                 />
-                {data.impactImage && (
-                  <div className="relative w-full aspect-21/9 bg-[#1a1a1a] rounded-xl overflow-hidden border border-[#1e1e1e]">
-                    <Image
-                      src={data.impactImage}
-                      alt="Impact"
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                )}
               </div>
             </div>
           </Card>
 
-          {/* Team */}
+          {/* ── Team Members (drag-and-drop left panel) ── */}
           <Card title="Team Members">
-            <div className="space-y-4">
-              {data.teamMembers.map((member, i) => (
-                <div
-                  key={member.id}
-                  className="bg-transparent border border-[#1e1e1e] rounded-2xl p-5"
-                >
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-xs font-semibold text-[#8e8e8e] uppercase tracking-wider">
-                      Member {i + 1}
-                    </span>
-                    <button
-                      onClick={() => removeMember(i)}
-                      className="text-red-500/80 hover:text-red-500 transition-colors"
-                    >
-                      <Trash2 size={13} />
-                    </button>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-4">
-                      <FieldEditor
-                        label="Name"
-                        value={member.name}
-                        onChange={(v) => updateMember(i, "name", v)}
-                      />
-                      <FieldEditor
-                        label="Role"
-                        value={member.role}
-                        onChange={(v) => updateMember(i, "role", v)}
-                      />
-                      <FieldEditor
-                        label="Photo URL"
-                        value={member.img}
-                        onChange={(v) => updateMember(i, "img", v)}
-                        placeholder="https://..."
-                      />
-                    </div>
-                    <div className="flex items-center justify-center">
-                      <div className="relative w-32 h-36 bg-[#1a1a1a] rounded-full overflow-hidden border border-[#1e1e1e] flex items-center justify-center">
-                        {member.img ? (
-                          <Image
-                            src={member.img}
-                            alt={member.name}
-                            fill
-                            className="object-cover"
-                          />
-                        ) : (
-                          <span className="text-[#8e8e8e] text-xs">
-                            No Image
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-              <button
-                onClick={addMember}
-                className="flex items-center gap-2 text-white hover:text-gray-300 text-sm font-medium transition-colors mt-2"
-              >
-                <Plus size={15} /> Add Team Member
-              </button>
+            <div className="space-y-1 mb-2">
+              <p className="text-[10px] text-[#555] font-[Inter,sans-serif]">
+                Drag the{" "}
+                <GripVertical
+                  size={11}
+                  className="inline-block text-[#8e8e8e]"
+                />{" "}
+                handle to reorder members.
+              </p>
             </div>
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleTeamDragEnd}
+            >
+              <SortableContext
+                items={data.teamMembers}
+                strategy={verticalListSortingStrategy}
+              >
+                <div className="space-y-4">
+                  {data.teamMembers.map((member, i) => (
+                    <SortableMemberFormCard
+                      key={member.id}
+                      member={member}
+                      index={i}
+                      onUpdate={(field, value) => updateMember(i, field, value)}
+                      onRemove={() => removeMember(i)}
+                    />
+                  ))}
+                </div>
+              </SortableContext>
+            </DndContext>
+            <button
+              onClick={addMember}
+              className="flex items-center gap-2 text-white hover:text-gray-300 text-sm font-medium transition-colors mt-4"
+            >
+              <Plus size={15} /> Add Team Member
+            </button>
           </Card>
 
           {/* Awards */}
@@ -443,7 +563,13 @@ export default function AdminAboutPage() {
           </div>
           <div className="flex-1 overflow-y-auto p-6 space-y-6">
             {/* Story */}
-            <div className="border border-[#1e1e1e] rounded-2xl p-6">
+            <div className="border border-[#1e1e1e] rounded-2xl p-6 relative group border-t-4 border-t-transparent hover:border-t-[#1e1e1e] transition-all">
+              <div className="absolute -top-3 right-4 opacity-0 group-hover:opacity-100 transition-opacity bg-black rounded-full px-2 border border-[#1e1e1e] z-10">
+                <SectionVisibilityToggle
+                  sectionId="about-story"
+                  label="Visible"
+                />
+              </div>
               <h2 className="font-[Poppins,sans-serif] font-bold text-2xl text-white mb-3">
                 {data.storyTitle || "Our Story"}
               </h2>
@@ -451,8 +577,15 @@ export default function AdminAboutPage() {
                 {data.storyText || "Story text…"}
               </p>
             </div>
+
             {/* Purpose */}
-            <div className="border border-[#1e1e1e] rounded-2xl p-6 bg-white text-black">
+            <div className="border border-[#1e1e1e] rounded-2xl p-6 bg-white text-black relative group">
+              <div className="absolute -top-3 right-4 opacity-0 group-hover:opacity-100 transition-opacity bg-white rounded-full px-2 border border-black/20 z-10">
+                <SectionVisibilityToggle
+                  sectionId="about-purpose"
+                  label="Visible"
+                />
+              </div>
               <h2 className="font-[Poppins,sans-serif] font-bold text-2xl mb-3">
                 {data.purposeTitle || "Our Purpose"}
               </h2>
@@ -460,43 +593,51 @@ export default function AdminAboutPage() {
                 {data.purposeText || "Purpose text…"}
               </p>
             </div>
-            {/* Team grid preview */}
+
+            {/* ── Team grid preview (drag-and-drop) ── */}
             {data.teamMembers.length > 0 && (
-              <div>
-                <h3 className="text-white font-bold text-sm font-[Poppins,sans-serif] mb-3">
+              <div className="relative group border border-transparent p-4 -m-4 rounded-xl hover:border-[#1e1e1e]">
+                <div className="absolute -top-3 right-4 opacity-0 group-hover:opacity-100 transition-opacity bg-black rounded-full px-2 border border-[#1e1e1e] z-10">
+                  <SectionVisibilityToggle
+                    sectionId="about-team"
+                    label="Visible"
+                  />
+                </div>
+                <h3 className="text-white font-bold text-sm font-[Poppins,sans-serif] mb-1">
                   {data.teamTitle || "Meet Our Team"} ({data.teamMembers.length}
                   )
                 </h3>
-                <div className="grid grid-cols-4 gap-3">
-                  {data.teamMembers.map((m) => (
-                    <div
-                      key={m.id}
-                      className="flex flex-col items-center text-center"
-                    >
-                      <div className="w-16 h-16 rounded-full bg-[#d5d5d5] relative overflow-hidden mb-2">
-                        {m.img && (
-                          <Image
-                            src={m.img}
-                            alt={m.name}
-                            fill
-                            className="object-cover"
-                          />
-                        )}
-                      </div>
-                      <p className="text-white text-xs font-semibold font-[Poppins,sans-serif] leading-tight">
-                        {m.name || "Name"}
-                      </p>
-                      <p className="text-[#8e8e8e] text-[10px] italic font-[Poppins,sans-serif]">
-                        {m.role || "Role"}
-                      </p>
+                <p className="text-[#555] text-[10px] mb-3 font-[Inter,sans-serif]">
+                  Drag cards to reorder
+                </p>
+                <DndContext
+                  sensors={sensors}
+                  collisionDetection={closestCenter}
+                  onDragEnd={handleTeamDragEnd}
+                >
+                  <SortableContext
+                    items={data.teamMembers}
+                    strategy={rectSortingStrategy}
+                  >
+                    <div className="grid grid-cols-4 gap-3">
+                      {data.teamMembers.map((m) => (
+                        <SortableTeamPreviewCard key={m.id} member={m} />
+                      ))}
                     </div>
-                  ))}
-                </div>
+                  </SortableContext>
+                </DndContext>
               </div>
             )}
+
             {/* Awards preview */}
             {data.awards.length > 0 && (
-              <div>
+              <div className="relative group border border-transparent p-2 -m-2 rounded-xl hover:border-[#1e1e1e]">
+                <div className="absolute -top-3 right-4 opacity-0 group-hover:opacity-100 transition-opacity bg-black rounded-full px-2 border border-[#1e1e1e] z-10">
+                  <SectionVisibilityToggle
+                    sectionId="about-awards"
+                    label="Visible"
+                  />
+                </div>
                 <h3 className="text-white font-bold text-sm font-[Poppins,sans-serif] mb-3">
                   {data.awardsTitle || "Awards"}
                 </h3>
@@ -517,8 +658,15 @@ export default function AdminAboutPage() {
                 </div>
               </div>
             )}
+
             {/* Brand / Impact */}
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3 relative group border border-transparent p-2 -m-2 rounded-xl hover:border-[#1e1e1e]">
+              <div className="absolute -top-3 right-4 opacity-0 group-hover:opacity-100 transition-opacity bg-black rounded-full px-2 border border-[#1e1e1e] z-10">
+                <SectionVisibilityToggle
+                  sectionId="about-brand-impact"
+                  label="Visible"
+                />
+              </div>
               <div
                 className="border border-[#1e1e1e] rounded-xl p-4 relative overflow-hidden"
                 style={{ minHeight: 100 }}
@@ -528,6 +676,8 @@ export default function AdminAboutPage() {
                     src={data.brandImage}
                     alt="Brand"
                     fill
+                    sizes="(max-width: 768px) 100vw, 250px"
+                    quality={60}
                     className="object-cover opacity-30"
                   />
                 )}
@@ -549,6 +699,8 @@ export default function AdminAboutPage() {
                     src={data.impactImage}
                     alt="Impact"
                     fill
+                    sizes="(max-width: 768px) 100vw, 250px"
+                    quality={60}
                     className="object-cover opacity-30"
                   />
                 )}

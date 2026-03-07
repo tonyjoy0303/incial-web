@@ -17,7 +17,7 @@ export const caseStudiesData: CaseStudy[] = [
     slug: "homescapes",
     title: "Homescapes",
     category: "E-commerce",
-    heroImage: "/images/case1.webp",
+    heroImage: "https://ik.imagekit.io/0bs3my2iz/incial-web/images/case1.webp",
     heroQuote:
       "How do you take a traditional offline home décor seller and turn them into a premium online brand? For Homescapes, we built their digital presence from scratch, and opened the doors to e-commerce success.",
     introduction:
@@ -55,7 +55,7 @@ export const caseStudiesData: CaseStudy[] = [
     slug: "funfee",
     title: "Funfee: Kids Park, Restocafé & Event Space",
     category: "Social Media Marketing",
-    heroImage: "/images/case1.webp",
+    heroImage: "https://ik.imagekit.io/0bs3my2iz/incial-web/images/case1.webp",
     heroQuote:
       "How do you turn a newly launched kids' park, restocafé, and event space into the most talked-about destination in town, with 18k followers in just three weeks? That's exactly what we achieved with Funfee Kanjirappally.",
     introduction:
@@ -92,7 +92,7 @@ export const caseStudiesData: CaseStudy[] = [
     slug: "datalabs",
     title: "DataLabs Corporation",
     category: "Brand Identity",
-    heroImage: "/images/case1.webp",
+    heroImage: "https://ik.imagekit.io/0bs3my2iz/incial-web/images/case1.webp",
     heroQuote:
       "What happens when an AI company is making big moves in the U.S. market, but doesn't have a brand identity to match its innovation? That's where Incial stepped in for DataLabs Corporation.",
     introduction:
@@ -129,7 +129,7 @@ export const caseStudiesData: CaseStudy[] = [
     slug: "livelong-wealth",
     title: "Livelong Wealth Pala",
     category: "Financial Services Marketing",
-    heroImage: "/images/case1.webp",
+    heroImage: "https://ik.imagekit.io/0bs3my2iz/incial-web/images/case1.webp",
     heroQuote:
       "How do you build awareness around wealth management and age-banking in a three-tier city, when you yourself are new to the financial world? That's the challenge we took on with Livelong Wealth Pala. The result? A community of engaged investors, a successful Regional Agent, and vital long-grow hits in 68 CR in just four months.",
     introduction:
@@ -180,7 +180,7 @@ export const caseStudiesData: CaseStudy[] = [
     slug: "internhub",
     title: "InternHub: Connecting Students with Real-World Innovation",
     category: "Platform Development",
-    heroImage: "/images/case1.webp",
+    heroImage: "https://ik.imagekit.io/0bs3my2iz/incial-web/images/case1.webp",
     heroQuote:
       "How do you bridge the gap between bright engineering students and real-world industry challenges? That's exactly what we achieved with InternHub — a digital platform we built for Amal Jyothi College of Engineering in partnership with Startups Valley Intl.",
     introduction:
@@ -222,7 +222,7 @@ export const caseStudiesData: CaseStudy[] = [
     slug: "blaupunkt",
     title: "Blaupunkt EV Website",
     category: "Web Design & Development",
-    heroImage: "/images/case1.webp",
+    heroImage: "https://ik.imagekit.io/0bs3my2iz/incial-web/images/case1.webp",
     heroQuote:
       "When one of the world's most recognized electronics brands — Blaupunkt — approached us to design their EV (Electric Vehicle) website, we knew this was something big. It was an honor, a challenge, and a milestone for Incial.",
     introduction:

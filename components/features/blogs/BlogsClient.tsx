@@ -77,6 +77,10 @@ export default function BlogsClient({
   const [menuOpen, setMenuOpen] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
 
+  const [sectionsConfig, setSectionsConfig] = useState<Record<string, boolean>>(
+    {},
+  );
+
   useEffect(() => {
     async function fetchConfig() {
       try {
@@ -85,6 +89,13 @@ export default function BlogsClient({
         const blogsConfig = data.sections?.find((s: any) => s.id === "blogs");
         if (blogsConfig && !blogsConfig.enabled) {
           setIsDisabled(true);
+        }
+        if (data?.sections) {
+          const configMap: Record<string, boolean> = {};
+          data.sections.forEach((s: any) => {
+            configMap[s.id] = s.enabled;
+          });
+          setSectionsConfig(configMap);
         }
       } catch (err) {
         // Ignore
@@ -145,27 +156,31 @@ export default function BlogsClient({
           </motion.h1>
 
           {/* ── Popular ─────────────────────────────────────────────────────── */}
-          <section className="mb-16">
-            <SectionLabel label="Popular" />
-            <div className="max-w-[1251px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-[60px] gap-y-[60px]">
-              {popularPosts.map((post, i) => (
-                <BlogCard key={post.id} post={post} index={i} />
-              ))}
-            </div>
-          </section>
+          {sectionsConfig["blog-popular"] !== false && (
+            <section className="mb-16">
+              <SectionLabel label="Popular" />
+              <div className="max-w-[1251px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-[60px] gap-y-[60px]">
+                {popularPosts.map((post, i) => (
+                  <BlogCard key={post.id} post={post} index={i} />
+                ))}
+              </div>
+            </section>
+          )}
 
           {/* Divider */}
           <div className="max-w-[1251px] border-t border-white/10 mb-16" />
 
           {/* ── Newest ──────────────────────────────────────────────────────── */}
-          <section>
-            <SectionLabel label="Newest" delay={0.1} />
-            <div className="max-w-[1251px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-[60px] gap-y-[60px]">
-              {newestPosts.map((post, i) => (
-                <BlogCard key={post.id} post={post} index={i} />
-              ))}
-            </div>
-          </section>
+          {sectionsConfig["blog-newest"] !== false && (
+            <section>
+              <SectionLabel label="Newest" delay={0.1} />
+              <div className="max-w-[1251px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-[60px] gap-y-[60px]">
+                {newestPosts.map((post, i) => (
+                  <BlogCard key={post.id} post={post} index={i} />
+                ))}
+              </div>
+            </section>
+          )}
         </main>
 
         <div className="pl-[90px] pr-[90px] max-w-[1431px] mx-auto">

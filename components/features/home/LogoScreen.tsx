@@ -87,14 +87,13 @@ export default function LogoScreen({
         </motion.svg>
 
         {/* Full Finished Logo */}
-        <motion.div
-          className="absolute inset-0 flex items-center justify-center"
-          initial={
-            skipAnimation
-              ? { opacity: 1, filter: "blur(0px)" }
-              : { opacity: 0, filter: "blur(10px)" }
-          }
-          animate={{ opacity: 1, filter: "blur(0px)" }}
+        <motion.a
+          href="/pdf/Brochure.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute inset-0 flex items-center justify-center cursor-pointer"
+          initial={skipAnimation ? { opacity: 1 } : { opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={
             skipAnimation
               ? { duration: 0 }
@@ -105,10 +104,10 @@ export default function LogoScreen({
             src="/logo/Logoo-white.svg"
             alt="Incial Logo"
             fill
-            className="object-contain drop-shadow-[0_0_20px_rgba(59,130,246,0.3)]"
+            className="object-contain"
             priority
           />
-        </motion.div>
+        </motion.a>
       </div>
 
       {/* Right Button */}
@@ -118,14 +117,12 @@ export default function LogoScreen({
         transition={skipAnimation ? { duration: 0 } : { delay: 2.5 }}
         className="absolute right-[10%] hidden md:block"
       >
-        <a
-          href="/pdf/Brochure.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
+        <button
+          onClick={handleOurWorks}
           className="rounded-full border border-white/30 px-8 py-3 text-sm text-white transition hover:bg-white hover:text-black inline-block"
         >
           Our Works
-        </a>
+        </button>
       </motion.div>
     </motion.div>
   );
