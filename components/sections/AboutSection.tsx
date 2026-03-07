@@ -11,7 +11,6 @@ import Image from "next/image";
 const imgHeroBanner = "/images/about/Team-Photo.png";
 const imgBrand = "/images/about/imgBrand.png";
 const imgImpact = "/images/about/imgImpact.png";
-const imgAwardsIcon = "/images/about/imgAwardsIcon.svg";
 
 // ── Fade-up animation variant ─────────────────────────────────────────────
 const fadeUp = {
@@ -40,6 +39,8 @@ export default function AboutSection({
 }: AboutSectionProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [data, setData] = useState<AboutData | null>(null);
+  const [brandSrc, setBrandSrc] = useState(imgBrand);
+  const [impactSrc, setImpactSrc] = useState(imgImpact);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -56,7 +57,12 @@ export default function AboutSection({
   useEffect(() => {
     fetch("/api/admin/about")
       .then((res) => res.json())
-      .then(setData)
+      .then((d) => {
+        setData(d);
+        // initialize image sources; fallback if undefined
+        setBrandSrc(d?.brandImage || imgBrand);
+        setImpactSrc(d?.impactImage || imgImpact);
+      })
       .catch(console.error);
   }, []);
 
@@ -268,11 +274,14 @@ export default function AboutSection({
           className="relative h-[245px] rounded-tl-3xl rounded-tr-3xl overflow-hidden"
         >
           <Image
-            src={data?.brandImage || imgBrand}
+            src={brandSrc}
             alt="Our Brand"
             fill
             sizes="(max-width: 1256px) 100vw, 1256px"
             className="object-cover object-center"
+            onError={() => {
+              if (brandSrc !== imgBrand) setBrandSrc(imgBrand);
+            }}
           />
           <div className="absolute inset-0 bg-black/50" />
           <div className="absolute inset-0 flex flex-col justify-center px-14 gap-3">
@@ -296,11 +305,14 @@ export default function AboutSection({
           className="relative h-[245px] rounded-bl-3xl rounded-br-3xl overflow-hidden"
         >
           <Image
-            src={data?.impactImage || imgImpact}
+            src={impactSrc}
             alt="Our Impact"
             fill
             sizes="(max-width: 1256px) 100vw, 1256px"
             className="object-cover object-center"
+            onError={() => {
+              if (impactSrc !== imgImpact) setImpactSrc(imgImpact);
+            }}
           />
           <div className="absolute inset-0 bg-black/50" />
           <div className="absolute inset-0 flex flex-col justify-center px-14 gap-3">

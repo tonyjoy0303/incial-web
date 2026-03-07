@@ -161,6 +161,7 @@ export default function ScrollSection({
                 skipAnimation={
                   startAtEnd || returnFromServices || skipAnimation
                 }
+                onNextClick={() => setShowServices(true)}
               />
             )}
           </AnimatePresence>

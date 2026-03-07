@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
@@ -51,7 +52,21 @@ const perks = [
 ];
 
 // ── Testimonial ────────────────────────────────────────────────────────────
-function TestimonialCard({ delay = 0 }: { delay?: number }) {
+interface TestimonialProps {
+  delay?: number;
+  text: string;
+  author: string;
+  role?: string;
+  company?: string;
+}
+
+function TestimonialCard({
+  delay = 0,
+  text,
+  author,
+  role,
+  company,
+}: TestimonialProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -61,21 +76,17 @@ function TestimonialCard({ delay = 0 }: { delay?: number }) {
       className="flex-1 min-w-0 flex flex-row justify-between gap-6"
     >
       <p className="text-[12px] text-gray-300 italic leading-relaxed max-w-[75%]">
-        "Our culture values respect, curiosity, and continuous learning. We
-        create space for fresh ideas and ensure that every voice contributes to
-        shaping our journey."
+        "{text}"
       </p>
       <div className="text-right shrink-0 flex flex-col justify-start pt-0.5">
         <p className="text-[12px] text-white font-medium">
-          ~ Abidh
-          <br />
-          Habeeb
+          ~ {author}
         </p>
         <Link
           href="#"
           className="text-[11px] text-blue-400 hover:underline mt-0.5"
         >
-          CEO | Incial
+          {role ? `${role} | ` : ""}{company || ""}
         </Link>
       </div>
     </motion.div>
@@ -357,20 +368,45 @@ export default function CareersPage() {
 
           {/* ── Perks list — right aligned ────────────────────────────────── */}
           <section className="px-10 md:px-20 max-w-[1100px] mx-auto mb-24">
-            <div className="flex flex-col gap-5 max-w-[580px] ml-auto">
-              {perks.map((perk, i) => (
-                <FadeIn key={i} delay={i * 0.06}>
-                  <p className="text-[13px] text-gray-200">{perk}</p>
-                </FadeIn>
-              ))}
+            <div className="flex flex-col md:flex-row items-start gap-10">
+              {/* decorative career image shown on larger screens */}
+              <div className="hidden md:block flex-shrink-0 order-last md:order-first">
+                <Image
+                  src="/Career.png"
+                  alt="Join us at Incial"
+                  width={400}
+                  height={400}
+                  className="object-contain"
+                />
+              </div>
+
+              <div className="flex flex-col gap-5 max-w-[580px] ml-auto">
+                {perks.map((perk, i) => (
+                  <FadeIn key={i} delay={i * 0.06}>
+                    <p className="text-[13px] text-gray-200">{perk}</p>
+                  </FadeIn>
+                ))}
+              </div>
             </div>
           </section>
 
           {/* ── Testimonials ──────────────────────────────────────────────── */}
           <section className="px-10 md:px-20 max-w-[1100px] mx-auto mb-28">
             <div className="flex flex-col md:flex-row gap-10 md:gap-16">
-              <TestimonialCard delay={0.1} />
-              <TestimonialCard delay={0.2} />
+              <TestimonialCard
+                delay={0.1}
+                text="Our culture values respect, curiosity, and continuous learning. We create space for fresh ideas and ensure that every voice contributes to shaping our journey."
+                author="Abidh Habeeb"
+                role="CEO"
+                company="Incial"
+              />
+              <TestimonialCard
+                delay={0.2}
+                text="Great marketing isn’t just about visibility, it’s about building genuine connections. At Incial, we focus on telling stories that resonate, inspire trust and create lasting relationships with the people we serve."
+                author="Alan Joseph"
+                role="CMO"
+                company="Incial"
+              />
             </div>
           </section>
 

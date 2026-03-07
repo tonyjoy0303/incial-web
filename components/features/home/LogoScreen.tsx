@@ -12,28 +12,25 @@ interface LogoScreenProps {
 
 export default function LogoScreen({
   onNextClick,
-  skipAnimation = false,
+  skipAnimation,
 }: LogoScreenProps) {
-  const pathVariants: Variants = skipAnimation
-    ? {
-        hidden: { pathLength: 1, opacity: 0 },
-        visible: { pathLength: 1, opacity: 0 },
-      }
-    : {
-        hidden: { pathLength: 0, opacity: 0 },
-        visible: {
-          pathLength: 1,
-          opacity: [0, 1, 1, 0],
-          transition: {
-            pathLength: { duration: 2.5, ease: "easeInOut" },
-            opacity: {
-              duration: 3.5,
-              times: [0, 0.1, 0.8, 1],
-              ease: "easeInOut",
-            },
-          },
-        },
-      };
+  const handleOurWorks = () => {
+    if (onNextClick) {
+      onNextClick();
+    }
+  };
+
+  const pathVariants: Variants = {
+    hidden: { pathLength: 0, opacity: 0 },
+    visible: {
+      pathLength: 1,
+      opacity: [0, 1, 1, 0],
+      transition: {
+        pathLength: { duration: 2.5, ease: "easeInOut" },
+        opacity: { duration: 3.5, times: [0, 0.1, 0.8, 1], ease: "easeInOut" },
+      },
+    },
+  };
 
   return (
     <motion.div
@@ -121,7 +118,10 @@ export default function LogoScreen({
         transition={skipAnimation ? { duration: 0 } : { delay: 2.5 }}
         className="absolute right-[10%] hidden md:block"
       >
-        <button className="rounded-full border border-white/30 px-8 py-3 text-sm text-white transition hover:bg-white hover:text-black">
+        <button
+          onClick={handleOurWorks}
+          className="rounded-full border border-white/30 px-8 py-3 text-sm text-white transition hover:bg-white hover:text-black inline-block"
+        >
           Our Works
         </button>
       </motion.div>
