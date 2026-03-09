@@ -3,6 +3,8 @@ import { auth } from "@/auth";
 import fs from "fs";
 import path from "path";
 
+export const dynamic = "force-dynamic";
+
 const ALLOWED_SECTIONS = [
   "about", "clients", "trust", "blogs", "services",
   "casestudies", "products", "sections",

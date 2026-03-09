@@ -23,17 +23,17 @@ function JobCard({ job }: { job: Job }) {
     <Link href={`/careers/${job.slug}`} className="group block">
       <div className="border border-white/10 rounded-2xl px-6 py-5 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:border-white/30 hover:bg-white/5 transition-all duration-300">
         <div>
-          <p className="text-[11px] uppercase tracking-widest text-gray-500 mb-1">
+          <p className="text-[14px] uppercase tracking-widest text-gray-500 mb-1">
             {job.department}
           </p>
-          <h3 className="text-[17px] font-semibold text-white group-hover:text-blue-400 transition-colors">
+          <h3 className="text-[20px] md:text-[22px] font-semibold text-white group-hover:text-blue-400 transition-colors">
             {job.title}
           </h3>
-          <p className="text-[13px] text-gray-400 mt-1">
+          <p className="text-[15px] text-gray-400 mt-1">
             {job.location} · {job.type}
           </p>
         </div>
-        <span className="text-sm text-blue-400 font-medium shrink-0 group-hover:underline">
+        <span className="text-[16px] text-blue-400 font-medium shrink-0 group-hover:underline">
           View role →
         </span>
       </div>
@@ -75,18 +75,17 @@ function TestimonialCard({
       transition={{ duration: 0.6, delay }}
       className="flex-1 min-w-0 flex flex-row justify-between gap-6"
     >
-      <p className="text-[12px] text-gray-300 italic leading-relaxed max-w-[75%]">
+      <p className="text-[16px] text-gray-300 italic leading-relaxed max-w-[75%]">
         "{text}"
       </p>
       <div className="text-right shrink-0 flex flex-col justify-start pt-0.5">
-        <p className="text-[12px] text-white font-medium">
-          ~ {author}
-        </p>
+        <p className="text-[16px] text-white font-medium">~ {author}</p>
         <Link
           href="#"
-          className="text-[11px] text-blue-400 hover:underline mt-0.5"
+          className="text-[14px] text-blue-400 hover:underline mt-0.5"
         >
-          {role ? `${role} | ` : ""}{company || ""}
+          {role ? `${role} | ` : ""}
+          {company || ""}
         </Link>
       </div>
     </motion.div>
@@ -224,7 +223,7 @@ export default function CareersPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-center text-3xl md:text-[32px] font-bold mb-14 px-6"
+            className="text-center text-[36px] font-bold mb-14 px-6"
           >
             Careers at <span className="text-blue-400">Incial</span>
           </motion.h1>
@@ -235,7 +234,7 @@ export default function CareersPage() {
             <section className="mb-16">
               <div className="flex flex-col md:flex-row justify-between gap-10 md:gap-16">
                 <FadeIn delay={0.1} className="md:w-[38%] shrink-0">
-                  <p className="text-[20px] md:text-[22px] font-bold leading-snug">
+                  <p className="text-[22px] md:text-[26px] font-bold leading-snug">
                     We're not just building brands: we're building a team that
                     loves Mondays.{" "}
                     <span className="italic text-blue-400">
@@ -244,7 +243,7 @@ export default function CareersPage() {
                   </p>
                 </FadeIn>
                 <FadeIn delay={0.2} className="md:w-[55%]">
-                  <p className="text-[12px] md:text-[13px] text-gray-300 leading-relaxed text-right">
+                  <p className="text-[16px] text-gray-300 leading-relaxed text-right">
                     Incial began with a simple vision: to empower brands,
                     businesses, and ideas with innovative digital solutions that
                     create lasting impact. Founded in 2024 in Kanjirappally,
@@ -265,13 +264,13 @@ export default function CareersPage() {
             <section className="mb-6">
               <div className="flex flex-col md:flex-row justify-between gap-10 md:gap-16">
                 <FadeIn delay={0.1} className="md:w-[38%] shrink-0">
-                  <h2 className="text-2xl md:text-[26px] font-bold">
+                  <h2 className="text-[28px] md:text-[36px] font-bold">
                     Current Openings
                   </h2>
                 </FadeIn>
                 <FadeIn delay={0.2} className="md:w-[55%]">
                   {jobs.length === 0 ? (
-                    <p className="text-[12px] md:text-[13px] text-gray-300 leading-relaxed">
+                    <p className="text-[16px] text-gray-300 leading-relaxed">
                       We're growing fast, but at the moment, there are no open
                       positions. However, we're always eager to connect with
                       passionate individuals who share our values and
@@ -291,14 +290,14 @@ export default function CareersPage() {
             {/* CTA row */}
             <FadeIn delay={0.3} className="mb-24">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                <p className="text-[12px] text-gray-400 italic">
+                <p className="text-[16px] text-gray-400 italic">
                   If that sounds like you, send us your portfolio or resume —
                   we'd love to stay in touch.
                 </p>
                 <div className="flex items-center gap-3 shrink-0">
                   <a
                     href="mailto:careers@incial.in"
-                    className="text-[12px] text-blue-400 hover:underline"
+                    className="text-[16px] text-blue-400 hover:underline"
                   >
                     careers@incial.in
                   </a>
@@ -359,7 +358,7 @@ export default function CareersPage() {
             delay={0.1}
             className="px-10 md:px-20 max-w-[1100px] mx-auto mb-20 text-center"
           >
-            <p className="text-[13px] text-gray-400 italic max-w-sm mx-auto leading-relaxed">
+            <p className="text-[16px] text-gray-400 italic max-w-sm mx-auto leading-relaxed">
               Our culture values respect, curiosity, and continuous learning. We
               create space for fresh ideas and ensure that every voice
               contributes to shaping our journey.
@@ -368,22 +367,135 @@ export default function CareersPage() {
 
           {/* ── Perks list — right aligned ────────────────────────────────── */}
           <section className="px-10 md:px-20 max-w-[1100px] mx-auto mb-24">
-            <div className="flex flex-col md:flex-row items-start gap-10">
+            <div className="flex flex-col md:flex-row items-center gap-15">
               {/* decorative career image shown on larger screens */}
-              <div className="hidden md:block flex-shrink-0 order-last md:order-first">
-                <Image
-                  src="/Career.png"
-                  alt="Join us at Incial"
-                  width={400}
-                  height={400}
-                  className="object-contain"
-                />
+              <div className="hidden md:block flex-shrink-0 order-last md:order-first w-[500px] -ml-8">
+                <motion.svg
+                  width="100%"
+                  height="100%"
+                  viewBox="0 0 1268 434"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-full h-auto scale-110"
+                >
+                  <defs>
+                    <linearGradient
+                      id="paint0_linear_1094_1567"
+                      x1="7.53737"
+                      y1="126.932"
+                      x2="1260.63"
+                      y2="56.5509"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stopColor="#0202FF" stopOpacity="0" />
+                      <stop offset="1" stopColor="#0085FF" />
+                    </linearGradient>
+                    <linearGradient
+                      id="paint1_linear_1094_1567"
+                      x1="7.32252"
+                      y1="176.935"
+                      x2="1260.42"
+                      y2="106.555"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stopColor="#0202FF" stopOpacity="0" />
+                      <stop offset="1" stopColor="#0085FF" />
+                    </linearGradient>
+                    <linearGradient
+                      id="paint2_linear_1094_1567"
+                      x1="7.10768"
+                      y1="226.937"
+                      x2="1260.2"
+                      y2="156.557"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stopColor="#0202FF" stopOpacity="0" />
+                      <stop offset="1" stopColor="#0085FF" />
+                    </linearGradient>
+                    <linearGradient
+                      id="paint3_linear_1094_1567"
+                      x1="6.89186"
+                      y1="276.94"
+                      x2="1259.99"
+                      y2="206.56"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stopColor="#0202FF" stopOpacity="0" />
+                      <stop offset="1" stopColor="#0085FF" />
+                    </linearGradient>
+                    <linearGradient
+                      id="paint4_linear_1094_1567"
+                      x1="6.67799"
+                      y1="326.946"
+                      x2="1259.77"
+                      y2="256.566"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stopColor="#0202FF" stopOpacity="0" />
+                      <stop offset="1" stopColor="#0085FF" />
+                    </linearGradient>
+                    <linearGradient
+                      id="paint5_linear_1094_1567"
+                      x1="6.46315"
+                      y1="376.95"
+                      x2="1259.56"
+                      y2="306.569"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stopColor="#0202FF" stopOpacity="0" />
+                      <stop offset="1" stopColor="#0085FF" />
+                    </linearGradient>
+                  </defs>
+
+                  {[
+                    {
+                      d: "M7.46073 125.567C470.209 -93.9912 823.224 278.793 1260.56 55.1864",
+                      stroke: "url(#paint0_linear_1094_1567)",
+                    },
+                    {
+                      d: "M7.24588 175.571C469.994 -43.9873 823.009 328.797 1260.34 105.19",
+                      stroke: "url(#paint1_linear_1094_1567)",
+                    },
+                    {
+                      d: "M7.03104 225.573C469.779 6.01462 822.794 378.799 1260.13 155.192",
+                      stroke: "url(#paint2_linear_1094_1567)",
+                    },
+                    {
+                      d: "M6.81522 275.576C469.563 56.0175 822.579 428.801 1259.91 205.195",
+                      stroke: "url(#paint3_linear_1094_1567)",
+                    },
+                    {
+                      d: "M6.60135 325.582C469.349 106.023 822.365 478.807 1259.7 255.201",
+                      stroke: "url(#paint4_linear_1094_1567)",
+                    },
+                    {
+                      d: "M6.38651 375.586C469.135 156.027 822.15 528.811 1259.48 305.205",
+                      stroke: "url(#paint5_linear_1094_1567)",
+                    },
+                  ].map((path, index) => (
+                    <motion.path
+                      key={index}
+                      d={path.d}
+                      stroke={path.stroke}
+                      strokeWidth={7}
+                      strokeLinecap="round"
+                      initial={{ pathLength: 0, opacity: 0 }}
+                      whileInView={{ pathLength: 1, opacity: 1 }}
+                      viewport={{ once: true, margin: "-100px" }}
+                      transition={{
+                        duration: 1.5,
+                        ease: "easeInOut",
+                        delay: index * 0.15,
+                      }}
+                    />
+                  ))}
+                </motion.svg>
               </div>
 
               <div className="flex flex-col gap-5 max-w-[580px] ml-auto">
                 {perks.map((perk, i) => (
                   <FadeIn key={i} delay={i * 0.06}>
-                    <p className="text-[13px] text-gray-200">{perk}</p>
+                    <p className="text-[16px] text-gray-200">{perk}</p>
                   </FadeIn>
                 ))}
               </div>
@@ -416,13 +528,13 @@ export default function CareersPage() {
               <h2 className="text-3xl md:text-4xl font-bold">Looking Ahead</h2>
             </FadeIn>
             <FadeIn delay={0.15} className="text-center mb-10">
-              <p className="text-[13px] text-gray-400 max-w-[280px] mx-auto leading-relaxed">
+              <p className="text-[16px] text-gray-400 max-w-[340px] mx-auto leading-relaxed">
                 If you'd like to be part of Incial's future opportunities, send
                 us your resume at:
               </p>
             </FadeIn>
             <FadeIn delay={0.25}>
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-[13px]">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-[16px]">
                 <a
                   href="mailto:careers@incial.in"
                   className="text-blue-400 hover:underline"

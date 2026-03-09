@@ -42,12 +42,6 @@ export default function AboutSection({
   const [data, setData] = useState<AboutData | null>(null);
   const [brandSrc, setBrandSrc] = useState(imgBrand);
   const [impactSrc, setImpactSrc] = useState(imgImpact);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
-  });
 
   const [showAllTeam, setShowAllTeam] = useState(false);
   const teamMembers = data?.teamMembers || [];
@@ -107,15 +101,6 @@ export default function AboutSection({
     container.addEventListener("wheel", handleScroll, { passive: false });
     return () => container.removeEventListener("wheel", handleScroll);
   }, [onBack, onComplete]);
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => setFormData({ ...formData, [e.target.name]: e.target.value });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Contact form submitted:", formData);
-  };
 
   return (
     <section
@@ -363,78 +348,7 @@ export default function AboutSection({
           </motion.div>
         </div>
       )}
-      {/* ── Contact ──────────────────────────────────────────────────── */}
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        variants={fadeUp}
-        custom={0}
-        className="flex flex-col items-center text-center px-6 pt-8 pb-12"
-      >
-        <h2 className="font-[Poppins,sans-serif] font-bold italic text-[32px] text-white mb-3">
-          Have a question? Need a quote?
-        </h2>
-        <p className="font-[Poppins,sans-serif] text-[16px] text-white/70 mb-10">
-          We promise to reply within 24 hours, every time.
-        </p>
 
-        <form
-          onSubmit={handleSubmit}
-          className="w-full max-w-[606px] flex flex-col gap-4"
-        >
-          {/* Name */}
-          <div className="border border-[#1e1e1e] rounded-full h-[42px] flex items-center px-6">
-            <input
-              type="text"
-              name="name"
-              placeholder="Full Name"
-              value={formData.name}
-              onChange={handleChange}
-              className="w-full bg-transparent outline-none text-white placeholder-[#8e8e8e] text-[16px] font-[Inter,sans-serif]"
-            />
-          </div>
-          {/* Email */}
-          <div className="border border-[#1e1e1e] rounded-full h-[42px] flex items-center px-6">
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full bg-transparent outline-none text-white placeholder-[#8e8e8e] text-[16px] font-[Inter,sans-serif]"
-            />
-          </div>
-          {/* Phone */}
-          <div className="border border-[#1e1e1e] rounded-full h-[42px] flex items-center px-6">
-            <input
-              type="tel"
-              name="phone"
-              placeholder="Phone"
-              value={formData.phone}
-              onChange={handleChange}
-              className="w-full bg-transparent outline-none text-white placeholder-[#8e8e8e] text-[16px] font-[Inter,sans-serif]"
-            />
-          </div>
-          {/* Message */}
-          <div className="border border-[#1e1e1e] rounded-3xl min-h-[140px] px-6 py-4 relative">
-            <textarea
-              name="message"
-              placeholder="Message"
-              rows={4}
-              value={formData.message}
-              onChange={handleChange}
-              className="w-full bg-transparent outline-none text-white placeholder-[#8e8e8e] resize-none mb-10 text-[16px] font-[Inter,sans-serif]"
-            />
-            <button
-              type="submit"
-              className="absolute bottom-4 right-4 bg-white text-black font-semibold text-[13px] font-[Inter,sans-serif] px-4 py-2 rounded-xl shadow-[0_0_50px_0_rgba(0,133,255,0.2)] hover:bg-gray-100 transition-colors"
-            >
-              Contact
-            </button>
-          </div>
-        </form>
-      </motion.div>
       {/* ── Footer ───────────────────────────────────────────────────── */}
       <div className="px-12 pb-6">
         <Footer />
