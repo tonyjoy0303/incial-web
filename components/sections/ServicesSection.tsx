@@ -35,7 +35,7 @@ export default function ServicesSection({
           setCurrentSlide((prev) => prev + 1);
           setTimeout(() => {
             isScrolling.current = false;
-          }, 800);
+          }, 1500);
         } else if (onComplete) {
           // End of section, trigger parent transition
           onComplete();
@@ -48,7 +48,7 @@ export default function ServicesSection({
           setCurrentSlide((prev) => prev - 1);
           setTimeout(() => {
             isScrolling.current = false;
-          }, 800);
+          }, 1500);
         } else if (onBack) {
           onBack();
         }
@@ -74,7 +74,7 @@ export default function ServicesSection({
             setCurrentSlide((prev) => prev + 1);
             setTimeout(() => {
               isScrolling.current = false;
-            }, 800);
+            }, 1500);
           } else if (onComplete) {
             onComplete();
           }
@@ -86,7 +86,7 @@ export default function ServicesSection({
             setCurrentSlide((prev) => prev - 1);
             setTimeout(() => {
               isScrolling.current = false;
-            }, 800);
+            }, 1500);
           } else if (onBack) {
             onBack();
           }

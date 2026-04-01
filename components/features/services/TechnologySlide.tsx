@@ -7,7 +7,7 @@ export default function TechnologySlide() {
     <div className="relative flex h-full w-full items-center justify-center overflow-hidden">
       <div className="relative w-full h-full max-w-6xl flex flex-col items-center justify-center">
         {/* Curved Technology Text */}
-        <div className="absolute top-[3%] left-[-12%] w-full h-[500px] flex items-center justify-center pointer-events-none">
+        <div className="absolute top-[3%] left-[-12%] w-full h-[50vmin] lg:h-[60vmin] flex items-center justify-center pointer-events-none">
           <svg viewBox="0 0 1000 500" className="w-[120%] h-full">
             <path
               id="techCurve"
@@ -23,8 +23,8 @@ export default function TechnologySlide() {
         </div>
 
         {/* Services List */}
-        <div className="absolute top-[68%] flex flex-col gap-8 -rotate-12 -translate-x-32">
-          <div className="flex gap-6">
+        <div className="absolute top-[68%] flex flex-col gap-[3vh] -rotate-12 -translate-x-[15vw]">
+          <div className="flex gap-[2vw]">
             {/* Vertical Line */}
             <motion.div
               initial={{ scaleY: 0 }}

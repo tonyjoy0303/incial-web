@@ -67,7 +67,7 @@ export default function ScrollSection({
 
         setTimeout(() => {
           isScrolling.current = false;
-        }, 500); // Debounce
+        }, 1500); // Debounce
       } else if (e.deltaY < 0) {
         // Scroll Up
         isScrolling.current = true;
@@ -81,7 +81,7 @@ export default function ScrollSection({
         }
         setTimeout(() => {
           isScrolling.current = false;
-        }, 500); // Debounce
+        }, 1500); // Debounce
       }
     };
 
@@ -124,7 +124,7 @@ export default function ScrollSection({
         }
         setTimeout(() => {
           isScrolling.current = false;
-        }, 500);
+        }, 1500);
       }
     };
 

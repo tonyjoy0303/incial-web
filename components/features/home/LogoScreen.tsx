@@ -14,11 +14,7 @@ export default function LogoScreen({
   onNextClick,
   skipAnimation,
 }: LogoScreenProps) {
-  const handleOurWorks = () => {
-    if (onNextClick) {
-      onNextClick();
-    }
-  };
+
 
   const pathVariants: Variants = {
     hidden: { pathLength: 0, opacity: 0 },
@@ -87,11 +83,8 @@ export default function LogoScreen({
         </motion.svg>
 
         {/* Full Finished Logo */}
-        <motion.a
-          href="/pdf/Brochure.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="absolute inset-0 flex items-center justify-center cursor-pointer"
+        <motion.div
+          className="absolute inset-0 flex items-center justify-center"
           initial={skipAnimation ? { opacity: 1 } : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={
@@ -107,7 +100,7 @@ export default function LogoScreen({
             className="object-contain"
             priority
           />
-        </motion.a>
+        </motion.div>
       </div>
 
       {/* Right Button */}
@@ -117,12 +110,14 @@ export default function LogoScreen({
         transition={skipAnimation ? { duration: 0 } : { delay: 2.5 }}
         className="absolute right-[10%] hidden md:block"
       >
-        <button
-          onClick={handleOurWorks}
+        <a
+          href="/pdf/Brochure.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
           className="rounded-full border border-white/30 px-8 py-3 text-sm text-white transition hover:bg-white hover:text-black inline-block"
         >
           Our Works
-        </button>
+        </a>
       </motion.div>
     </motion.div>
   );

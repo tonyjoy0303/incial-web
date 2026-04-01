@@ -8,7 +8,7 @@ export default function BrandingSlide() {
       {/* Container for the visual branding elements */}
       <div className="relative flex items-center justify-center">
         {/* Main Circle Group */}
-        <div className="relative w-[300px] h-[300px] md:w-[500px] md:h-[500px] flex items-center justify-center -translate-x-[85%] translate-y-[20%]">
+        <div className="relative w-[70vmin] h-[70vmin] md:w-[60vmin] md:h-[60vmin] lg:w-[50vmin] lg:h-[50vmin] flex items-center justify-center -translate-x-[85%] translate-y-[20%]">
           {/* Inner Thin Circle */}
           <div className="absolute inset-0 rounded-full border-2 border-white" />
 

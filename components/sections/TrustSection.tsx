@@ -69,7 +69,7 @@ export default function TrustSection({
       }
       setTimeout(() => {
         isScrolling = false;
-      }, 500);
+      }, 1500);
     };
 
     let touchStartY = 0;
@@ -86,13 +86,13 @@ export default function TrustSection({
         if (onComplete) onComplete();
         setTimeout(() => {
           isScrolling = false;
-        }, 500);
+        }, 1500);
       } else if (deltaY < -50) {
         isScrolling = true;
         if (onBack) onBack();
         setTimeout(() => {
           isScrolling = false;
-        }, 500);
+        }, 1500);
       }
     };
 
