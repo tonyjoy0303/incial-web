@@ -6,7 +6,7 @@ export default function ExperienceSlide() {
   return (
     <div className="relative flex h-full w-full items-center justify-between px-[5vw] md:px-[15vw]">
       {/* Services List - Left Side */}
-      <div className="flex gap-[2vw] z-10">
+      <div className="flex gap-[2vw] z-10 -translate-x-[208px]">
         {/* Vertical Line */}
         <motion.div
           initial={{ scaleY: 0 }}
@@ -43,7 +43,7 @@ export default function ExperienceSlide() {
       </div>
 
       {/* Main Title - Right Side */}
-      <div className="flex flex-col items-end text-right z-10 mr-[2vw] md:mr-[5vw]">
+      <div className="flex flex-col items-end text-right z-10 translate-x-[24px]">
         <motion.h2
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}

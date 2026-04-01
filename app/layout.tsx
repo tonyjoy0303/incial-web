@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL || "https://incial.com",
   ),
-  title: "Incial — We Build Brands",
+  title: "Incial — We Build Brand,Business & Beyond",
   description:
     "Incial is a creative digital agency building brands, experiences, and products.",
 };
