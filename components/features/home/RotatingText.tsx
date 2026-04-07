@@ -16,10 +16,10 @@ export default function RotatingText({ wordIndex, words }: RotatingTextProps) {
       exit={{ opacity: 0, y: -20, transition: { duration: 0.3 } }}
       className="flex w-full items-center justify-center gap-3 text-center"
     >
-      <div className="text-4xl font-light text-white/90 md:text-5xl">
+      <div className="text-[6vmin] font-light text-white/90">
         We <span className="italic">build</span>
       </div>
-      <div className="text-left text-4xl font-bold text-white md:text-5xl">
+      <div className="text-left text-[6vmin] font-bold text-white">
         <AnimatePresence mode="wait">
           <motion.div
             key={wordIndex}

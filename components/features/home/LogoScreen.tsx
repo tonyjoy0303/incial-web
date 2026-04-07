@@ -52,7 +52,7 @@ export default function LogoScreen({
         </Link>
       </motion.div>
 
-      <div className="relative flex h-80 w-80 items-center justify-center md:h-[32rem] md:w-[32rem] lg:h-[40rem] lg:w-[40rem]">
+      <div className="relative flex h-[60vmin] w-[60vmin] items-center justify-center">
         {/* Sharp Stroke Layer */}
         <motion.svg
           viewBox="0 0 626 590"

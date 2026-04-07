@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   ),
   title: "Incial — We Build Brand,Business & Beyond",
   description:
-    "Incial is a creative digital agency building brands, experiences, and products.",
+    "Incial builds brand, business, and beyond with digital marketing, media production, branding, web design, app and website development, and complete tech solutions for growth.",
 };
 
 export default function RootLayout({

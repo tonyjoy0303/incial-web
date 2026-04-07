@@ -12,7 +12,7 @@ export default function BrandingSlide() {
           {/* Inner Thin Circle */}
           <div className="absolute inset-0 rounded-full border-2 border-white" />
 
-          <motion.div className="absolute inset-[-100px]">
+          <motion.div className="absolute inset-[-15vmin]">
             <svg
               className="w-full h-full"
               viewBox="0 0 100 100"
