@@ -103,7 +103,7 @@ export default function ServicesSection({
       window.removeEventListener("touchstart", handleTouchStart);
       window.removeEventListener("touchmove", handleTouchMove);
     };
-  }, [currentSlide]);
+  }, [currentSlide, onBack, onComplete]);
 
   const slideVariants = {
     enter: (direction: number) => ({
@@ -139,61 +139,52 @@ export default function ServicesSection({
 
   return (
     <section className="h-screen w-full bg-black overflow-hidden relative">
-      {/* Shared Background Circle */}
-      <motion.div
-        className="absolute rounded-full border-2 border-white/80 pointer-events-none z-10"
-        animate={
-          currentSlide === 1
-            ? "branding"
-            : currentSlide === 2
-              ? "technology"
-              : currentSlide === 3
-                ? "experience"
-                : "intro"
-        }
-        variants={{
-          intro: {
-            left: "calc(100% - 210vmin)",
-            top: "50%",
-            y: "100vmin",
-            x: "0%",
-            width: "180vmin",
-            height: "180vmin",
-            opacity: 0,
-          },
-          branding: {
-            left: "calc(100% - 210vmin)",
-            top: "50%",
-            y: "-50%",
-            x: "0%",
-            width: "180vmin",
-            height: "180vmin",
-            opacity: 1,
-            transition: { duration: 1, ease: [0.22, 1, 0.36, 1] },
-          },
-          technology: {
-            top: "-130vmin",
-            left: "40%",
-            x: "-50%",
-            y: "0%",
-            width: "180vmin",
-            height: "180vmin",
-            opacity: 1,
-            transition: { duration: 1, ease: [0.22, 1, 0.36, 1] },
-          },
-          experience: {
-            top: "50%",
-            left: "calc(100% - 25vmin)",
-            y: "-50%",
-            x: "0%",
-            width: "160vmin",
-            height: "160vmin",
-            opacity: 1,
-            transition: { duration: 1, ease: [0.22, 1, 0.36, 1] },
-          },
-        }}
-        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-      />
+      {/* Shared Background Circle (hidden on intro slide) */}
+      {currentSlide > 0 && (
+        <motion.div
+          className="absolute rounded-full border-2 border-white/80 pointer-events-none z-10"
+          animate={
+            currentSlide === 1
+              ? "branding"
+              : currentSlide === 2
+                ? "technology"
+                : "experience"
+          }
+          variants={{
+            branding: {
+              left: "calc(100% - 265vmin)",
+              top: "50%",
+              y: "-110vmin",
+              x: "0%",
+              width: "220vmin",
+              height: "220vmin",
+              opacity: 1,
+              transition: { duration: 1, ease: [0.22, 1, 0.36, 1] },
+            },
+            technology: {
+              top: "-130vmin",
+              left: "35%",
+              x: "-50%",
+              y: "0%",
+              width: "190vmin",
+              height: "190vmin",
+              opacity: 1,
+              transition: { duration: 1, ease: [0.22, 1, 0.36, 1] },
+            },
+            experience: {
+              top: "50%",
+              left: "calc(100% - 25vmin)",
+              y: "-80vmin",
+              x: "0%",
+              width: "160vmin",
+              height: "160vmin",
+              opacity: 1,
+              transition: { duration: 1, ease: [0.22, 1, 0.36, 1] },
+            },
+          }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+        />
+      )}
 
       <AnimatePresence custom={direction}>
         {currentSlide === 0 && (

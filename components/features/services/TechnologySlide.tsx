@@ -7,15 +7,15 @@ export default function TechnologySlide() {
     <div className="relative flex h-full w-full items-center justify-center overflow-hidden">
       <div className="relative w-full h-full max-w-6xl flex flex-col items-center justify-center">
         {/* Curved Technology Text */}
-        <div className="absolute top-[3%] left-[-20%] w-full h-[50vmin] lg:h-[60vmin] flex items-center justify-center pointer-events-none -translate-y-[4vmin] translate-x-[4vmin]">
+        <div className="absolute top-[18%] left-[-14%] w-full h-[50vmin] lg:h-[60vmin] flex items-center justify-center pointer-events-none -translate-y-[4vmin] translate-x-[-2vmin]">
           <svg viewBox="0 0 1000 500" className="w-[120%] h-full">
             <path
               id="techCurve"
-              d="M 100,280 Q 500,520 900,280"
+              d="M 100,240 Q 500,460 900,240"
               fill="transparent"
             />
             <text
-              fontSize="10vmin"
+              fontSize="11vmin"
               fontWeight="bold"
               fill="white"
               letterSpacing="-2"
@@ -28,16 +28,8 @@ export default function TechnologySlide() {
         </div>
 
         {/* Services List */}
-        <div className="absolute top-[68%] flex flex-col gap-[3vh] -rotate-12 -translate-x-[calc(15vw+12vmin)] -translate-y-[8vmin]">
+        <div className="absolute top-[73%] flex flex-col gap-[3vh] -rotate-12 -translate-x-[calc(23vw+12vmin)] -translate-y-[4vmin]">
           <div className="flex gap-[2vw]">
-            {/* Vertical Line */}
-            <motion.div
-              initial={{ scaleY: 0 }}
-              animate={{ scaleY: 1 }}
-              transition={{ duration: 1, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="w-[2px] bg-blue-200 origin-top"
-            />
-
             <div className="flex flex-col gap-[3vmin] text-[2.5vmin] font-medium tracking-widest text-blue-200">
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
@@ -47,6 +39,7 @@ export default function TechnologySlide() {
                   duration: 0.8,
                   ease: [0.22, 1, 0.36, 1],
                 }}
+                className="text-[2.85vmin]"
               >
                 WEBSITE BUILDING & DESIGN (UI/UX)
               </motion.div>
@@ -59,6 +52,7 @@ export default function TechnologySlide() {
                   duration: 0.8,
                   ease: [0.22, 1, 0.36, 1],
                 }}
+                className="text-[2.85vmin]"
               >
                 VFX & CGI
               </motion.div>
@@ -71,6 +65,7 @@ export default function TechnologySlide() {
                   duration: 0.8,
                   ease: [0.22, 1, 0.36, 1],
                 }}
+                className="text-[2.85vmin]"
               >
                 PRODUCT DESIGN
               </motion.div>
@@ -81,3 +76,9 @@ export default function TechnologySlide() {
     </div>
   );
 }
+
+
+
+
+
+

@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   ),
   title: "Incial — We Build Brand,Business & Beyond",
   description:
-    "Incial builds brand, business, and beyond with digital marketing, media production, branding, web design, app and website development, and complete tech solutions for growth.",
+    "Incial is a creative digital agency building brands, experiences, and products.",
 };
 
 export default function RootLayout({
@@ -42,9 +42,6 @@ export default function RootLayout({
         <div className="hidden lg:block h-full w-full">
           <MarketingShell>{children}</MarketingShell>
         </div>
-
-        {/* Render persistent global cursors entirely outside any layout wrappers to avoid stacking context issues */}
-        <div id="global-cursor-portal"></div>
       </body>
     </html>
   );

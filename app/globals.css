@@ -34,5 +34,27 @@ body {
   padding: 0;
 }
 
+/* ── Admin panel: restore browser default cursor ── */
+body .admin-panel,
+body .admin-panel * {
+  cursor: auto !important;
+}
 
+body .admin-panel button,
+body .admin-panel a,
+body .admin-panel input,
+body .admin-panel textarea,
+body .admin-panel select,
+body .admin-panel [role="button"] {
+  cursor: pointer !important;
+}
+
+body .admin-panel input[type="password"],
+body .admin-panel input[type="text"],
+body .admin-panel input[type="email"],
+body .admin-panel input[type="number"],
+body .admin-panel input[type="tel"],
+body .admin-panel textarea {
+  cursor: text !important;
+}
 

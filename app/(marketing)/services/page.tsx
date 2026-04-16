@@ -53,13 +53,13 @@ export default function ServicesPage() {
         className="relative origin-top overflow-x-hidden bg-black text-white min-h-screen selection:bg-white/20"
         style={{ zIndex: 30 }}
       >
-        <main className="pt-24 pb-20 px-6 md:px-12 lg:px-24 max-w-7xl mx-auto font-[Inter,sans-serif]">
+        <main className="pt-[clamp(5rem,4.4rem+2.4vw,6rem)] pb-[clamp(4rem,3.5rem+2vw,5rem)] px-[clamp(1rem,0.55rem+1.8vw,1.5rem)] md:px-[clamp(2rem,0.2rem+3vw,3rem)] lg:px-24 max-w-7xl mx-auto font-[Inter,sans-serif]">
           {/* Header Section */}
-          <div className="mb-16 md:mb-24 mt-8">
-            <p className="text-[#8e8e8e] text-sm uppercase tracking-widest mb-4 font-semibold">
+          <div className="mb-[clamp(3rem,1.8rem+4.2vw,6rem)] mt-[clamp(1.5rem,1.1rem+1.4vw,2rem)]">
+            <p className="text-[#8e8e8e] text-[clamp(0.75rem,0.68rem+0.28vw,0.875rem)] uppercase tracking-[0.22em] mb-4 font-semibold">
               What We Offer
             </p>
-            <h1 className="text-4xl md:text-6xl font-bold font-[Poppins,sans-serif] leading-tight max-w-3xl">
+            <h1 className="text-[clamp(2.25rem,1.7rem+2.2vw,3.75rem)] font-bold font-[Poppins,sans-serif] leading-[1.08] max-w-3xl">
               Empowering your business with tailored{" "}
               <span className="text-white/50 italic font-light">services</span>.
             </h1>
@@ -67,48 +67,48 @@ export default function ServicesPage() {
 
           {/* Services Grid */}
           {loading ? (
-            <div className="py-20 text-center border border-[#1e1e1e] rounded-3xl bg-[#0a0a0a]">
-              <p className="text-[#8e8e8e] text-lg">Loading services...</p>
+            <div className="py-[clamp(3rem,2rem+3.8vw,5rem)] text-center border border-[#1e1e1e] rounded-3xl bg-[#0a0a0a]">
+              <p className="text-[#8e8e8e] text-[clamp(1rem,0.93rem+0.3vw,1.125rem)]">Loading services...</p>
             </div>
           ) : services.length === 0 ? (
-            <div className="py-20 text-center border border-[#1e1e1e] rounded-3xl bg-[#0a0a0a]">
-              <p className="text-[#8e8e8e] text-lg">
+            <div className="py-[clamp(3rem,2rem+3.8vw,5rem)] text-center border border-[#1e1e1e] rounded-3xl bg-[#0a0a0a]">
+              <p className="text-[#8e8e8e] text-[clamp(1rem,0.93rem+0.3vw,1.125rem)]">
                 New services are coming soon. Stay tuned!
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 min-h-[40vh]">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[clamp(1rem,0.55rem+1.8vw,2rem)] min-h-[40vh]">
               {services.map((service: ServiceItem) => (
                 <div
                   key={service.id}
-                  className="group relative border border-[#1e1e1e] rounded-3xl p-8 bg-[#0a0a0a] hover:bg-[#111] transition-all duration-300 flex flex-col overflow-hidden"
+                  className="group relative border border-[#1e1e1e] rounded-3xl p-[clamp(1.1rem,0.6rem+2vw,2rem)] bg-[#0a0a0a] hover:bg-[#111] transition-all duration-300 flex flex-col overflow-hidden"
                 >
                   {/* Hover Glow Effect */}
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none bg-linear-to-br from-white via-transparent to-transparent" />
 
-                  <div className="flex justify-between items-start mb-6 relative z-10 gap-2">
-                    <h3 className="text-xl md:text-2xl font-bold font-[Poppins,sans-serif]">
+                  <div className="flex justify-between items-start mb-[clamp(1rem,0.65rem+1.3vw,1.5rem)] relative z-10 gap-[clamp(0.5rem,0.2rem+1vw,0.75rem)] max-[420px]:flex-col max-[420px]:items-start">
+                    <h3 className="text-[clamp(1.25rem,1.1rem+0.6vw,1.5rem)] font-bold font-[Poppins,sans-serif] leading-tight">
                       {service.title}
                     </h3>
 
                     {/* Free vs Paid Badge */}
                     {service.isFree ? (
-                      <span className="px-3 py-1.5 rounded-full bg-green-500/10 text-green-400 text-[10px] font-semibold uppercase tracking-wider border border-green-500/20 whitespace-nowrap mt-1">
+                      <span className="px-3 py-1.5 rounded-full bg-green-500/10 text-green-400 text-[clamp(0.625rem,0.59rem+0.14vw,0.6875rem)] font-semibold uppercase tracking-wider border border-green-500/20 whitespace-nowrap mt-1">
                         Free Request
                       </span>
                     ) : (
-                      <span className="px-3 py-1.5 rounded-full bg-blue-500/10 text-blue-400 text-[10px] font-semibold uppercase tracking-wider border border-blue-500/20 whitespace-nowrap mt-1">
+                      <span className="px-3 py-1.5 rounded-full bg-blue-500/10 text-blue-400 text-[clamp(0.625rem,0.59rem+0.14vw,0.6875rem)] font-semibold uppercase tracking-wider border border-blue-500/20 whitespace-nowrap mt-1">
                         {service.price ? `$${service.price}` : "Premium"}
                       </span>
                     )}
                   </div>
 
-                  <p className="text-[#8e8e8e] leading-relaxed mb-10 flex-1 relative z-10 text-sm">
+                  <p className="text-[#8e8e8e] leading-relaxed mb-[clamp(1.5rem,0.7rem+2.8vw,2.5rem)] flex-1 relative z-10 text-[clamp(0.875rem,0.82rem+0.22vw,1rem)]">
                     {service.description}
                   </p>
 
-                  <div className="pt-6 border-t border-[#1e1e1e] relative z-10 flex items-center justify-between mt-auto">
-                    <span className="text-xs text-[#555] font-medium">
+                  <div className="pt-[clamp(0.9rem,0.55rem+1.3vw,1.5rem)] border-t border-[#1e1e1e] relative z-10 flex items-center justify-between mt-auto max-[420px]:flex-col max-[420px]:items-start max-[420px]:gap-2">
+                    <span className="text-[clamp(0.75rem,0.72rem+0.12vw,0.8125rem)] text-[#555] font-medium">
                       {new Date(service.createdAt).toLocaleDateString("en-US", {
                         month: "short",
                         year: "numeric",
@@ -116,7 +116,7 @@ export default function ServicesPage() {
                     </span>
 
                     {/* Example CTA button */}
-                    <button className="text-xs font-semibold text-white group-hover:underline underline-offset-4 decoration-white/30 transition-all">
+                    <button className="text-[clamp(0.75rem,0.72rem+0.12vw,0.8125rem)] font-semibold text-white group-hover:underline underline-offset-4 decoration-white/30 transition-all">
                       Learn More →
                     </button>
                   </div>

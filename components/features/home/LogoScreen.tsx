@@ -3,15 +3,12 @@
 import { motion, Variants } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { FiArrowDown } from "react-icons/fi";
 
 interface LogoScreenProps {
-  onNextClick?: () => void;
   skipAnimation?: boolean;
 }
 
 export default function LogoScreen({
-  onNextClick,
   skipAnimation,
 }: LogoScreenProps) {
 
@@ -52,13 +49,23 @@ export default function LogoScreen({
         </Link>
       </motion.div>
 
-      <div className="relative flex h-[60vmin] w-[60vmin] items-center justify-center">
+      <div
+        className="relative flex items-center justify-center"
+        style={{
+          width: "clamp(16rem, 74vmin, 52rem)",
+          height: "clamp(16rem, 74vmin, 52rem)",
+        }}
+      >
         {/* Sharp Stroke Layer */}
         <motion.svg
           viewBox="0 0 626 590"
           className="absolute inset-0 h-full w-full stroke-white"
           fill="transparent"
-          strokeWidth="3"
+          style={{
+            strokeWidth: "clamp(2px, 0.22vmin, 4px)",
+            transform: "scale(1.18)",
+            transformOrigin: "center",
+          }}
           strokeLinecap="round"
           strokeLinejoin="round"
           initial="hidden"
@@ -85,6 +92,7 @@ export default function LogoScreen({
         {/* Full Finished Logo */}
         <motion.div
           className="absolute inset-0 flex items-center justify-center"
+          style={{ transform: "scale(1.18)", transformOrigin: "center" }}
           initial={skipAnimation ? { opacity: 1 } : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={

@@ -12,7 +12,8 @@ export default function ExperienceSlide() {
           initial={{ scaleY: 0 }}
           animate={{ scaleY: 1 }}
           transition={{ duration: 1, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="w-[2px] bg-blue-200 origin-top"
+          className="bg-blue-200 origin-top"
+          style={{ width: "clamp(1px, 0.12vw, 2px)" }}
         />
 
         <div className="flex flex-col gap-[4vmin] text-[2.5vmin] font-medium tracking-wide text-blue-200 justify-center">
@@ -22,14 +23,6 @@ export default function ExperienceSlide() {
             transition={{ delay: 0.6, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             Creative Design
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.7, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          >
-            Social Media Management
           </motion.div>
 
           <motion.div
