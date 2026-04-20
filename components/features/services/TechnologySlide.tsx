@@ -7,7 +7,7 @@ export default function TechnologySlide() {
     <div className="relative flex h-full w-full items-center justify-center overflow-hidden">
       <div className="relative w-full h-full max-w-6xl flex flex-col items-center justify-center">
         {/* Curved Technology Text */}
-        <div className="absolute top-[18%] left-[-14%] w-full h-[50vmin] lg:h-[60vmin] flex items-center justify-center pointer-events-none -translate-y-[4vmin] translate-x-[-2vmin]">
+        <div className="absolute w-full flex items-center justify-center pointer-events-none" style={{ top: "clamp(15%, 18%, 22%)", left: "clamp(-20%, -14%, -8%)", height: "clamp(50vmin, 55vmin, 65vmin)", transform: "translateY(-1vmin) translateX(-2vmin)" }}>
           <svg viewBox="0 0 1000 500" className="w-[120%] h-full">
             <path
               id="techCurve"
@@ -15,7 +15,7 @@ export default function TechnologySlide() {
               fill="transparent"
             />
             <text
-              fontSize="11vmin"
+              style={{ fontSize: "calc(11.7vmin + 0.5cm)" }}
               fontWeight="bold"
               fill="white"
               letterSpacing="-2"
@@ -28,9 +28,9 @@ export default function TechnologySlide() {
         </div>
 
         {/* Services List */}
-        <div className="absolute top-[73%] flex flex-col gap-[3vh] -rotate-12 -translate-x-[calc(23vw+12vmin)] -translate-y-[4vmin]">
+        <div className="absolute top-[73%] flex flex-col gap-[3vh] -rotate-12" style={{ transform: `translateX(clamp(-30vw, calc(-23vw - 8vmin), -40vw)) translateY(calc(-8vmin - 2cm))` }}>
           <div className="flex gap-[2vw]">
-            <div className="flex flex-col gap-[3vmin] text-[2.5vmin] font-medium tracking-widest text-blue-200">
+            <div className="flex flex-col gap-[3vmin] font-medium tracking-widest text-blue-200" style={{ fontSize: "clamp(0.875rem, 2.5vmin, 2rem)" }}>
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -40,6 +40,7 @@ export default function TechnologySlide() {
                   ease: [0.22, 1, 0.36, 1],
                 }}
                 className="text-[2.85vmin]"
+                style={{ fontSize: "clamp(0.875rem, 2.85vmin, 2.25rem)" }}
               >
                 WEBSITE BUILDING & DESIGN (UI/UX)
               </motion.div>
@@ -53,6 +54,7 @@ export default function TechnologySlide() {
                   ease: [0.22, 1, 0.36, 1],
                 }}
                 className="text-[2.85vmin]"
+                style={{ fontSize: "clamp(0.875rem, 2.85vmin, 2.25rem)" }}
               >
                 VFX & CGI
               </motion.div>
@@ -75,7 +77,14 @@ export default function TechnologySlide() {
       </div>
     </div>
   );
+
 }
+
+
+
+
+
+
 
 
 

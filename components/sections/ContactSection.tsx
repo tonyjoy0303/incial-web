@@ -102,10 +102,10 @@ export default function ContactSection({ onBack }: ContactSectionProps) {
   };
 
   return (
-    <section className="min-h-screen w-full bg-black text-white flex flex-col justify-between pt-24 pb-8 px-6 md:px-12 relative overflow-hidden">
-      <div className="grow flex flex-col justify-center items-center max-w-2xl mx-auto w-full z-10">
+    <section className="min-h-screen w-full bg-black text-white flex flex-col justify-between pt-24 pb-8 relative overflow-hidden">
+      <div className="layout-content grow flex flex-col justify-center items-center max-w-2xl w-full z-10">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: "1.25rem" }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
@@ -120,7 +120,7 @@ export default function ContactSection({ onBack }: ContactSectionProps) {
         </motion.div>
 
         <motion.form
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: "1.875rem" }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2 }}
@@ -181,7 +181,7 @@ export default function ContactSection({ onBack }: ContactSectionProps) {
             )}
             {status === "error" && (
               <p
-                className="absolute bottom-4 left-6 text-red-500 text-sm max-w-[70%] truncate"
+                className="absolute bottom-4 left-6 text-red-500 text-sm max-w-[70%] line-clamp-2"
                 title={errorMessage}
               >
                 {errorMessage}

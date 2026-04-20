@@ -109,10 +109,10 @@ export default function TrustSection({
 
   return (
     <section className="h-screen w-full bg-black text-white flex flex-col justify-center items-center relative overflow-hidden">
-      <div className="container mx-auto px-6 md:px-12 relative z-10 h-full flex flex-col justify-center items-center">
+      <div className="layout-container relative z-10 h-full flex flex-col justify-center items-center">
         <motion.div
           className="flex flex-col justify-center items-center w-full max-w-5xl"
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: "3.125rem" }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
@@ -127,13 +127,13 @@ export default function TrustSection({
 
           {/* Stats Grid */}
           {sectionsConfig["trust-stats"] !== false && (
-            <div className="flex flex-col md:flex-row flex-wrap justify-center items-center gap-16 md:gap-32 text-center w-full">
+            <div className="flex flex-col md:flex-row flex-wrap justify-center items-center gap-14 lg:gap-24 2xl:gap-32 text-center w-full">
               {stats.map((stat, index) => (
                 <div
                   key={index}
-                  className="flex flex-col items-center min-w-[200px]"
+                  className="flex flex-col items-center min-w-[10rem] md:min-w-[12.5rem]"
                 >
-                  <div className="text-7xl md:text-[80px] font-bold text-[#5ba4e6] mb-4 italic tracking-tighter">
+                  <div className="text-6xl md:text-7xl xl:text-[5rem] font-bold text-[#5ba4e6] mb-4 italic tracking-tighter">
                     {stat.value}
                   </div>
                   <div className="text-xl md:text-2xl text-white font-normal">

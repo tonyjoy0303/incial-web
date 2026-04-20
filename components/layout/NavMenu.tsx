@@ -30,25 +30,27 @@ export default function NavMenu() {
 
   return (
     <motion.nav
-      initial={{ y: -80, opacity: 0 }}
+      initial={{ y: "-5rem", opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      exit={{ y: -80, opacity: 0 }}
+      exit={{ y: "-5rem", opacity: 0 }}
       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-      className="fixed left-0 right-0 top-0 z-40 flex items-center justify-center gap-0 bg-white px-6 py-8"
+      className="fixed inset-x-0 top-0 z-40 bg-white py-6 sm:py-7 lg:py-8"
     >
-      {visibleLinks.map((link, i) => (
-        <div key={link.label} className="flex items-center">
-          <Link
-            href={link.href}
-            className="px-5 text-sm font-medium text-black transition-colors hover:text-black/60"
-          >
-            {link.label}
-          </Link>
-          {i < visibleLinks.length - 1 && (
-            <div className="h-4 w-px bg-black/20" />
-          )}
-        </div>
-      ))}
+      <div className="layout-container flex items-center justify-center overflow-x-auto whitespace-nowrap scrollbar-hide">
+        {visibleLinks.map((link, i) => (
+          <div key={link.label} className="flex items-center">
+            <Link
+              href={link.href}
+              className="px-3 sm:px-4 lg:px-5 text-sm font-medium text-black transition-colors hover:text-black/60"
+            >
+              {link.label}
+            </Link>
+            {i < visibleLinks.length - 1 && (
+              <div className="h-4 w-px bg-black/20" />
+            )}
+          </div>
+        ))}
+      </div>
     </motion.nav>
   );
 }

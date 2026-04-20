@@ -32,6 +32,48 @@ body {
   color: var(--foreground);
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
+}
+
+/* Shared desktop-first containers used across immersive sections */
+.layout-container {
+  width: min(100% - 3rem, 90rem);
+  margin-inline: auto;
+}
+
+.layout-content {
+  width: min(100% - 3rem, 78.25rem);
+  margin-inline: auto;
+}
+
+@media (min-width: 768px) {
+  .layout-container {
+    width: min(100% - 4rem, 90rem);
+  }
+
+  .layout-content {
+    width: min(100% - 4rem, 78.25rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .layout-container {
+    width: min(100% - 5rem, 90rem);
+  }
+
+  .layout-content {
+    width: min(100% - 6rem, 78.25rem);
+  }
+}
+
+@media (min-width: 1536px) {
+  .layout-container {
+    width: min(100% - 7rem, 95rem);
+  }
+
+  .layout-content {
+    width: min(100% - 7rem, 82rem);
+  }
 }
 
 /* ── Admin panel: restore browser default cursor ── */

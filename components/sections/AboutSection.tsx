@@ -122,8 +122,7 @@ export default function AboutSection({
         viewport={{ once: true }}
         variants={fadeUp}
         custom={0}
-        className="mx-auto mt-4 mb-0 rounded-3xl overflow-hidden relative"
-        style={{ width: "calc(100% - 96px)", maxWidth: 1252, height: 675 }}
+        className="layout-content mt-4 mb-0 rounded-3xl overflow-hidden relative aspect-[1252/675] max-h-[42.1875rem] min-h-[18rem] sm:min-h-[24rem]"
       >
         {data?.heroBanner ? (
           <Image
@@ -155,10 +154,10 @@ export default function AboutSection({
           custom={0.1}
           className="text-center px-6 pt-16 pb-12 max-w-4xl mx-auto"
         >
-          <h2 className="font-[Poppins,sans-serif] font-bold text-[36px] text-white mb-6">
+          <h2 className="font-[Poppins,sans-serif] font-bold text-[2rem] md:text-[2.125rem] lg:text-[36px] text-white mb-6">
             {data?.storyTitle || "Our Story"}
           </h2>
-          <p className="font-[Poppins,sans-serif] italic text-[16px] text-white/80 leading-relaxed max-w-3xl mx-auto">
+          <p className="font-[Poppins,sans-serif] italic text-[0.95rem] lg:text-[16px] text-white/80 leading-relaxed max-w-3xl mx-auto">
             {data?.storyText ||
               "Incial began with a simple vision: to empower brands, businesses, and ideas with innovative digital solutions that create lasting impact. Founded in 2024 in Kanjirappally, Kerala, we started as a small team of passionate creators and strategists determined to make a difference. From those first projects to now serving businesses across industries, our journey has been fueled by creativity, collaboration, and a relentless drive to push boundaries."}
           </p>
@@ -172,13 +171,12 @@ export default function AboutSection({
           viewport={{ once: true }}
           variants={fadeUp}
           custom={0.15}
-          className="mx-auto bg-white text-black rounded-3xl px-20 py-16 mb-16 flex flex-col gap-8"
-          style={{ width: "calc(100% - 96px)", maxWidth: 1253 }}
+          className="layout-content bg-white text-black rounded-3xl px-6 sm:px-10 lg:px-20 py-10 sm:py-14 lg:py-16 mb-16 flex flex-col gap-6 sm:gap-8"
         >
-          <h2 className="font-[Poppins,sans-serif] font-bold text-[36px]">
+          <h2 className="font-[Poppins,sans-serif] font-bold text-[2rem] md:text-[2.125rem] lg:text-[36px]">
             {data?.purposeTitle || "Our Purpose"}
           </h2>
-          <p className="font-[Poppins,sans-serif] italic text-[16px] leading-relaxed max-w-3xl">
+          <p className="font-[Poppins,sans-serif] italic text-[0.95rem] lg:text-[16px] leading-relaxed max-w-3xl">
             {data?.purposeText ||
               "Our purpose is clear: to build brands that resonate, businesses that grow, and beyond that, to innovate continuously. We align strategy with creativity, technology with human connection, and ideas with measurable results."}
           </p>
@@ -195,10 +193,10 @@ export default function AboutSection({
             custom={0.1}
             className="text-center px-6 pt-4 pb-6"
           >
-            <h2 className="font-[Poppins,sans-serif] font-bold text-[36px] text-white mb-5">
+            <h2 className="font-[Poppins,sans-serif] font-bold text-[2rem] md:text-[2.125rem] lg:text-[36px] text-white mb-5">
               {data?.teamTitle || "Meet Our Team"}
             </h2>
-            <p className="font-[Poppins,sans-serif] italic text-[16px] text-white/80 max-w-3xl mx-auto mb-12">
+            <p className="font-[Poppins,sans-serif] italic text-[0.95rem] lg:text-[16px] text-white/80 max-w-3xl mx-auto mb-12">
               {data?.teamSubtitle ||
                 "Behind every project is a team of talented professionals — creatives, marketers, designers, and technologists — united by passion and expertise. Together, we bring ideas to life and transform challenges into opportunities."}
             </p>
@@ -238,10 +236,10 @@ export default function AboutSection({
             custom={0.1}
             className="text-center px-6 pb-6"
           >
-            <h2 className="font-[Poppins,sans-serif] font-bold text-[36px] text-white mb-5">
+            <h2 className="font-[Poppins,sans-serif] font-bold text-[2rem] md:text-[2.125rem] lg:text-[36px] text-white mb-5">
               {data?.awardsTitle || "Awards & Recognitions"}
             </h2>
-            <p className="font-[Poppins,sans-serif] italic text-[16px] text-white/80 max-w-3xl mx-auto mb-14">
+            <p className="font-[Poppins,sans-serif] italic text-[0.95rem] lg:text-[16px] text-white/80 max-w-3xl mx-auto mb-14">
               {data?.awardsSubtitle ||
                 "Over the years, Incial has been proud to receive industry awards and recognitions that celebrate our commitment to excellence, innovation, and client success. These honors inspire us to continuously raise the bar."}
             </p>
@@ -265,10 +263,10 @@ export default function AboutSection({
                   className="mb-4 opacity-90"
                   loading="lazy"
                 />
-                <h3 className="font-[Poppins,sans-serif] font-bold text-[24px] text-white">
+                <h3 className="font-[Poppins,sans-serif] font-bold text-[1.35rem] lg:text-[24px] text-white">
                   {award.name}
                 </h3>
-                <p className="font-[Poppins,sans-serif] italic text-[16px] text-white/70 mt-1">
+                <p className="font-[Poppins,sans-serif] italic text-[0.95rem] lg:text-[16px] text-white/70 mt-1">
                   {award.description} <span className="text-[#65adef]">|</span>{" "}
                   {award.year}
                 </p>
@@ -280,8 +278,7 @@ export default function AboutSection({
       {/* ── Our Brand + Our Impact (stacked image cards) ─────────────── */}
       {sectionsConfig["about-brand-impact"] !== false && (
         <div
-          className="mx-auto mb-16"
-          style={{ width: "calc(100% - 96px)", maxWidth: 1256 }}
+          className="layout-content mb-16"
         >
           {/* Brand */}
           <motion.div
@@ -290,7 +287,7 @@ export default function AboutSection({
             viewport={{ once: true }}
             variants={fadeUp}
             custom={0}
-            className="relative h-[245px] rounded-tl-3xl rounded-tr-3xl overflow-hidden"
+            className="relative min-h-[13rem] h-[15.3125rem] lg:h-[16rem] 2xl:h-[18rem] rounded-tl-3xl rounded-tr-3xl overflow-hidden"
           >
             <Image
               src={brandSrc}
@@ -304,11 +301,11 @@ export default function AboutSection({
               loading="lazy"
             />
             <div className="absolute inset-0 bg-black/50" />
-            <div className="absolute inset-0 flex flex-col justify-center px-14 gap-3">
-              <h3 className="font-[Poppins,sans-serif] font-bold text-[36px] text-white">
+            <div className="absolute inset-0 flex flex-col justify-center px-6 sm:px-10 lg:px-14 gap-2.5 sm:gap-3">
+              <h3 className="font-[Poppins,sans-serif] font-bold text-[2rem] md:text-[2.125rem] lg:text-[36px] text-white">
                 {data?.brandTitle || "Our Brand"}
               </h3>
-              <p className="font-[Poppins,sans-serif] italic text-[16px] text-white/90 max-w-3xl leading-relaxed">
+              <p className="font-[Poppins,sans-serif] italic text-[0.95rem] lg:text-[16px] text-white/90 max-w-3xl leading-relaxed">
                 {data?.brandText ||
                   "At Incial, our brand echoes our values: authentic, innovative, and trusted. We believe in transparency, empathy, and delivering beyond expectations. Every interaction is a chance to build lasting relationships."}
               </p>
@@ -322,7 +319,7 @@ export default function AboutSection({
             viewport={{ once: true }}
             variants={fadeUp}
             custom={0.1}
-            className="relative h-[245px] rounded-bl-3xl rounded-br-3xl overflow-hidden"
+            className="relative min-h-[13rem] h-[15.3125rem] lg:h-[16rem] 2xl:h-[18rem] rounded-bl-3xl rounded-br-3xl overflow-hidden"
           >
             <Image
               src={impactSrc}
@@ -336,11 +333,11 @@ export default function AboutSection({
               loading="lazy"
             />
             <div className="absolute inset-0 bg-black/50" />
-            <div className="absolute inset-0 flex flex-col justify-center px-14 gap-3">
-              <h3 className="font-[Poppins,sans-serif] font-bold text-[36px] text-white">
+            <div className="absolute inset-0 flex flex-col justify-center px-6 sm:px-10 lg:px-14 gap-2.5 sm:gap-3">
+              <h3 className="font-[Poppins,sans-serif] font-bold text-[2rem] md:text-[2.125rem] lg:text-[36px] text-white">
                 {data?.impactTitle || "Our Impact"}
               </h3>
-              <p className="font-[Poppins,sans-serif] italic text-[16px] text-white/90 max-w-3xl leading-relaxed">
+              <p className="font-[Poppins,sans-serif] italic text-[0.95rem] lg:text-[16px] text-white/90 max-w-3xl leading-relaxed">
                 {data?.impactText ||
                   "Every project is a story of growth, transformation, and measurable success. We take pride in helping clients achieve goals, enhance visibility, and create memorable digital experiences."}
               </p>
@@ -350,7 +347,7 @@ export default function AboutSection({
       )}
 
       {/* ── Footer ───────────────────────────────────────────────────── */}
-      <div className="px-12 pb-6">
+      <div className="layout-content pb-6">
         <Footer />
       </div>
     </section>
@@ -369,8 +366,8 @@ function TeamMemberCard({ member, delay }: { member: any; delay: number }) {
       className="flex flex-col items-center text-center"
     >
       {/* Blue glow circle BG + avatar */}
-      <div className="relative w-[247px] h-[276px] mb-4 overflow-hidden rounded-[125px]">
-        <div className="absolute bottom-0 left-0 w-[247px] h-[247px] rounded-full bg-[#d5d5d5]" />
+      <div className="relative w-full max-w-[15.4375rem] aspect-[247/276] mb-4 overflow-hidden rounded-[125px]">
+        <div className="absolute bottom-0 left-0 w-full aspect-square rounded-full bg-[#d5d5d5]" />
         <Image
           src={
             member.img ||
@@ -378,15 +375,15 @@ function TeamMemberCard({ member, delay }: { member: any; delay: number }) {
           }
           alt={member.name}
           fill
-          sizes="247px"
+          sizes="(max-width: 768px) 60vw, 247px"
           className={`object-cover ${member.objectPos || "object-top"} grayscale hover:grayscale-0 transition-all duration-500`}
           loading="lazy"
         />
       </div>
-      <h3 className="font-[Poppins,sans-serif] font-bold text-[24px] text-white">
+      <h3 className="font-[Poppins,sans-serif] font-bold text-[1.35rem] lg:text-[24px] text-white">
         {member.name}
       </h3>
-      <p className="font-[Poppins,sans-serif] italic text-[16px] text-white/70">
+      <p className="font-[Poppins,sans-serif] italic text-[0.95rem] lg:text-[16px] text-white/70">
         {member.role}
       </p>
     </motion.div>

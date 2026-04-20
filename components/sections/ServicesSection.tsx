@@ -138,7 +138,7 @@ export default function ServicesSection({
   // Technology: Center is Top Middle (for bottom arc/smile).
 
   return (
-    <section className="h-screen w-full bg-black overflow-hidden relative">
+    <section className="h-dvh min-h-screen w-full bg-black overflow-hidden relative">
       {/* Shared Background Circle (hidden on intro slide) */}
       {currentSlide > 0 && (
         <motion.div

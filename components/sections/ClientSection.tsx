@@ -90,10 +90,10 @@ export default function ClientSection({
 
   return (
     <section className="h-screen w-full bg-black text-white flex flex-col justify-center items-center relative overflow-hidden">
-      <div className="container mx-auto px-6 md:px-12 relative z-10 h-full flex flex-col justify-center items-center">
+      <div className="layout-container relative z-10 h-full flex flex-col justify-center items-center">
         <motion.div
           className="flex flex-col items-center w-full max-w-7xl"
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: "3.125rem" }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
@@ -106,7 +106,7 @@ export default function ClientSection({
 
           {/* Client Logo Grid */}
           {sectionsConfig["client-logos"] !== false && (
-            <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-2 md:gap-2.5 mb-10 md:mb-14 w-full">
+            <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-2 md:gap-2.5 2xl:gap-3 mb-10 md:mb-14 w-full">
               {(data?.clients || []).map((client, index) => (
                 <motion.div
                   key={client.id}

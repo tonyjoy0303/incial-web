@@ -11,7 +11,7 @@ export default function Footer() {
       <div className="text-2xl font-bold tracking-tight">incial</div>
 
       {/* Spacer for centering if needed, or social links again? Keeping it minimal as per design */}
-      <div className="hidden md:block w-[150px]"></div>
+      <div className="hidden md:block md:w-36 lg:w-40 xl:w-44 2xl:w-48 shrink-0"></div>
     </footer>
   );
 }

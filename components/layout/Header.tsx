@@ -19,7 +19,8 @@ export default function Header({
   variant = "default",
   hidden = false,
 }: HeaderProps) {
-  const hiddenY = variant === "pill" ? -120 : -140;
+  const menuOffsetY = "6.25rem";
+  const hiddenY = variant === "pill" ? "-7.5rem" : "-8.75rem";
 
   if (variant === "pill") {
     return (
@@ -29,16 +30,16 @@ export default function Header({
         <motion.header
           initial={{ y: -20, opacity: 0 }}
           animate={{
-            y: menuOpen ? 100 : hidden ? hiddenY : 0,
+            y: menuOpen ? menuOffsetY : hidden ? hiddenY : 0,
             opacity: 1,
             scale: menuOpen ? 0.95 : 1,
           }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="fixed left-1/2 top-6 z-50 -translate-x-1/2 origin-top"
+          className="fixed left-1/2 z-50 -translate-x-1/2 origin-top" style={{ top: "clamp(1.25rem, 1.5vmax, 2.5rem)" }}
         >
-          <div className="flex items-center gap-4 rounded-full border border-white/20 bg-black/60 px-5 py-3 backdrop-blur-md shadow-lg shadow-black/30">
+          <div className="flex items-center gap-3 sm:gap-4 rounded-full border border-white/20 bg-black/60 px-4 py-2.5 sm:px-5 sm:py-3 backdrop-blur-md shadow-lg shadow-black/30">
             {/* Logo */}
-            <div className="text-sm font-light tracking-wide text-white whitespace-nowrap">
+            <div className="text-xs sm:text-sm font-light tracking-wide text-white whitespace-nowrap">
               We Are <span className="font-bold">incial.</span>
             </div>
 
@@ -53,7 +54,7 @@ export default function Header({
             <button
               onClick={onToggleMenu}
               aria-label={menuOpen ? "Close menu" : "Open menu"}
-              className="flex cursor-pointer items-center gap-2 rounded-full border border-white/30 px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-white/10"
+              className="flex cursor-pointer items-center gap-2 rounded-full border border-white/30 px-3 py-1.5 sm:px-4 text-xs sm:text-sm font-medium text-white transition-colors hover:bg-white/10"
             >
               {menuOpen ? "Close" : "Menu"}
               {menuOpen ? (
@@ -77,33 +78,35 @@ export default function Header({
       <motion.header
         initial={{ y: 0 }}
         animate={{
-          y: menuOpen ? 100 : hidden ? hiddenY : 0,
+          y: menuOpen ? menuOffsetY : hidden ? hiddenY : 0,
           scale: menuOpen ? 0.95 : 1,
         }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed left-0 right-0 top-0 z-50 flex origin-top items-center justify-between px-10 pb-4 pt-10 md:px-20"
+        className="fixed inset-x-0 top-0 z-50 origin-top"
       >
-        {/* Logo */}
-        <div className="text-xl font-light tracking-wide text-white">
-          We Are <span className="font-bold">incial.</span>
+        <div className="layout-container flex items-center justify-between px-1 pb-4 pt-8 sm:pt-10">
+          {/* Logo */}
+          <div className="text-lg sm:text-xl font-light tracking-wide text-white">
+            We Are <span className="font-bold">incial.</span>
+          </div>
+
+          {/* Menu toggle */}
+          <button
+            onClick={onToggleMenu}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            className="flex cursor-pointer items-center gap-2 rounded-full border border-white/30 px-4 py-2 sm:px-5 sm:py-2.5 text-sm font-medium text-white transition-colors hover:bg-white/10"
+          >
+            {menuOpen ? "Close" : "Menu"}
+            {menuOpen ? (
+              <IoCloseOutline className="text-lg" />
+            ) : (
+              <HiMenuAlt3 className="text-lg" />
+            )}
+          </button>
+
+          {/* Social icons */}
+          <SocialLinks />
         </div>
-
-        {/* Menu toggle */}
-        <button
-          onClick={onToggleMenu}
-          aria-label={menuOpen ? "Close menu" : "Open menu"}
-          className="flex cursor-pointer items-center gap-2 rounded-full border border-white/30 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-white/10"
-        >
-          {menuOpen ? "Close" : "Menu"}
-          {menuOpen ? (
-            <IoCloseOutline className="text-lg" />
-          ) : (
-            <HiMenuAlt3 className="text-lg" />
-          )}
-        </button>
-
-        {/* Social icons */}
-        <SocialLinks />
       </motion.header>
     </>
   );

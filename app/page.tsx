@@ -27,6 +27,8 @@ const sectionVariants = {
   }),
 };
 
+const MENU_OFFSET_Y = "6.25rem";
+
 export default function Home() {
   const [phase, setPhase] = useState<Phase>("greetings");
   const [direction, setDirection] = useState(1);
@@ -149,7 +151,7 @@ export default function Home() {
         <motion.div
           initial={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
           animate={{
-            y: menuOpen ? 100 : 0,
+            y: menuOpen ? MENU_OFFSET_Y : 0,
             scale: menuOpen ? 0.95 : 1,
             borderTopLeftRadius: menuOpen ? 24 : 0,
             borderTopRightRadius: menuOpen ? 24 : 0,
