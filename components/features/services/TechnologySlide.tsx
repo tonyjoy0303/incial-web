@@ -79,15 +79,3 @@ export default function TechnologySlide() {
   );
 
 }
-
-
-
-
-
-
-
-
-
-
-
-

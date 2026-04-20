@@ -100,3 +100,27 @@ body .admin-panel textarea {
   cursor: text !important;
 }
 
+/* ── Services section: constrain vmin/vw scaling on large desktop screens ── */
+.services-section {
+  /* Maintain consistent appearance across desktop sizes */
+  /* Center section and prevent excessive horizontal expansion */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 2000px) {
+  .services-section {
+    /* Scale down slightly on 2K+ screens to match visual appearance at 1920px */
+    transform: scale(0.95);
+    transform-origin: center;
+  }
+}
+
+@media (min-width: 2560px) {
+  .services-section {
+    /* Further scale down on 4K screens */
+    transform: scale(0.85);
+  }
+}
+
