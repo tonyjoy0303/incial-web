@@ -142,7 +142,8 @@ export default function ServicesSection({
       {/* Shared Background Circle (hidden on intro slide) */}
       {currentSlide > 0 && (
         <motion.div
-          className="absolute rounded-full border-2 border-white/80 pointer-events-none z-10"
+          className="absolute rounded-full border-white/80 pointer-events-none z-10"
+          style={{ borderWidth: "clamp(1px, 0.12vw, 2px)" }}
           animate={
             currentSlide === 1
               ? "branding"
@@ -162,7 +163,7 @@ export default function ServicesSection({
               transition: { duration: 1, ease: [0.22, 1, 0.36, 1] },
             },
             technology: {
-              top: "-130vmin",
+              top: "-128vmin",
               left: "35%",
               x: "-50%",
               y: "0%",

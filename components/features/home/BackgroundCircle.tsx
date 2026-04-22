@@ -34,8 +34,8 @@ export default function BackgroundCircle({
         mass: 1,
       }}
       style={{
-        width: "min(1000px, 90vw)",
-        height: "min(1000px, 90vw)",
+        width: "min(1000px, 90vmin)",
+        height: "min(1000px, 90vmin)",
       }}
     >
       <RotatingEarth className="w-full h-full" width={1000} height={1000} />
