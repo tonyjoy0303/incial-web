@@ -15,6 +15,7 @@ const nextConfig: NextConfig = {
   compress: true,
   images: {
     unoptimized: true, // ImageKit CDN already handles optimization; bypass Next.js image processing
+    qualities: [60, 75],
     remotePatterns: [
       {
         protocol: "https",

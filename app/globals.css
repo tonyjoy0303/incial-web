@@ -35,6 +35,24 @@ body {
   overflow-x: hidden;
 }
 
+.mobile-experience-screen {
+  display: none;
+}
+
+.desktop-experience-shell {
+  display: block;
+}
+
+@media (max-width: 480px) {
+  .mobile-experience-screen {
+    display: flex;
+  }
+
+  .desktop-experience-shell {
+    display: none;
+  }
+}
+
 /* Shared desktop-first containers used across immersive sections */
 .layout-container {
   width: min(100% - 3rem, 90rem);

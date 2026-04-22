@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import {
   UploadCloud,
@@ -83,9 +83,14 @@ export default function ImageUpload({
           ? localStorage.getItem("admin_token") || ""
           : "";
 
+      const headers: HeadersInit = {};
+      if (token) {
+        headers.Authorization = `Bearer ${token}`;
+      }
+
       const res = await fetch("/api/upload", {
         method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
+        headers,
         body: formData,
       });
 
@@ -97,9 +102,10 @@ export default function ImageUpload({
       const data = await res.json();
       finishProgress(true);
       onChange(data.url);
-    } catch (err: any) {
+    } catch (err: unknown) {
       finishProgress(false);
-      setError(err.message || "An unexpected error occurred.");
+      const message = err instanceof Error ? err.message : "An unexpected error occurred.";
+      setError(message);
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -119,12 +125,25 @@ export default function ImageUpload({
   };
 
   const handleUrlSubmit = () => {
-    if (!urlInput.trim()) {
+    const nextUrl = urlInput.trim();
+    if (!nextUrl) {
       setError("Please enter a valid URL.");
       return;
     }
+
+    try {
+      const parsed = new URL(nextUrl);
+      if (!["http:", "https:"].includes(parsed.protocol)) {
+        setError("URL must start with http:// or https://");
+        return;
+      }
+    } catch {
+      setError("Please enter a valid URL.");
+      return;
+    }
+
     setError(null);
-    onChange(urlInput.trim());
+    onChange(nextUrl);
     setUrlInput("");
     setMode("upload");
   };
@@ -266,7 +285,7 @@ export default function ImageUpload({
                   fill
                   sizes="(max-width: 768px) 100vw, 300px"
                   quality={60}
-                  className="object-cover"
+                  className="object-contain object-center"
                 />
                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                   <button

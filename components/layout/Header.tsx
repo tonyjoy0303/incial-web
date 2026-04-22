@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { IoCloseOutline } from "react-icons/io5";
 import SocialLinks from "@/components/ui/SocialLinks";
@@ -19,8 +20,35 @@ export default function Header({
   variant = "default",
   hidden = false,
 }: HeaderProps) {
+  const [scrollHidden, setScrollHidden] = useState(false);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    lastScrollY.current = window.scrollY;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const delta = currentScrollY - lastScrollY.current;
+
+      if (Math.abs(delta) < 6) return;
+
+      if (currentScrollY <= 24) {
+        setScrollHidden(false);
+        lastScrollY.current = currentScrollY;
+        return;
+      }
+
+      setScrollHidden(delta > 0);
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const menuOffsetY = "6.25rem";
   const hiddenY = variant === "pill" ? "-7.5rem" : "-8.75rem";
+  const isHidden = hidden || scrollHidden;
 
   if (variant === "pill") {
     return (
@@ -30,7 +58,7 @@ export default function Header({
         <motion.header
           initial={{ y: -20, opacity: 0 }}
           animate={{
-            y: menuOpen ? menuOffsetY : hidden ? hiddenY : 0,
+            y: menuOpen ? menuOffsetY : isHidden ? hiddenY : 0,
             opacity: 1,
             scale: menuOpen ? 0.95 : 1,
           }}
@@ -78,7 +106,7 @@ export default function Header({
       <motion.header
         initial={{ y: 0 }}
         animate={{
-          y: menuOpen ? menuOffsetY : hidden ? hiddenY : 0,
+          y: menuOpen ? menuOffsetY : isHidden ? hiddenY : 0,
           scale: menuOpen ? 0.95 : 1,
         }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -22,6 +22,12 @@ interface ContentBlock {
   text: string;
 }
 
+function getPostImages(post: BlogPost): string[] {
+  return (post.images || [])
+    .map((img) => (typeof img === "string" ? img.trim() : ""))
+    .filter(Boolean);
+}
+
 function getLayoutVariant(slug: string): LayoutVariant {
   if (slug === "popular-2") {
     return "interwoven";
@@ -39,44 +45,86 @@ function getLayoutVariant(slug: string): LayoutVariant {
   return variants[hash % variants.length];
 }
 
-function countWords(text: string): number {
-  return text.trim().split(/\s+/).filter(Boolean).length;
+function renderContentBlock(block: ContentBlock, index: number) {
+  if (block.type === "divider") {
+    return (
+      <motion.div
+        key={`d-${index}`}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4 }}
+        className="h-px bg-white/10 my-8"
+      />
+    );
+  }
+
+  const styles: Record<Exclude<ContentBlockType, "divider">, string> = {
+    h1: "text-2xl md:text-3xl font-bold text-white mt-4",
+    h2: "text-xl md:text-2xl font-semibold text-white mt-4",
+    h3: "text-lg md:text-xl font-semibold text-white mt-2",
+    li: "text-[16px] md:text-[17px] leading-relaxed text-white/80 ml-6 list-disc",
+    p: "text-[16px] md:text-[17px] leading-relaxed text-white/72 font-light",
+  };
+
+  const Tag = block.type === "li" ? "li" : "p";
+
+  if (block.type === "li") {
+    return (
+      <motion.ul
+        key={`l-${index}`}
+        initial={{ opacity: 0, y: 12 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-30px" }}
+        transition={{ duration: 0.45, delay: index * 0.01 }}
+        className="space-y-2"
+      >
+        <li className={styles.li}>{block.text}</li>
+      </motion.ul>
+    );
+  }
+
+  return (
+    <motion.div
+      key={`b-${index}`}
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.5, delay: index * 0.02 }}
+    >
+      <Tag className={styles[block.type]}>{block.text}</Tag>
+    </motion.div>
+  );
 }
 
-function getInlineImageInsertions(blocks: ContentBlock[]): number[] {
-  const candidates = blocks
-    .map((block, index) => ({ block, index }))
-    .filter(({ block }) => block.type === "p" || block.type === "h2");
-
-  if (candidates.length < 2) {
-    return [];
-  }
-
-  const totalWords = candidates.reduce(
-    (sum, item) => sum + countWords(item.block.text),
-    0,
+function GalleryImageFigure({
+  src,
+  alt,
+  index,
+}: {
+  src: string;
+  alt: string;
+  index: number;
+}) {
+  return (
+    <motion.figure
+      key={`g-${index}`}
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.55, delay: 0.05 }}
+      className="relative w-full my-8"
+    >
+      <div className="relative w-full overflow-hidden rounded-[24px] border border-white/10 bg-white/[0.02] aspect-[16/10] sm:aspect-[16/9]">
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          className="object-contain object-center"
+        />
+      </div>
+    </motion.figure>
   );
-
-  // Keep image positions deterministic and content-aware by using word progress.
-  const thresholds =
-    totalWords >= 220 ? [Math.floor(totalWords * 0.35), Math.floor(totalWords * 0.72)] : [Math.floor(totalWords * 0.55)];
-
-  const insertionIndices: number[] = [];
-  let runningWords = 0;
-
-  for (const { block, index } of candidates) {
-    runningWords += countWords(block.text);
-
-    if (
-      insertionIndices.length < thresholds.length &&
-      runningWords >= thresholds[insertionIndices.length]
-    ) {
-      // Insert after this block index.
-      insertionIndices.push(index);
-    }
-  }
-
-  return Array.from(new Set(insertionIndices));
 }
 
 function parseContentToBlocks(content?: string): ContentBlock[] {
@@ -129,165 +177,51 @@ function parseContentToBlocks(content?: string): ContentBlock[] {
   return blocks;
 }
 
-function ContentRenderer({ blocks }: { blocks: ContentBlock[] }) {
-  return (
-    <div className="space-y-5">
-      {blocks.map((block, i) => {
-        if (block.type === "divider") {
-          return (
-            <motion.div
-              key={`d-${i}`}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4 }}
-              className="h-px bg-white/10 my-8"
-            />
-          );
-        }
-
-        const styles: Record<Exclude<ContentBlockType, "divider">, string> = {
-          h1: "text-2xl md:text-3xl font-bold text-white mt-4",
-          h2: "text-xl md:text-2xl font-semibold text-white mt-4",
-          h3: "text-lg md:text-xl font-semibold text-white mt-2",
-          li: "text-[16px] md:text-[17px] leading-relaxed text-white/80 ml-6 list-disc",
-          p: "text-[16px] md:text-[17px] leading-relaxed text-white/72 font-light",
-        };
-
-        const Tag = block.type === "li" ? "li" : "p";
-
-        if (block.type === "li") {
-          return (
-            <motion.ul
-              key={`l-${i}`}
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-30px" }}
-              transition={{ duration: 0.45, delay: i * 0.01 }}
-              className="space-y-2"
-            >
-              <li className={styles.li}>{block.text}</li>
-            </motion.ul>
-          );
-        }
-
-        return (
-          <motion.div
-            key={`b-${i}`}
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-40px" }}
-            transition={{ duration: 0.5, delay: i * 0.02 }}
-          >
-            <Tag className={styles[block.type]}>{block.text}</Tag>
-          </motion.div>
-        );
-      })}
-    </div>
-  );
-}
-
-function InterwovenContentRenderer({
+function ContentRenderer({
   blocks,
-  post,
+  galleryImages = [],
+  altText,
 }: {
   blocks: ContentBlock[];
-  post: BlogPost;
+  galleryImages?: string[];
+  altText: string;
 }) {
-  const insertions = getInlineImageInsertions(blocks);
+  const paragraphIndexes = blocks
+    .map((block, index) => ({ block, index }))
+    .filter(({ block }) => block.type === "p")
+    .map(({ index }) => index);
 
   return (
     <div className="space-y-5">
-      {blocks.map((block, i) => {
-        const contentNode = (() => {
-          if (block.type === "divider") {
-            return (
-              <motion.div
-                key={`d-${i}`}
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4 }}
-                className="h-px bg-white/10 my-8"
-              />
+      {blocks.map((block, index) => {
+        const nodes = [renderContentBlock(block, index)];
+
+        if (block.type === "p" && galleryImages.length > 0 && paragraphIndexes.includes(index)) {
+          const imageIndex = paragraphIndexes.indexOf(index);
+          if (imageIndex < galleryImages.length) {
+            nodes.push(
+              <GalleryImageFigure
+                key={`g-${index}`}
+                src={galleryImages[imageIndex]}
+                alt={altText}
+                index={imageIndex}
+              />,
             );
           }
-
-          const styles: Record<Exclude<ContentBlockType, "divider">, string> = {
-            h1: "text-2xl md:text-3xl font-bold text-white mt-4",
-            h2: "text-xl md:text-2xl font-semibold text-white mt-4",
-            h3: "text-lg md:text-xl font-semibold text-white mt-2",
-            li: "text-[16px] md:text-[17px] leading-relaxed text-white/80 ml-6 list-disc",
-            p: "text-[16px] md:text-[17px] leading-relaxed text-white/72 font-light",
-          };
-
-          const Tag = block.type === "li" ? "li" : "p";
-
-          if (block.type === "li") {
-            return (
-              <motion.ul
-                key={`l-${i}`}
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-30px" }}
-                transition={{ duration: 0.45, delay: i * 0.01 }}
-                className="space-y-2"
-              >
-                <li className={styles.li}>{block.text}</li>
-              </motion.ul>
-            );
-          }
-
-          return (
-            <motion.div
-              key={`b-${i}`}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.5, delay: i * 0.02 }}
-            >
-              <Tag className={styles[block.type]}>{block.text}</Tag>
-            </motion.div>
-          );
-        })();
-
-        if (!insertions.includes(i)) {
-          return contentNode;
         }
 
-        const imageOrder = insertions.indexOf(i);
-        const alignClass = imageOrder % 2 === 0 ? "mr-auto" : "ml-auto";
-        const imageHeight = imageOrder % 2 === 0 ? "h-[260px] sm:h-[320px]" : "h-[240px] sm:h-[300px]";
-
-        return (
-          <div key={`combo-${i}`} className="space-y-6">
-            {contentNode}
-            <motion.figure
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.55, delay: 0.05 }}
-              className={`relative w-full max-w-[680px] ${alignClass}`}
-            >
-              <div className={`relative ${imageHeight} rounded-[24px] overflow-hidden border border-white/10`}>
-                <Image
-                  src={post.image}
-                  alt={post.title}
-                  fill
-                  className="object-cover grayscale brightness-60"
-                />
-                <div className="absolute inset-0 bg-linear-to-t from-black/55 via-black/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <p className="text-xs uppercase tracking-[0.18em] text-white/70 mb-1">
-                    Visual Break
-                  </p>
-                  <p className="text-sm text-white/85 line-clamp-2">{post.title}</p>
-                </div>
-              </div>
-            </motion.figure>
-          </div>
-        );
+        return nodes;
       })}
+
+      {galleryImages.length > paragraphIndexes.length &&
+        galleryImages.slice(paragraphIndexes.length).map((src, index) => (
+          <GalleryImageFigure
+            key={`g-bottom-${index}`}
+            src={src}
+            alt={altText}
+            index={paragraphIndexes.length + index}
+          />
+        ))}
     </div>
   );
 }
@@ -324,7 +258,7 @@ function RelatedCard({ post, index }: { post: BlogPost; index: number }) {
               src={post.image}
               alt={post.title}
               fill
-              className="object-cover grayscale brightness-60 group-hover:brightness-70 transition-all duration-500"
+              className="object-contain object-center"
             />
             <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent" />
             <div className="absolute bottom-0 left-0 right-0 p-3">
@@ -348,39 +282,14 @@ export default function BlogPostClient({
   relatedPosts,
 }: BlogPostClientProps) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const variant = getLayoutVariant(post.slug);
   const blocks = parseContentToBlocks(post.content);
-
-  useEffect(() => {
-    let lastY = window.scrollY;
-
-    function onScroll() {
-      const currentY = window.scrollY;
-      const diff = currentY - lastY;
-
-      if (currentY <= 20) {
-        setIsHeaderVisible(true);
-      } else if (diff > 6) {
-        setIsHeaderVisible(false);
-      } else if (diff < -6) {
-        setIsHeaderVisible(true);
-      }
-
-      lastY = currentY;
-    }
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  const coverImage = post.image;
+  const galleryImages = getPostImages(post);
 
   return (
     <div className="relative min-h-screen bg-white">
-      <Header
-        menuOpen={menuOpen}
-        onToggleMenu={() => setMenuOpen(!menuOpen)}
-        hidden={!isHeaderVisible}
-      />
+      <Header menuOpen={menuOpen} onToggleMenu={() => setMenuOpen(!menuOpen)} />
 
       <motion.div
         animate={{
@@ -397,11 +306,11 @@ export default function BlogPostClient({
           <>
             <div className="relative w-full h-[55vh] min-h-[340px] overflow-hidden">
               <Image
-                src={post.image}
+                src={coverImage}
                 alt={post.title}
                 fill
                 priority
-                className="object-cover grayscale brightness-50"
+                className="object-contain object-center"
               />
               <div className="absolute inset-0 bg-linear-to-b from-black/30 via-transparent to-black" />
 
@@ -450,7 +359,11 @@ export default function BlogPostClient({
                       transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
                       className="origin-left h-px bg-white/10 mb-10"
                     />
-                    <ContentRenderer blocks={blocks} />
+                    <ContentRenderer
+                      blocks={blocks}
+                      galleryImages={galleryImages}
+                      altText={post.title}
+                    />
                     <motion.div
                       initial={{ opacity: 0 }}
                       whileInView={{ opacity: 1 }}
@@ -536,15 +449,16 @@ export default function BlogPostClient({
                 className="lg:col-span-7 relative rounded-[26px] overflow-hidden min-h-[280px] sm:min-h-[380px] border border-white/10"
               >
                 <Image
-                  src={post.image}
+                  src={coverImage}
                   alt={post.title}
                   fill
                   priority
-                  className="object-cover grayscale brightness-60"
+                  className="object-contain object-center"
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
               </motion.div>
             </section>
+
 
             <section className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
               {relatedPosts.length > 0 && (
@@ -564,7 +478,11 @@ export default function BlogPostClient({
 
               <article className="lg:col-span-8 lg:order-2 order-1">
                 <div className="rounded-[22px] border border-white/10 bg-white/[0.02] p-5 sm:p-8">
-                  <ContentRenderer blocks={blocks} />
+                  <ContentRenderer
+                    blocks={blocks}
+                    galleryImages={galleryImages}
+                    altText={post.title}
+                  />
                 </div>
 
                 <motion.div
@@ -632,17 +550,22 @@ export default function BlogPostClient({
               className="relative rounded-[26px] overflow-hidden h-[36vh] sm:h-[48vh] min-h-[280px] max-w-5xl mx-auto border border-white/10 mb-14"
             >
               <Image
-                src={post.image}
+                src={coverImage}
                 alt={post.title}
                 fill
                 priority
-                className="object-cover grayscale brightness-55"
+                className="object-contain object-center"
               />
               <div className="absolute inset-0 bg-linear-to-b from-black/15 via-black/10 to-black/45" />
             </motion.div>
 
+
             <article className="max-w-3xl mx-auto">
-              <ContentRenderer blocks={blocks} />
+              <ContentRenderer
+                blocks={blocks}
+                galleryImages={galleryImages}
+                altText={post.title}
+              />
 
               <motion.div
                 initial={{ opacity: 0 }}
@@ -713,8 +636,14 @@ export default function BlogPostClient({
             </section>
 
             <section className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
+              <div className="lg:col-span-12">
+              </div>
               <article className="lg:col-span-8">
-                <InterwovenContentRenderer blocks={blocks} post={post} />
+                <ContentRenderer
+                  blocks={blocks}
+                  galleryImages={galleryImages}
+                  altText={post.title}
+                />
 
                 <motion.div
                   initial={{ opacity: 0 }}

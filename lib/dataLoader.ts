@@ -116,6 +116,7 @@ export interface BlogPost {
   mins: number;
   date: string;
   image: string;
+  images?: string[];
   category: string;
   content?: string;
 }

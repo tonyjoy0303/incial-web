@@ -81,7 +81,6 @@ export default function BlogsClient({
 }: BlogsClientProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
-  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
 
   const [sectionsConfig, setSectionsConfig] = useState<Record<string, boolean>>(
     {},
@@ -110,37 +109,10 @@ export default function BlogsClient({
     fetchConfig();
   }, []);
 
-  useEffect(() => {
-    let lastY = window.scrollY;
-
-    function onScroll() {
-      const currentY = window.scrollY;
-      const diff = currentY - lastY;
-
-      // Keep header visible near the top, hide only on meaningful downward scroll.
-      if (currentY <= 20) {
-        setIsHeaderVisible(true);
-      } else if (diff > 6) {
-        setIsHeaderVisible(false);
-      } else if (diff < -6) {
-        setIsHeaderVisible(true);
-      }
-
-      lastY = currentY;
-    }
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   if (isDisabled) {
     return (
       <div className="relative min-h-screen bg-white">
-        <Header
-          menuOpen={menuOpen}
-          onToggleMenu={() => setMenuOpen(!menuOpen)}
-          hidden={!isHeaderVisible}
-        />
+        <Header menuOpen={menuOpen} onToggleMenu={() => setMenuOpen(!menuOpen)} />
         <div className="flex min-h-[70vh] items-center justify-center bg-black text-white px-6">
           <div className="text-center">
             <h1 className="text-3xl font-bold mb-4">Section Disabled</h1>
@@ -153,11 +125,7 @@ export default function BlogsClient({
 
   return (
     <div className="relative min-h-screen bg-white">
-      <Header
-        menuOpen={menuOpen}
-        onToggleMenu={() => setMenuOpen(!menuOpen)}
-        hidden={!isHeaderVisible}
-      />
+      <Header menuOpen={menuOpen} onToggleMenu={() => setMenuOpen(!menuOpen)} />
 
       <motion.div
         animate={{

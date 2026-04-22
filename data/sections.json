@@ -59,6 +59,11 @@
       "id": "casestudies-list",
       "label": "Visible",
       "enabled": true
+    },
+    {
+      "id": "blog-newest",
+      "label": "Visible",
+      "enabled": true
     }
   ]
 }

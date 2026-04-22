@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import ImageKit from "imagekit";
+import { auth } from "@/auth";
+
+interface UploadResult {
+  url: string;
+}
 
 // Generate a random string for filename mapping
 function generateId(length: number = 8) {
@@ -11,7 +16,12 @@ function generateId(length: number = 8) {
   return result;
 }
 
-function validateAuth(req: NextRequest): boolean {
+async function validateAuth(req: NextRequest): Promise<boolean> {
+  const session = await auth();
+  if (session) {
+    return true;
+  }
+
   const authHeader = req.headers.get("authorization");
   if (!authHeader?.startsWith("Bearer ")) return false;
   const token = authHeader.slice(7);
@@ -20,7 +30,7 @@ function validateAuth(req: NextRequest): boolean {
 }
 
 export async function POST(req: NextRequest) {
-  if (!validateAuth(req)) {
+  if (!(await validateAuth(req))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -60,7 +70,7 @@ export async function POST(req: NextRequest) {
       ? `/incial-web/${folder.replace(/^\/|\/$/g, "")}`
       : "/incial-web/uploads";
 
-    const uploadResponse = await new Promise((resolve, reject) => {
+    const uploadResponse = await new Promise<UploadResult>((resolve, reject) => {
       imagekit.upload(
         {
           file: buffer,
@@ -69,13 +79,13 @@ export async function POST(req: NextRequest) {
         },
         function(error, result) {
           if (error) reject(error);
-          else resolve(result);
+          else resolve(result as UploadResult);
         }
       );
-    }) as any;
+    });
 
     return NextResponse.json({ url: uploadResponse.url }, { status: 200 });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Upload error:", error);
     return NextResponse.json(
       { error: "Failed to upload to ImageKit." },

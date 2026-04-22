@@ -39,7 +39,7 @@ export default function RootLayout({
         className={`${poppins.variable} ${notoSans.variable} font-sans antialiased h-full w-full`}
       >
         <DesktopOnlyScreen />
-        <div className="hidden lg:block h-full w-full">
+        <div className="desktop-experience-shell h-full w-full">
           <MarketingShell>{children}</MarketingShell>
         </div>
       </body>
