@@ -50,7 +50,7 @@ export default function BrandingSlide() {
               </defs>
               <text
                 className="font-bold fill-white tracking-tighter"
-                style={{ ...brandingTextStyle, transform: "translateY(-4px)" }}
+                style={{ ...brandingTextStyle, transform: "translateY(-7px)" }}
               >
                 <textPath
                   href="#textPath"
@@ -67,22 +67,22 @@ export default function BrandingSlide() {
                 style={{ textAnchor: "start", dominantBaseline: "middle" }}
               >
                 {/* Branding */}
-                <text x="82" y="50" transform="rotate(-18 50 50)" style={subTextStyle}>
+                <text x="86" y="50" transform="rotate(-18 50 50)" style={subTextStyle}>
                   BRANDING
                 </text>
 
                 {/* Social Media */}
-                <text x="82" y="50" transform="rotate(-6 50 50)" style={subTextStyle}>
+                <text x="86" y="50" transform="rotate(-6 50 50)" style={subTextStyle}>
                   SOCIAL MEDIA MANAGEMENT
                 </text>
 
                 {/* Digital Marketing */}
-                <text x="82" y="50" transform="rotate(6 50 50)" style={subTextStyle}>
+                <text x="86" y="50" transform="rotate(6 50 50)" style={subTextStyle}>
                   DIGITAL MARKETING
                 </text>
 
                 {/* SEO */}
-                <text x="82" y="50" transform="rotate(18 50 50)" style={subTextStyle}>
+                <text x="86" y="50" transform="rotate(18 50 50)" style={subTextStyle}>
                   SEO & DIGITAL ADS
                 </text>
               </g>
