@@ -15,7 +15,7 @@ interface ClientsData {
   clients: Client[];
 }
 
-const INITIAL_COUNT = 14;
+const INITIAL_COUNT = 16;
 
 interface ClientsSlideProps {
   id?: string;

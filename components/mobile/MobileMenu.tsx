@@ -1,6 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { navLinks } from '@/lib/constants';
+import type { SectionConfig } from '@/lib/dataLoader';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -8,19 +11,24 @@ interface MobileMenuProps {
 }
 
 export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
-  const menuItems = [
-    { label: 'Branding', id: 'branding' },
-    { label: 'Technology', id: 'technology' },
-    { label: 'Experience', id: 'experience' },
-    { label: 'Stats', id: 'stats' },
-    { label: 'Clients', id: 'clients' },
-    { label: 'Contact', id: 'contact' },
-  ];
+  const [enabledSections, setEnabledSections] = useState<string[] | null>(null);
 
-  const handleMenuItemClick = (id: string) => {
-    // Scroll to section will be implemented with slide system
-    onClose();
-  };
+  useEffect(() => {
+    fetch('/api/admin/sections')
+      .then((res) => res.json())
+      .then((data: { sections: SectionConfig[] }) => {
+        const enabled = data.sections.filter((s) => s.enabled).map((s) => s.id);
+        setEnabledSections(enabled);
+      })
+      .catch(() => {
+        setEnabledSections([]);
+      });
+  }, []);
+
+  const visibleLinks = navLinks.filter((link) => {
+    if (!enabledSections || !link.sectionId) return true;
+    return enabledSections.includes(link.sectionId);
+  });
 
   return (
     <>
@@ -42,6 +50,7 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
         <button
           onClick={onClose}
           className="absolute top-6 right-6 text-white text-2xl"
+          aria-label="Close menu"
         >
           ✕
         </button>
@@ -49,14 +58,15 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
         {/* Menu items */}
         <nav className="pt-20 px-6">
           <ul className="space-y-6">
-            {menuItems.map((item) => (
-              <li key={item.id}>
-                <button
-                  onClick={() => handleMenuItemClick(item.id)}
-                  className="text-white text-lg font-medium hover:text-gray-300 transition-colors"
+            {visibleLinks.map((link) => (
+              <li key={link.label}>
+                <Link
+                  href={link.href}
+                  onClick={onClose}
+                  className="text-white text-lg font-medium hover:text-gray-300 transition-colors block"
                 >
-                  {item.label}
-                </button>
+                  {link.label}
+                </Link>
               </li>
             ))}
           </ul>
