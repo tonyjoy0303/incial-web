@@ -54,14 +54,14 @@ export const MobileServicePage = ({ skipPreloader = false }: MobileServicePagePr
             variants={{
               landing: { opacity: 0, x: 159, y: 430, scale: 3.95, transition: { duration: 0 } },
               intro: { opacity: 0, x: 159, y: 430, scale: 3.95, transition: { duration: 0 } },
-              branding: { opacity: 1, x: 159, y: 430, scale: 3.95, transition: { duration: 0.1 } },
+              branding: { opacity: 1, x: 159, y: 430, scale: 3.95, transition: { duration: 0.4, ease: [0.33, 1, 0.68, 1] } },
               technology: { opacity: 1, x: 195, y: 76, scale: 3.14 },
               experience: { opacity: 1, x: 690, y: 390, scale: 4.00 },
               stats: { opacity: 0, x: 690, y: 390, scale: 4.00 },
               clients: { opacity: 0, x: 690, y: 390, scale: 4.00 },
               contact: { opacity: 0, x: 690, y: 390, scale: 4.00 },
             }}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.7, ease: [0.33, 1, 0.68, 1] }}
           />
         </motion.svg>
       </MobileArtboard>

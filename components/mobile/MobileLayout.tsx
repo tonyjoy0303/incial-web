@@ -14,20 +14,20 @@ export const MobileLayout = ({ children, backgroundLayer }: MobileLayoutProps) =
   return (
     <div className="relative w-full h-screen bg-black overflow-hidden">
       {/* Fixed Header */}
-      <header className="fixed top-0 left-0 right-0 z-30 h-[110px] pt-[45px] pb-2 bg-black/95 backdrop-blur-sm flex items-center justify-between px-6">
-        <div className="text-[15.5px] leading-none tracking-[-0.02em] text-white">
+      <header className={`fixed top-0 left-0 right-0 z-[60] h-[110px] pt-[45px] pb-2 transition-colors duration-300 flex items-center justify-between px-6 ${menuOpen ? 'bg-white' : 'bg-black/95 backdrop-blur-sm'}`}>
+        <div className={`text-[15.5px] leading-none tracking-[-0.02em] transition-colors duration-300 ${menuOpen ? 'text-black' : 'text-white'}`}>
           <span className="font-normal">We Are </span>
           <span className="font-extrabold">incial.</span>
         </div>
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="flex h-9 w-9 items-center justify-center rounded-full border border-white/90 text-white focus:outline-none"
+          className={`flex h-[38px] w-[38px] items-center justify-center rounded-full border transition-colors duration-300 focus:outline-none ${menuOpen ? 'border-black/20 text-black' : 'border-white/90 text-white'}`}
           aria-label="Toggle menu"
         >
           <span className="relative block h-3.5 w-3.5">
-            <span className="absolute left-0 top-0.5 h-[1.5px] w-3.5 bg-white/90" />
-            <span className="absolute left-0 top-[6px] h-[1.5px] w-3.5 bg-white/90" />
-            <span className="absolute left-0 top-[11px] h-[1.5px] w-3.5 bg-white/90" />
+            <span className={`absolute left-0 top-0.5 h-[1.2px] w-3.5 transition-colors duration-300 ${menuOpen ? 'bg-black' : 'bg-white/90'}`} />
+            <span className={`absolute left-0 top-[6px] h-[1.2px] w-3.5 transition-colors duration-300 ${menuOpen ? 'bg-black' : 'bg-white/90'}`} />
+            <span className={`absolute left-0 top-[11px] h-[1.2px] w-3.5 transition-colors duration-300 ${menuOpen ? 'bg-black' : 'bg-white/90'}`} />
           </span>
         </button>
       </header>

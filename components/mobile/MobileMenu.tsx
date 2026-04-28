@@ -32,45 +32,52 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
 
   return (
     <>
-      {/* Overlay */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black bg-opacity-50"
-          onClick={onClose}
-        />
-      )}
-
       {/* Menu */}
       <div
-        className={`fixed top-0 right-0 h-full w-64 bg-black z-50 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 right-0 h-full w-full bg-white z-50 transform transition-transform duration-400 ease-in-out flex flex-col items-center justify-center ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className="absolute top-6 right-6 text-white text-2xl"
-          aria-label="Close menu"
-        >
-          ✕
-        </button>
-
         {/* Menu items */}
-        <nav className="pt-20 px-6">
-          <ul className="space-y-6">
-            {visibleLinks.map((link) => (
-              <li key={link.label}>
+        <nav className="w-full px-6 flex flex-col items-center">
+          <ul className="w-full flex flex-col items-center max-w-[240px]">
+            {visibleLinks.map((link, index) => (
+              <li key={link.label} className="w-full flex flex-col items-center">
                 <Link
                   href={link.href}
                   onClick={onClose}
-                  className="text-white text-lg font-medium hover:text-gray-300 transition-colors block"
+                  className="text-black text-[18px] font-medium py-[18px] hover:text-gray-600 transition-colors block text-center"
                 >
                   {link.label}
                 </Link>
+                {index < visibleLinks.length - 1 && (
+                  <div className="w-full h-[1px] bg-black/10" />
+                )}
               </li>
             ))}
           </ul>
         </nav>
+
+        {/* Back Button */}
+        <button
+          onClick={onClose}
+          className="mt-8 flex items-center justify-center w-[32px] h-[32px] rounded-full border-[1.5px] border-black hover:bg-black/5 transition-all duration-300"
+          aria-label="Go back"
+        >
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="black"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M19 12H5" />
+            <path d="M12 19l-7-7 7-7" />
+          </svg>
+        </button>
       </div>
     </>
   );

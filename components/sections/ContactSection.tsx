@@ -123,7 +123,7 @@ export default function ContactSection({ onBack }: ContactSectionProps) {
   };
 
   return (
-    <section className="min-h-screen w-full bg-black text-white flex flex-col justify-between pt-24 pb-8 relative overflow-hidden">
+    <section id="contact" className="min-h-screen w-full bg-black text-white flex flex-col justify-between pt-24 pb-8 relative overflow-hidden">
       <div className="layout-content grow flex flex-col justify-center items-center max-w-2xl w-full z-10">
         <motion.div
           initial={{ opacity: 0, y: "1.25rem" }}
