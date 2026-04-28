@@ -45,12 +45,14 @@ export const LandingSlide = ({ onNavigate, playLogoAnimation = false, id, onInVi
             >
               About Us
             </button>
-            <button
-              onClick={() => handleCTA('works')}
-              className="rounded-full border border-white/80 px-[24px] py-[11px] text-[12px] font-medium text-white transition-colors hover:bg-white hover:text-black"
+            <a
+              href="/pdf/Brochure.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full border border-white/80 px-[24px] py-[11px] text-[12px] font-medium text-white transition-colors hover:bg-white hover:text-black inline-block text-center"
             >
               Our Works
-            </button>
+            </a>
             <button
               onClick={() => handleCTA('products')}
               className="rounded-full border border-white/80 px-[24px] py-[11px] text-[12px] font-medium text-white transition-colors hover:bg-white hover:text-black"
