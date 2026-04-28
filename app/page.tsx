@@ -5,13 +5,14 @@ import { AnimatePresence, motion } from "framer-motion";
 import { greetings } from "@/lib/constants";
 import { Header, NavMenu } from "@/components/layout";
 import { GreetingsOverlay, ScrollSection } from "@/components/sections";
+import { useDevice } from "@/hooks";
 import type { SectionConfig } from "@/lib/dataLoader";
 
 import TrustSection from "@/components/sections/TrustSection";
 import ClientSection from "@/components/sections/ClientSection";
 import ContactSection from "@/components/sections/ContactSection";
 
-// All possible phases in order (excluding greetings which always shows)
+// All scrollable section phases (greetings preloader is handled separately)
 const ALL_PHASES = ["scrolling", "trust", "client", "contact"] as const;
 type Phase = "greetings" | (typeof ALL_PHASES)[number];
 
@@ -30,9 +31,10 @@ const sectionVariants = {
 const MENU_OFFSET_Y = "6.25rem";
 
 export default function Home() {
+  const { isMobile, isLoading: isDeviceLoading } = useDevice();
   const [phase, setPhase] = useState<Phase>("greetings");
-  const [direction, setDirection] = useState(1);
   const [greetingIndex, setGreetingIndex] = useState(0);
+  const [direction, setDirection] = useState(1);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrollSectionStartAtEnd, setScrollSectionStartAtEnd] = useState(false);
   const [hasCompletedInitialCrawl, setHasCompletedInitialCrawl] =
@@ -62,6 +64,10 @@ export default function Home() {
   );
 
   function getNextPhase(current: Phase, dir: 1 | -1): Phase {
+    if (current === "greetings") {
+      return "scrolling";
+    }
+
     const idx = orderedEnabledPhases.indexOf(
       current as (typeof ALL_PHASES)[number],
     );
@@ -72,29 +78,27 @@ export default function Home() {
     }
   }
 
-  function isLastPhase(current: Phase) {
-    return orderedEnabledPhases[orderedEnabledPhases.length - 1] === current;
-  }
-
-  /* ── Greeting sequence ──────────────────────────── */
+  /* ── Greeting Preloader Sequence ───────────────── */
   useEffect(() => {
     if (phase !== "greetings") return;
+
     if (greetingIndex < greetings.length - 1) {
       const timer = setTimeout(() => setGreetingIndex((prev) => prev + 1), 500);
       return () => clearTimeout(timer);
-    } else {
-      const timer = setTimeout(() => {
-        setDirection(1);
-        // Only go to scrolling if we don't already have a hash that says otherwise
-        const hash = window.location.hash.replace("#", "");
-        if (hash && enabledSections.includes(hash)) {
-          setPhase(hash as Phase);
-        } else {
-          setPhase("scrolling");
-        }
-      }, 500);
-      return () => clearTimeout(timer);
     }
+
+    const timer = setTimeout(() => {
+      setDirection(1);
+
+      const hash = window.location.hash.replace("#", "");
+      if (hash && enabledSections.includes(hash)) {
+        setPhase(hash as Phase);
+      } else {
+        setPhase("scrolling");
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
   }, [greetingIndex, phase, enabledSections]);
 
   /* ── Hash Navigation ────────────────────────────── */
@@ -131,9 +135,13 @@ export default function Home() {
     [orderedEnabledPhases],
   );
 
+  const useMobileServicesShell =
+    phase === "scrolling" && (isDeviceLoading || isMobile);
+  const isPreloading = phase === "greetings";
+
   return (
     <>
-      {/* Greetings overlay */}
+      {/* Greetings preloader overlay */}
       <AnimatePresence>
         {phase === "greetings" && (
           <GreetingsOverlay greetingIndex={greetingIndex} />
@@ -142,11 +150,13 @@ export default function Home() {
 
       {/* Main page */}
       <div className="relative bg-white">
-        {phase !== "greetings" && (
+        {!useMobileServicesShell && !isPreloading && (
           <Header menuOpen={menuOpen} onToggleMenu={handleToggleMenu} />
         )}
 
-        <AnimatePresence>{menuOpen && <NavMenu />}</AnimatePresence>
+        <AnimatePresence>
+          {menuOpen && !useMobileServicesShell && !isPreloading && <NavMenu />}
+        </AnimatePresence>
 
         <motion.div
           initial={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
@@ -182,9 +192,9 @@ export default function Home() {
                   }}
                   onBack={() => {
                     // Allow scrolling up from LogoScreen to trigger back behavior
-                    // Going back from scrolling section goes to greetings or just top
+                    // Going back from scrolling section stays in scrolling phase
                     setDirection(-1);
-                    setPhase("greetings");
+                    setPhase("scrolling");
                   }}
                 />
               </motion.div>

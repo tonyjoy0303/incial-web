@@ -18,24 +18,31 @@ export default function BackgroundCircle({
   showLogo,
   totalWords,
 }: BackgroundCircleProps) {
+  // Use the last word index as the animation endpoint so the globe reaches
+  // its final raised position before transitioning to the logo state.
+  const maxWordIndex = Math.max(totalWords - 1, 1);
+  const progress = Math.min(wordIndex / maxWordIndex, 1);
+  // Lift slightly higher at the end so the earth sits fully up on the text.
+  const yOffset = 90 - progress * 102;
+
   return (
     <motion.div
       ref={circleRef}
       className="pointer-events-none absolute left-1/2 z-10 -translate-x-1/2"
-      initial={{ bottom: "-95%" }}
+      initial={{ y: "90%", opacity: 1 }}
       animate={{
-        bottom: showLogo ? "-100%" : `${-95 + (wordIndex / totalWords) * 80}%`,
+        y: showLogo ? "95%" : `${yOffset}%`,
         opacity: showLogo ? 0 : 1,
       }}
       transition={{
-        type: "spring",
-        stiffness: 60,
-        damping: 20,
-        mass: 1,
+        duration: 1.2,
+        ease: [0.22, 1, 0.36, 1],
       }}
       style={{
-        width: "min(1000px, 90vmin)",
-        height: "min(1000px, 90vmin)",
+        bottom: "-5%",
+        width: "clamp(16rem, 82vmin, 62.5rem)",
+        height: "clamp(16rem, 82vmin, 62.5rem)",
+        willChange: "transform, opacity",
       }}
     >
       <RotatingEarth className="w-full h-full" width={1000} height={1000} />

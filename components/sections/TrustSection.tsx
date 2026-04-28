@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 interface Stat {
@@ -28,6 +28,7 @@ export default function TrustSection({
   const [sectionsConfig, setSectionsConfig] = useState<Record<string, boolean>>(
     {},
   );
+  const isScrollingRef = useRef(false);
 
   useEffect(() => {
     fetch("/api/admin/trust")
@@ -58,18 +59,29 @@ export default function TrustSection({
   }, []);
 
   useEffect(() => {
-    let isScrolling = false;
+    const isCoarsePointer =
+      typeof window !== "undefined" &&
+      window.matchMedia("(pointer: coarse)").matches;
+    const scrollThreshold = isCoarsePointer ? 24 : 40;
+    const scrollLockMs = isCoarsePointer ? 700 : 1200;
+
+    const lockScroll = () => {
+      isScrollingRef.current = true;
+      setTimeout(() => {
+        isScrollingRef.current = false;
+      }, scrollLockMs);
+    };
+
     const handleScroll = (e: WheelEvent) => {
-      if (isScrolling) return;
-      isScrolling = true;
+      if (Math.abs(e.deltaY) < scrollThreshold) return;
+      e.preventDefault();
+      if (isScrollingRef.current) return;
+      lockScroll();
       if (e.deltaY > 0) {
         if (onComplete) onComplete();
       } else {
         if (onBack) onBack();
       }
-      setTimeout(() => {
-        isScrolling = false;
-      }, 1500);
     };
 
     let touchStartY = 0;
@@ -77,22 +89,17 @@ export default function TrustSection({
       touchStartY = e.touches[0].clientY;
     };
     const handleTouchMove = (e: TouchEvent) => {
-      if (isScrolling) return;
+      e.preventDefault();
+      if (isScrollingRef.current) return;
       const touchEndY = e.touches[0].clientY;
       const deltaY = touchStartY - touchEndY;
 
-      if (deltaY > 50) {
-        isScrolling = true;
+      if (deltaY > scrollThreshold) {
+        lockScroll();
         if (onComplete) onComplete();
-        setTimeout(() => {
-          isScrolling = false;
-        }, 1500);
-      } else if (deltaY < -50) {
-        isScrolling = true;
+      } else if (deltaY < -scrollThreshold) {
+        lockScroll();
         if (onBack) onBack();
-        setTimeout(() => {
-          isScrolling = false;
-        }, 1500);
       }
     };
 

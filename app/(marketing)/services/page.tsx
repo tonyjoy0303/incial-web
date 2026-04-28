@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { getServices } from "@/lib/actions/service.actions";
 import { Header } from "@/components/layout";
 import Footer from "@/components/layout/Footer";
+import { MobileServicePage } from "@/components/mobile";
+import { useDevice } from "@/hooks";
 
 // Type definition for service
 interface ServiceItem {
@@ -64,11 +66,17 @@ function ServiceCard({ service }: { service: ServiceItem }) {
 }
 
 export default function ServicesPage() {
+  const { isMobile, isLoading: isDeviceLoading } = useDevice();
   const [menuOpen, setMenuOpen] = useState(false);
   const [services, setServices] = useState<ServiceItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (isMobile) {
+      setLoading(false);
+      return;
+    }
+
     async function loadServices() {
       try {
         const result = await getServices();
@@ -82,7 +90,15 @@ export default function ServicesPage() {
       }
     }
     loadServices();
-  }, []);
+  }, [isMobile]);
+
+  if (isDeviceLoading) {
+    return <div className="min-h-screen w-full bg-black" />;
+  }
+
+  if (isMobile) {
+    return <MobileServicePage />;
+  }
 
   return (
     <div className="relative min-h-screen bg-white">

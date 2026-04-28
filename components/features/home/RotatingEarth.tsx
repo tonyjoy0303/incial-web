@@ -9,6 +9,15 @@ interface RotatingEarthProps {
   className?: string;
 }
 
+interface DotData {
+  lng: number;
+  lat: number;
+  visible: boolean;
+}
+
+let cachedLandFeatures: any = null;
+let cachedDots: DotData[] | null = null;
+
 export default function RotatingEarth({
   width = 800,
   height = 600,
@@ -117,12 +126,6 @@ export default function RotatingEarth({
       return dots;
     };
 
-    interface DotData {
-      lng: number;
-      lat: number;
-      visible: boolean;
-    }
-
     const allDots: DotData[] = [];
     let landFeatures: any;
 
@@ -223,6 +226,14 @@ export default function RotatingEarth({
       try {
         setIsLoading(true);
 
+        if (cachedLandFeatures && cachedDots) {
+          landFeatures = cachedLandFeatures;
+          allDots.push(...cachedDots);
+          render();
+          setIsLoading(false);
+          return;
+        }
+
         const response = await fetch(
           "https://raw.githubusercontent.com/martynafford/natural-earth-geojson/refs/heads/master/110m/physical/ne_110m_land.json",
         );
@@ -233,12 +244,15 @@ export default function RotatingEarth({
         // Generate dots for all land features
         let totalDots = 0;
         landFeatures.features.forEach((feature: any) => {
-          const dots = generateDotsInPolygon(feature, 16);
+          const dots = generateDotsInPolygon(feature, 18);
           dots.forEach(([lng, lat]) => {
             allDots.push({ lng, lat, visible: true });
             totalDots++;
           });
         });
+
+        cachedLandFeatures = landFeatures;
+        cachedDots = [...allDots];
 
         render();
         setIsLoading(false);

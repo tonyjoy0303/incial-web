@@ -21,7 +21,7 @@ export default function GreetingsOverlay({
         <motion.div
           key={greetingIndex}
           lang={greetings[greetingIndex].lang}
-          className="flex text-4xl font-semibold text-white sm:text-5xl"
+          className="flex max-w-[92vw] text-2xl font-semibold text-white sm:text-4xl md:text-5xl"
           initial="hidden"
           animate="visible"
           exit="exit"

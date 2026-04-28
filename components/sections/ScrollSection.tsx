@@ -9,6 +9,8 @@ import RotatingText from "@/components/features/home/RotatingText";
 import LogoScreen from "@/components/features/home/LogoScreen";
 import BackgroundCircle from "@/components/features/home/BackgroundCircle";
 import ServicesSection from "@/components/sections/ServicesSection";
+import { MobileServicePage } from "@/components/mobile";
+import { useDevice } from "@/hooks";
 
 interface ScrollSectionProps {
   onScrollComplete?: () => void;
@@ -23,6 +25,7 @@ export default function ScrollSection({
   startAtEnd = false,
   skipAnimation = false,
 }: ScrollSectionProps) {
+  const { isMobile, isLoading: isDeviceLoading } = useDevice();
   const [wordIndex, setWordIndex] = useState(
     startAtEnd ? rotatingWords.length - 1 : 0,
   );
@@ -34,6 +37,8 @@ export default function ScrollSection({
   const circleRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (isMobile || isDeviceLoading) return;
+
     // Auto flow: keep advancing wordIndex until we reach the end, then showLogo.
     // If startAtEnd is true, this won't run because showLogo is true or wordIndex is at max.
     if (!showLogo && !showServices) {
@@ -46,15 +51,32 @@ export default function ScrollSection({
       }, 1500); // Increased from 700ms to 1500ms per word
       return () => clearTimeout(timer);
     }
-  }, [wordIndex, showLogo, showServices]);
+  }, [wordIndex, showLogo, showServices, isMobile, isDeviceLoading]);
 
   useEffect(() => {
+    if (isMobile || isDeviceLoading) return;
+
+    const isCoarsePointer =
+      typeof window !== "undefined" &&
+      window.matchMedia("(pointer: coarse)").matches;
+    const scrollThreshold = isCoarsePointer ? 24 : 40;
+    const scrollLockMs = isCoarsePointer ? 700 : 1200;
+
+    const lockScroll = () => {
+      isScrolling.current = true;
+      setTimeout(() => {
+        isScrolling.current = false;
+      }, scrollLockMs);
+    };
+
     const handleScroll = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) < scrollThreshold) return;
+      e.preventDefault();
       if (isScrolling.current) return;
 
       if (e.deltaY > 0) {
         // Scroll Down
-        isScrolling.current = true;
+        lockScroll();
 
         if (!showLogo) {
           // If the user scrolls down during the introductory text rotation,
@@ -64,13 +86,9 @@ export default function ScrollSection({
         } else if (showLogo && !showServices) {
           setShowServices(true);
         }
-
-        setTimeout(() => {
-          isScrolling.current = false;
-        }, 1500); // Debounce
       } else if (e.deltaY < 0) {
         // Scroll Up
-        isScrolling.current = true;
+        lockScroll();
         if (showServices) {
           // Handled by ServicesSection going back
         } else if (showLogo && onBack) {
@@ -79,9 +97,6 @@ export default function ScrollSection({
           // Allow backing out even while auto-animating
           onBack();
         }
-        setTimeout(() => {
-          isScrolling.current = false;
-        }, 1500); // Debounce
       }
     };
 
@@ -91,19 +106,16 @@ export default function ScrollSection({
       touchStartY = e.touches[0].clientY;
     };
     const handleTouchMove = (e: TouchEvent) => {
-      // Prevent default scrolling when inside scroll section
-      if (typeof window !== "undefined" && window.scrollY === 0) {
-        e.preventDefault();
-      }
+      e.preventDefault();
 
       if (isScrolling.current) return;
       const touchEndY = e.touches[0].clientY;
       const deltaY = touchStartY - touchEndY;
 
-      if (Math.abs(deltaY) > 50) {
+      if (Math.abs(deltaY) > scrollThreshold) {
         if (deltaY > 0) {
           // Swipe Up / Scroll Down
-          isScrolling.current = true;
+          lockScroll();
 
           if (!showLogo) {
             setReturnFromServices(true);
@@ -113,7 +125,7 @@ export default function ScrollSection({
           }
         } else {
           // Swipe Down / Scroll Up
-          isScrolling.current = true;
+          lockScroll();
           if (showServices) {
             // Handled by ServicesSection
           } else if (showLogo && onBack) {
@@ -122,9 +134,6 @@ export default function ScrollSection({
             onBack();
           }
         }
-        setTimeout(() => {
-          isScrolling.current = false;
-        }, 1500);
       }
     };
 
@@ -137,13 +146,18 @@ export default function ScrollSection({
       window.removeEventListener("touchstart", handleTouchStart);
       window.removeEventListener("touchmove", handleTouchMove);
     };
-  }, [showLogo, showServices, onBack]);
+  }, [showLogo, showServices, onBack, isMobile, isDeviceLoading]);
 
   return (
     <div className="relative h-screen w-full overflow-hidden bg-black">
       <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
         {/* Main Interaction Area */}
         <main className="relative z-20 flex flex-1 items-center justify-center">
+          {isDeviceLoading ? (
+            <div className="h-full w-full bg-black" />
+          ) : isMobile ? (
+            <MobileServicePage skipPreloader />
+          ) : (
           <AnimatePresence mode="wait">
             {showServices ? (
               <ServicesSection
@@ -164,10 +178,11 @@ export default function ScrollSection({
               />
             )}
           </AnimatePresence>
+          )}
         </main>
 
         {/* Animated Background - Only shown before services */}
-        {!showServices && (
+        {!isMobile && !showServices && (
           <BackgroundCircle
             circleRef={circleRef}
             wordIndex={wordIndex}

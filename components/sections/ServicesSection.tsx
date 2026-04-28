@@ -24,32 +24,43 @@ export default function ServicesSection({
   const isScrolling = useRef(false);
 
   useEffect(() => {
+    const isCoarsePointer =
+      typeof window !== "undefined" &&
+      window.matchMedia("(pointer: coarse)").matches;
+    const scrollThreshold = isCoarsePointer ? 24 : 40;
+    const scrollLockMs = isCoarsePointer ? 700 : 1200;
+
+    const lockScroll = () => {
+      isScrolling.current = true;
+      setTimeout(() => {
+        isScrolling.current = false;
+      }, scrollLockMs);
+    };
+
     const handleScroll = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) < scrollThreshold) return;
+      e.preventDefault();
       if (isScrolling.current) return;
 
       if (e.deltaY > 0) {
         // Scroll Down
         if (currentSlide < SLIDES.length - 1) {
-          isScrolling.current = true;
+          lockScroll();
           setDirection(1);
           setCurrentSlide((prev) => prev + 1);
-          setTimeout(() => {
-            isScrolling.current = false;
-          }, 1500);
         } else if (onComplete) {
           // End of section, trigger parent transition
+          lockScroll();
           onComplete();
         }
       } else if (e.deltaY < 0) {
         // Scroll Up
         if (currentSlide > 0) {
-          isScrolling.current = true;
+          lockScroll();
           setDirection(-1);
           setCurrentSlide((prev) => prev - 1);
-          setTimeout(() => {
-            isScrolling.current = false;
-          }, 1500);
         } else if (onBack) {
+          lockScroll();
           onBack();
         }
       }
@@ -61,33 +72,30 @@ export default function ServicesSection({
       touchStartY = e.touches[0].clientY;
     };
     const handleTouchMove = (e: TouchEvent) => {
+      e.preventDefault();
       if (isScrolling.current) return;
       const touchEndY = e.touches[0].clientY;
       const deltaY = touchStartY - touchEndY;
 
-      if (Math.abs(deltaY) > 50) {
+      if (Math.abs(deltaY) > scrollThreshold) {
         if (deltaY > 0) {
           // Swipe Up / Scroll Down
           if (currentSlide < SLIDES.length - 1) {
-            isScrolling.current = true;
+            lockScroll();
             setDirection(1);
             setCurrentSlide((prev) => prev + 1);
-            setTimeout(() => {
-              isScrolling.current = false;
-            }, 1500);
           } else if (onComplete) {
+            lockScroll();
             onComplete();
           }
         } else {
           // Swipe Down / Scroll Up
           if (currentSlide > 0) {
-            isScrolling.current = true;
+            lockScroll();
             setDirection(-1);
             setCurrentSlide((prev) => prev - 1);
-            setTimeout(() => {
-              isScrolling.current = false;
-            }, 1500);
           } else if (onBack) {
+            lockScroll();
             onBack();
           }
         }
@@ -199,10 +207,10 @@ export default function ServicesSection({
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
             className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center z-10"
           >
-            <h2 className="text-4xl font-bold text-white md:text-6xl">
+            <h2 className="text-2xl font-bold text-white sm:text-3xl md:text-5xl lg:text-6xl">
               Services That Make Magic Happen
             </h2>
-            <p className="mt-4 text-xl text-white/80 italic md:text-2xl">
+            <p className="mt-3 text-base text-white/80 italic sm:text-lg md:mt-4 md:text-2xl">
               (And Seriously Grow Your Business)
             </p>
           </motion.div>

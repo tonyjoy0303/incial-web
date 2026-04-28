@@ -35,33 +35,25 @@ body {
   overflow-x: hidden;
 }
 
-.mobile-experience-screen {
-  display: none;
-}
-
-.desktop-experience-shell {
-  display: block;
-}
-
-@media (max-width: 480px) {
-  .mobile-experience-screen {
-    display: flex;
-  }
-
-  .desktop-experience-shell {
-    display: none;
-  }
-}
-
 /* Shared desktop-first containers used across immersive sections */
 .layout-container {
-  width: min(100% - 3rem, 90rem);
+  width: min(100% - 1.5rem, 90rem);
   margin-inline: auto;
 }
 
 .layout-content {
-  width: min(100% - 3rem, 78.25rem);
+  width: min(100% - 1.5rem, 78.25rem);
   margin-inline: auto;
+}
+
+@media (min-width: 640px) {
+  .layout-container {
+    width: min(100% - 2.5rem, 90rem);
+  }
+
+  .layout-content {
+    width: min(100% - 2.5rem, 78.25rem);
+  }
 }
 
 @media (min-width: 768px) {

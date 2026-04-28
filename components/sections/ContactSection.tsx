@@ -10,9 +10,27 @@ interface ContactSectionProps {
 
 export default function ContactSection({ onBack }: ContactSectionProps) {
   useEffect(() => {
+    const isCoarsePointer =
+      typeof window !== "undefined" &&
+      window.matchMedia("(pointer: coarse)").matches;
+    const scrollThreshold = isCoarsePointer ? 24 : 40;
+    const scrollLockMs = isCoarsePointer ? 700 : 1200;
+    let isScrolling = false;
+
+    const lockScroll = () => {
+      isScrolling = true;
+      setTimeout(() => {
+        isScrolling = false;
+      }, scrollLockMs);
+    };
+
     const handleScroll = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) < scrollThreshold) return;
+      if (isScrolling) return;
       // If scrolling UP and at the top of the page
       if (e.deltaY < 0 && window.scrollY === 0 && onBack) {
+        e.preventDefault();
+        lockScroll();
         onBack();
       }
     };
@@ -23,11 +41,14 @@ export default function ContactSection({ onBack }: ContactSectionProps) {
       touchStartY = e.touches[0].clientY;
     };
     const handleTouchMove = (e: TouchEvent) => {
+      if (isScrolling) return;
       const touchEndY = e.touches[0].clientY;
       const deltaY = touchStartY - touchEndY;
 
       // Swipe Down (negative deltaY) and at top
-      if (deltaY < -50 && window.scrollY === 0 && onBack) {
+      if (deltaY < -scrollThreshold && window.scrollY === 0 && onBack) {
+        e.preventDefault();
+        lockScroll();
         onBack();
       }
     };

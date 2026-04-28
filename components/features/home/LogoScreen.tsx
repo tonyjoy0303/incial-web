@@ -6,12 +6,19 @@ import Link from "next/link";
 
 interface LogoScreenProps {
   skipAnimation?: boolean;
+  sizeMode?: "desktop" | "mobile";
 }
 
 export default function LogoScreen({
   skipAnimation,
+  sizeMode = "desktop",
 }: LogoScreenProps) {
-
+  const isMobileMode = sizeMode === "mobile";
+  const logoFrameStyle = {
+    width: isMobileMode ? "clamp(14rem, 84vw, 23rem)" : "clamp(11rem, 30vw, 34rem)",
+    height: isMobileMode ? "clamp(14rem, 84vw, 23rem)" : "clamp(11rem, 30vw, 34rem)",
+  } as const;
+  const logoScale = isMobileMode ? "scale(1.1)" : "scale(1.05)";
 
   const pathVariants: Variants = {
     hidden: { pathLength: 0, opacity: 0 },
@@ -28,10 +35,10 @@ export default function LogoScreen({
   return (
     <motion.div
       key="logo-screen"
-      initial={{ opacity: 0, scale: 0.95 }}
+      initial={skipAnimation ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      transition={skipAnimation ? { duration: 0 } : { duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       className="relative flex h-full w-full items-center justify-center"
     >
       {/* Left Button */}
@@ -51,10 +58,7 @@ export default function LogoScreen({
 
       <div
         className="relative flex items-center justify-center"
-        style={{
-          width: "clamp(16rem, 74vmin, 52rem)",
-          height: "clamp(16rem, 74vmin, 52rem)",
-        }}
+        style={logoFrameStyle}
       >
         {/* Sharp Stroke Layer */}
         <motion.svg
@@ -62,8 +66,8 @@ export default function LogoScreen({
           className="absolute inset-0 h-full w-full stroke-white"
           fill="transparent"
           style={{
-            strokeWidth: "clamp(2px, 0.22vmin, 4px)",
-            transform: "scale(1.18)",
+            strokeWidth: "clamp(1.5px, 0.28vmin, 4px)",
+            transform: logoScale,
             transformOrigin: "center",
           }}
           strokeLinecap="round"
@@ -92,7 +96,7 @@ export default function LogoScreen({
         {/* Full Finished Logo */}
         <motion.div
           className="absolute inset-0 flex items-center justify-center"
-          style={{ transform: "scale(1.18)", transformOrigin: "center" }}
+          style={{ transform: logoScale, transformOrigin: "center" }}
           initial={skipAnimation ? { opacity: 1 } : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={

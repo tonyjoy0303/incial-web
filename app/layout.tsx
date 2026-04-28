@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Poppins, Noto_Sans } from "next/font/google";
 import "./globals.css";
 import MarketingShell from "@/components/layout/MarketingShell";
-import DesktopOnlyScreen from "@/components/ui/DesktopOnlyScreen";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -38,10 +37,7 @@ export default function RootLayout({
         suppressHydrationWarning
         className={`${poppins.variable} ${notoSans.variable} font-sans antialiased h-full w-full`}
       >
-        <DesktopOnlyScreen />
-        <div className="desktop-experience-shell h-full w-full">
-          <MarketingShell>{children}</MarketingShell>
-        </div>
+        <MarketingShell>{children}</MarketingShell>
       </body>
     </html>
   );
