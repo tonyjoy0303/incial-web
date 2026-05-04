@@ -17,6 +17,8 @@ interface BlogPostClientProps {
 type LayoutVariant = "cinematic" | "split" | "editorial" | "interwoven";
 type ContentBlockType = "h1" | "h2" | "h3" | "li" | "p" | "divider";
 
+const SENTENCES_BETWEEN_GALLERIES = 6;
+
 interface ContentBlock {
   type: ContentBlockType;
   text: string;
@@ -127,6 +129,18 @@ function GalleryImageFigure({
   );
 }
 
+function splitIntoSentences(text: string): string[] {
+  const normalized = text.replace(/\s+/g, " ").trim();
+
+  if (!normalized) {
+    return [];
+  }
+
+  const sentences = normalized.match(/[^.!?]+[.!?]+(?:[\"')\]]+)?|[^.!?]+$/g);
+
+  return (sentences ?? [normalized]).map((sentence) => sentence.trim()).filter(Boolean);
+}
+
 function parseContentToBlocks(content?: string): ContentBlock[] {
   if (!content) {
     return [
@@ -186,42 +200,84 @@ function ContentRenderer({
   galleryImages?: string[];
   altText: string;
 }) {
-  const paragraphIndexes = blocks
-    .map((block, index) => ({ block, index }))
-    .filter(({ block }) => block.type === "p")
-    .map(({ index }) => index);
+  const rendered: JSX.Element[] = [];
+  let galleryIndex = 0;
+  let sentencesSinceGallery = 0;
+  let paragraphIndex = 0;
+
+  function appendGalleryImage() {
+    if (galleryIndex >= galleryImages.length) {
+      return;
+    }
+
+    rendered.push(
+      <GalleryImageFigure
+        key={`g-${galleryIndex}`}
+        src={galleryImages[galleryIndex]}
+        alt={altText}
+        index={galleryIndex}
+      />,
+    );
+    galleryIndex += 1;
+  }
+
+  function appendParagraph(text: string) {
+    rendered.push(renderContentBlock({ type: "p", text }, paragraphIndex));
+    paragraphIndex += 1;
+  }
+
+  for (const block of blocks) {
+    if (block.type !== "p") {
+      rendered.push(renderContentBlock(block, paragraphIndex));
+      paragraphIndex += 1;
+      continue;
+    }
+
+    const sentences = splitIntoSentences(block.text);
+
+    if (sentences.length === 0) {
+      continue;
+    }
+
+    let chunk: string[] = [];
+
+    for (const sentence of sentences) {
+      chunk.push(sentence);
+      const endsSentence = /[.!?][\"')\]]?$/.test(sentence);
+
+      if (!endsSentence) {
+        continue;
+      }
+
+      sentencesSinceGallery += 1;
+
+      if (sentencesSinceGallery >= SENTENCES_BETWEEN_GALLERIES) {
+        appendParagraph(chunk.join(" "));
+        chunk = [];
+        appendGalleryImage();
+        sentencesSinceGallery = 0;
+      }
+    }
+
+    if (chunk.length > 0) {
+      appendParagraph(chunk.join(" "));
+    }
+  }
+
+  for (; galleryIndex < galleryImages.length; galleryIndex += 1) {
+    rendered.push(
+      <GalleryImageFigure
+        key={`g-bottom-${galleryIndex}`}
+        src={galleryImages[galleryIndex]}
+        alt={altText}
+        index={galleryIndex}
+      />,
+    );
+  }
 
   return (
     <div className="space-y-5">
-      {blocks.map((block, index) => {
-        const nodes = [renderContentBlock(block, index)];
-
-        if (block.type === "p" && galleryImages.length > 0 && paragraphIndexes.includes(index)) {
-          const imageIndex = paragraphIndexes.indexOf(index);
-          if (imageIndex < galleryImages.length) {
-            nodes.push(
-              <GalleryImageFigure
-                key={`g-${index}`}
-                src={galleryImages[imageIndex]}
-                alt={altText}
-                index={imageIndex}
-              />,
-            );
-          }
-        }
-
-        return nodes;
-      })}
-
-      {galleryImages.length > paragraphIndexes.length &&
-        galleryImages.slice(paragraphIndexes.length).map((src, index) => (
-          <GalleryImageFigure
-            key={`g-bottom-${index}`}
-            src={src}
-            alt={altText}
-            index={paragraphIndexes.length + index}
-          />
-        ))}
+      {rendered}
     </div>
   );
 }
@@ -239,6 +295,35 @@ function MetaRow({ post }: { post: BlogPost }) {
       <span>{post.date}</span>
       <span className="w-px h-4 bg-white/20" />
       <span>{post.mins} min read</span>
+    </motion.div>
+  );
+}
+
+function BlogHeroVisual({
+  post,
+  variant,
+}: {
+  post: BlogPost;
+  variant: LayoutVariant;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: 0.2 }}
+      className="relative overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.02] shadow-[0_24px_80px_rgba(0,0,0,0.35)]"
+    >
+      <div className="absolute inset-0 bg-linear-to-tr from-white/10 via-transparent to-transparent" />
+      <div className="relative aspect-[16/9] sm:aspect-[18/8] min-h-[280px] sm:min-h-[360px]">
+        <Image
+          src={post.image}
+          alt={post.title}
+          fill
+          priority
+          className="object-contain object-center"
+        />
+      </div>
+      <div className="absolute inset-0 bg-linear-to-t from-black/35 via-transparent to-transparent" />
     </motion.div>
   );
 }
@@ -543,21 +628,9 @@ export default function BlogPostClient({
               </div>
             </section>
 
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="relative rounded-[26px] overflow-hidden h-[36vh] sm:h-[48vh] min-h-[280px] max-w-5xl mx-auto border border-white/10 mb-14"
-            >
-              <Image
-                src={coverImage}
-                alt={post.title}
-                fill
-                priority
-                className="object-contain object-center"
-              />
-              <div className="absolute inset-0 bg-linear-to-b from-black/15 via-black/10 to-black/45" />
-            </motion.div>
+            <div className="max-w-5xl mx-auto mb-14">
+              <BlogHeroVisual post={post} variant={variant} />
+            </div>
 
 
             <article className="max-w-3xl mx-auto">
@@ -635,9 +708,11 @@ export default function BlogPostClient({
               <MetaRow post={post} />
             </section>
 
+            <div className="max-w-6xl mb-14">
+              <BlogHeroVisual post={post} variant={variant} />
+            </div>
+
             <section className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
-              <div className="lg:col-span-12">
-              </div>
               <article className="lg:col-span-8">
                 <ContentRenderer
                   blocks={blocks}

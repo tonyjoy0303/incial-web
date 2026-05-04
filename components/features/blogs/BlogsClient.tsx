@@ -8,6 +8,8 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import type { BlogPost } from "@/lib/dataLoader";
+import { useDevice } from "@/hooks";
+import { MobileLayout } from "@/components/mobile";
 
 function BlogCard({ post, index }: { post: BlogPost; index: number }) {
   return (
@@ -79,6 +81,7 @@ export default function BlogsClient({
   popularPosts,
   newestPosts,
 }: BlogsClientProps) {
+  const { isMobile, isLoading: isDeviceLoading } = useDevice();
   const [menuOpen, setMenuOpen] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
 
@@ -109,18 +112,104 @@ export default function BlogsClient({
     fetchConfig();
   }, []);
 
+  if (isDeviceLoading) {
+    return <div className="min-h-screen w-full bg-black" />;
+  }
+
+  const disabledContent = (
+    <div className="flex min-h-[70vh] items-center justify-center bg-black text-white px-6">
+      <div className="text-center">
+        <h1 className="text-3xl font-bold mb-4">Section Disabled</h1>
+        <p className="text-gray-400">This page is currently unavailable.</p>
+      </div>
+    </div>
+  );
+
+  const pageBody = (
+    <>
+      <div className="pointer-events-none absolute inset-0 opacity-40">
+        <div className="absolute -top-24 -right-28 h-72 w-72 rounded-full bg-white/8 blur-3xl" />
+        <div className="absolute top-[38%] -left-28 h-64 w-64 rounded-full bg-white/8 blur-3xl" />
+        <div className="absolute bottom-0 right-[16%] h-52 w-52 rounded-full bg-white/10 blur-3xl" />
+      </div>
+
+      <main className="relative pt-24 sm:pt-28 pb-20 sm:pb-24 px-5 sm:px-8 lg:px-12 max-w-[1431px] mx-auto">
+        {/* Breadcrumb */}
+        <Breadcrumbs
+          items={[{ label: "Home", href: "/" }, { label: "Blogs" }]}
+          variant="pill"
+          size="lg"
+          className="mb-8"
+        />
+
+        {/* Page Title */}
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="text-4xl sm:text-5xl md:text-6xl font-bold text-center mb-4"
+        >
+          Blogs
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="text-center text-white/70 text-sm sm:text-base whitespace-nowrap mx-auto mb-12 sm:mb-14"
+        >
+          Sharp ideas, practical playbooks, and stories from the teams building
+          standout digital experiences.
+        </motion.p>
+
+        {/* ── Popular ─────────────────────────────────────────────────────── */}
+        {sectionsConfig["blog-popular"] !== false && (
+          <section className="mb-16">
+            <SectionLabel label="Popular" />
+            <div className="max-w-[1251px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-10">
+              {popularPosts.map((post, i) => (
+                <BlogCard key={post.id} post={post} index={i} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Divider */}
+        <div className="max-w-[1251px] border-t border-white/15 mb-16" />
+
+        {/* ── Newest ──────────────────────────────────────────────────────── */}
+        {sectionsConfig["blog-newest"] !== false && (
+          <section>
+            <SectionLabel label="Newest" delay={0.1} />
+            <div className="max-w-[1251px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-10">
+              {newestPosts.map((post, i) => (
+                <BlogCard key={post.id} post={post} index={i} />
+              ))}
+            </div>
+          </section>
+        )}
+      </main>
+
+      <div className="px-5 sm:px-8 lg:px-12 max-w-[1431px] mx-auto">
+        <Footer />
+      </div>
+    </>
+  );
+
   if (isDisabled) {
+    if (isMobile) {
+      return <MobileLayout>{disabledContent}</MobileLayout>;
+    }
     return (
       <div className="relative min-h-screen bg-white">
         <Header menuOpen={menuOpen} onToggleMenu={() => setMenuOpen(!menuOpen)} />
-        <div className="flex min-h-[70vh] items-center justify-center bg-black text-white px-6">
-          <div className="text-center">
-            <h1 className="text-3xl font-bold mb-4">Section Disabled</h1>
-            <p className="text-gray-400">This page is currently unavailable.</p>
-          </div>
-        </div>
+        {disabledContent}
       </div>
     );
+  }
+
+  if (isMobile) {
+    return <MobileLayout>{pageBody}</MobileLayout>;
   }
 
   return (
@@ -138,72 +227,7 @@ export default function BlogsClient({
         className="relative origin-top overflow-hidden bg-black text-white min-h-screen"
         style={{ zIndex: 30 }}
       >
-        <div className="pointer-events-none absolute inset-0 opacity-40">
-          <div className="absolute -top-24 -right-28 h-72 w-72 rounded-full bg-white/8 blur-3xl" />
-          <div className="absolute top-[38%] -left-28 h-64 w-64 rounded-full bg-white/8 blur-3xl" />
-          <div className="absolute bottom-0 right-[16%] h-52 w-52 rounded-full bg-white/10 blur-3xl" />
-        </div>
-
-        <main className="relative pt-24 sm:pt-28 pb-20 sm:pb-24 px-5 sm:px-8 lg:px-12 max-w-[1431px] mx-auto">
-          {/* Breadcrumb */}
-          <Breadcrumbs
-            items={[{ label: "Home", href: "/" }, { label: "Blogs" }]}
-            variant="pill"
-            size="lg"
-            className="mb-8"
-          />
-
-          {/* Page Title */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl sm:text-5xl md:text-6xl font-bold text-center mb-4"
-          >
-            Blogs
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-center text-white/70 text-sm sm:text-base whitespace-nowrap mx-auto mb-12 sm:mb-14"
-          >
-            Sharp ideas, practical playbooks, and stories from the teams building
-            standout digital experiences.
-          </motion.p>
-
-          {/* ── Popular ─────────────────────────────────────────────────────── */}
-          {sectionsConfig["blog-popular"] !== false && (
-            <section className="mb-16">
-              <SectionLabel label="Popular" />
-              <div className="max-w-[1251px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-10">
-                {popularPosts.map((post, i) => (
-                  <BlogCard key={post.id} post={post} index={i} />
-                ))}
-              </div>
-            </section>
-          )}
-
-          {/* Divider */}
-          <div className="max-w-[1251px] border-t border-white/15 mb-16" />
-
-          {/* ── Newest ──────────────────────────────────────────────────────── */}
-          {sectionsConfig["blog-newest"] !== false && (
-            <section>
-              <SectionLabel label="Newest" delay={0.1} />
-              <div className="max-w-[1251px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-10">
-                {newestPosts.map((post, i) => (
-                  <BlogCard key={post.id} post={post} index={i} />
-                ))}
-              </div>
-            </section>
-          )}
-        </main>
-
-        <div className="px-5 sm:px-8 lg:px-12 max-w-[1431px] mx-auto">
-          <Footer />
-        </div>
+        {pageBody}
       </motion.div>
     </div>
   );

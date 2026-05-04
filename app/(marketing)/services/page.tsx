@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { getServices } from "@/lib/actions/service.actions";
 import { Header } from "@/components/layout";
@@ -68,8 +68,10 @@ function ServiceCard({ service }: { service: ServiceItem }) {
 export default function ServicesPage() {
   const { isMobile, isLoading: isDeviceLoading } = useDevice();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [headerHidden, setHeaderHidden] = useState(false);
   const [services, setServices] = useState<ServiceItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     if (isMobile) {
@@ -92,6 +94,34 @@ export default function ServicesPage() {
     loadServices();
   }, [isMobile]);
 
+  useEffect(() => {
+    if (isMobile) {
+      setHeaderHidden(false);
+      return;
+    }
+
+    lastScrollY.current = window.scrollY;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const delta = currentScrollY - lastScrollY.current;
+
+      if (Math.abs(delta) < 6) return;
+
+      if (currentScrollY <= 24) {
+        setHeaderHidden(false);
+        lastScrollY.current = currentScrollY;
+        return;
+      }
+
+      setHeaderHidden(delta > 0);
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isMobile]);
+
   if (isDeviceLoading) {
     return <div className="min-h-screen w-full bg-black" />;
   }
@@ -102,7 +132,11 @@ export default function ServicesPage() {
 
   return (
     <div className="relative min-h-screen bg-white">
-      <Header menuOpen={menuOpen} onToggleMenu={() => setMenuOpen(!menuOpen)} />
+      <Header
+        menuOpen={menuOpen}
+        onToggleMenu={() => setMenuOpen(!menuOpen)}
+        hidden={headerHidden}
+      />
 
       <motion.div
         animate={{
